@@ -1,0 +1,52 @@
+{
+	"name": "@labor-digital/bits",
+	"version": "1.0.0",
+	"description": "Code encapsulation, data-binding and reactive HTML in the light-dom; without a framework - with web-components",
+	"homepage": "https://bits.labor.tools/",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/labor-digital/bits/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com:labor-digital/bits.git"
+	},
+	"author": {
+		"name": "LABOR.digital",
+		"email": "info@labor.tools",
+		"url": "https://labor.digital"
+	},
+	"contributors": [
+		{
+			"name": "Martin Neundorfer",
+			"email": "code@neunerlei.eu",
+			"url": "https://www.neunerlei.eu"
+		}
+	],
+	"types": "dist/index.d.ts",
+	"main": "dist/index.umd.js",
+	"module": "dist/index.js",
+	"sideEffects": false,
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"build": "npm run build:ts && npm run build:bundle",
+		"build:ts": "npm run clean && tsc",
+		"build:bundle": "rollup --config ./rollup.config.js",
+		"watch": "npm run clean && tsc --project ./tsconfig.watch.json --watch"
+	},
+	"peerDependencies": {
+		"@labor-digital/helferlein": "^4.0.2"
+	},
+	"dependencies": {
+		"mobx": "^6.1.8",
+		"lit-html": "^1.3.0"
+	},
+	"devDependencies": {
+		"@labor-digital/helferlein": "^4.0.2",
+		"typescript": "^4.2.3",
+		"rollup": "^2.41.0",
+		"rollup-plugin-terser": "^7.0.2",
+		"rollup-plugin-typescript2": "^0.30.0",
+		"rimraf": "^3.0.2"
+	}
+}

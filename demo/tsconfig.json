@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"sourceMap": true,
+		"target": "es5",
+		"experimentalDecorators": true,
+		"suppressImplicitAnyIndexErrors": true,
+		"moduleResolution": "node",
+		"module": "esnext",
+		"jsx": "react",
+		"allowJs": true
+	}
+}

@@ -1,0 +1,95 @@
+<!--
+  ~ Copyright 2021 LABOR.digital
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ Last modified: 2021.03.03 at 14:35
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../dist/bundle.js"></script>
+    <title>Example: Props</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <!-- Parent bit -->
+            <b-mount type="props/parent" class="card bg-light mt-3">
+                
+                <div class="card-header">
+                    Parent
+                </div>
+                
+                <div class="card-body">
+                    
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" data-model="prop" id="textInput"/>
+                        <label for="textInput">Prop (read only on child)</label>
+                    </div>
+                    
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" data-model="model" id="modelInput"/>
+                        <label for="modelInput">Model (updates both ways)</label>
+                    </div>
+                    
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            Prop: <strong data-bind="prop"></strong>
+                        </li>
+                        <li class="list-group-item">
+                            Model: <strong data-bind="model"></strong>
+                        </li>
+                    </ul>
+                    
+                    <!-- Child bit -->
+                    <b-mount type="props/child"
+                             class="card bg-secondary mt-3"
+                             data-bind-attr="prop:prop,class:classes"
+                             data-model="model">
+                        
+                        <div class="card-header text-white">
+                            Child
+                        </div>
+                        
+                        <div class="card-body">
+                            
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" data-model="value" id="childInput"/>
+                                <label for="childInput">Model value in child</label>
+                            </div>
+                            
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    Prop in a child: <strong data-bind="prop"></strong>
+                                </li>
+                                <li class="list-group-item">
+                                    Model in a child: <strong data-bind="value"></strong>
+                                </li>
+                            </ul>
+                        
+                        </div>
+                    </b-mount>
+                </div>
+            </b-mount>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
