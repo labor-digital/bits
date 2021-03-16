@@ -103,11 +103,15 @@ export class BitApp
         const walker = function (bits: IBitNs, ns: string, walker: any) {
             forEach(bits, (ctor, type) => {
                 if (isPlainObject(ctor)) {
-                    walker(ctor, ns + type + '/');
+                    walker(ctor, ns + type + '/', walker);
                     return;
                 }
                 
-                registry.add(ns + type, ctor);
+                // If the "type" is empty, remove the trailing slash
+                registry.add(type === ''
+                    ? ns.substr(0, ns.length - 1)
+                    : ns + type,
+                    ctor);
             });
         };
         
