@@ -23,13 +23,13 @@ export class BitRegistry
 {
     /**
      * The injected resolver to find the bits with
-     * @protected
+     * @hidden
      */
     protected _resolver: IBitRegistryResolver;
     
     /**
      * The list of resolved bit constructors
-     * @protected
+     * @hidden
      */
     protected _bits: Map<string, IBitConstructor>;
     

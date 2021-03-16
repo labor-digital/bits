@@ -99,6 +99,10 @@ export interface AbstractBit
 
 export class AbstractBit
 {
+    /**
+     * The actual context instance, you should use $context to access it!
+     * @internal
+     */
     protected _context: BitContext;
     
     constructor(context: BitContext)
@@ -108,6 +112,7 @@ export class AbstractBit
     
     /**
      * Marker to detect if this element is a bit class
+     * @internal
      */
     public static get __bit(): true
     {
@@ -394,7 +399,7 @@ export class AbstractBit
     }
     
     /**
-     * Utility to load the content of a <template> tag into a new sub-node which will be returned.
+     * Utility to load the content of a "template" tag into a new sub-node which will be returned.
      * To be selectable, your template should have a data-ref="$ref" attribute.
      *
      * The method allows you to provide a one-dimensional list of values that should be injected

@@ -1,6 +1,7 @@
 node_modules
 dist
 docs/.vuepress/public/demo/examples
+docs/api
 
 # IDEA Code Style
 .idea/*

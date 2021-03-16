@@ -78,7 +78,7 @@ In your `index.html` we need to add a "mount", which is a html element that will
 the [customElement api](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) to keep track on dom changes and automatically
 instantiate a new bit class, every time a mount-point plops into existence, or destroy the bit when the dom node is removed.
 
-::: info
+::: tip
 
 Unlike the way aou normally work with custom elements, you won't define custom-tags for each of your bits. This has, two major reasons: 1. it is easer to
 polyfill for older browsers like ie and 2. it allows some nifty features like lazy loading bits using webpacks dynamic import()
@@ -110,6 +110,12 @@ new BitApp({
     }
 });
 ```
+
+::: tip
+
+You can find the list of all supported options [here](/api/interfaces/ibitappoptions.md)
+
+:::
 
 The app is a central registry for all bits of your project, and acts as map between the "type" attribute on the b-mount tag and your actual class. It will also
 provide a global event bus to all your bits to allow cross-bit events independent of the dom.

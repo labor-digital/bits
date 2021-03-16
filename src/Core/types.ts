@@ -31,6 +31,9 @@ export interface IBitConstructor
 {
     new(context: BitContext): AbstractBit
     
+    /**
+     * @hidden
+     */
     __bit: true
 }
 

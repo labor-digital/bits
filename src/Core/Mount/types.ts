@@ -27,6 +27,9 @@ declare global
     }
 }
 
+/**
+ * @ignore
+ */
 export interface BitMountHTMLElement extends HTMLElement
 {
     _bitMount: Mount

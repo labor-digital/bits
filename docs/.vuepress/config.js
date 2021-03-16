@@ -19,19 +19,49 @@
 module.exports = {
     title: 'Bits - A reactive JS micro framework',
     themeConfig: {
-        sidebar: [
-            '/',
-            '/guide/GettingStarted',
+        nav: [
             {
-                title: 'Essentials',
-                children: [
-                    '/guide/Lifecycle',
-                    '/guide/Reactivity',
-                    '/guide/DomAccess',
-                    '/guide/ClassAndStyle',
-                    '/guide/FormBinding'
-                ]
+                text: 'Guide',
+                link: '/guide/'
+            },
+            {
+                text: 'API',
+                link: '/api/'
+            }
+        ],
+        sidebar: {
+            '/guide/': [
+                '/guide/',
+                {
+                    title: 'Essentials',
+                    children: [
+                        'Lifecycle',
+                        'Reactivity',
+                        'DomAccess',
+                        'ClassAndStyle',
+                        'FormBinding'
+                    ]
+                }
+            ]
+        }
+        
+    },
+    plugins: [
+        [
+            'vuepress-plugin-typedoc',
+            {
+                entryPoints: ['../src/index.ts'],
+                tsconfig: '../tsconfig.watch.json',
+                excludeInternal: true,
+                excludePrivate: true,
+                readme: 'none',
+                out: 'api',
+                hideInPageTOC: true,
+                sidebar: {
+                    fullNames: true,
+                    parentCategory: 'API'
+                }
             }
         ]
-    }
+    ]
 };

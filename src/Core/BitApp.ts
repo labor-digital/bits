@@ -26,7 +26,14 @@ import type {IBitAppOptions, IBitNs} from './types';
 
 export class BitApp
 {
+    /**
+     * @hidden
+     */
     protected _mountTag: string;
+    
+    /**
+     * @hidden
+     */
     protected _registry: BitRegistry;
     
     constructor(options?: IBitAppOptions)
