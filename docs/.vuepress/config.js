@@ -28,6 +28,10 @@ module.exports = {
             {
                 text: 'API',
                 link: '/api/'
+            },
+            {
+                text: 'GitHub',
+                link: 'https://github.com/labor-digital/bits'
             }
         ],
         sidebar: {
