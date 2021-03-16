@@ -22,14 +22,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="../dist/bundle.js"></script>
-    <title>Example: Forms and data binding</title>
+    <title>Example: Forms and data binding (pull initial data)</title>
 </head>
 <body>
 
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <b-mount type="forms" class="card bg-light mt-3 mb-3">
+            <b-mount type="forms" class="card bg-light mt-3">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-7 mb-3">
@@ -38,7 +38,7 @@
                                 <select class="form-select" data-model="data.gender" id="gender">
                                     <option></option>
                                     <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="female" selected>Female</option>
                                     <option value="other">Other</option>
                                 </select>
                                 
@@ -52,7 +52,8 @@
                             
                             <label for="firstName">First name</label>
                             <div class="input-group">
-                                <input id="firstName" class="form-control" type="text" data-model="data.firstName"/>
+                                <input id="firstName" class="form-control" type="text" data-model="data.firstName"
+                                       value="First name"/>
                                 
                                 <button class="btn btn-secondary" data-ref="set" data-field="firstName">
                                     Set from JS
@@ -64,7 +65,8 @@
                             
                             <label for="lastName">Last name</label>
                             <div class="input-group">
-                                <input id="lastName" class="form-control" type="text" data-model="data.lastName"/>
+                                <input id="lastName" class="form-control" type="text" data-model="data.lastName"
+                                       value="Last name"/>
                                 
                                 <button class="btn btn-secondary" data-ref="set" data-field="lastName">
                                     Set from JS
@@ -76,7 +78,8 @@
                             
                             <label for="birthday">Birthday</label>
                             <div class="input-group">
-                                <input id="birthday" class="form-control" type="date" data-model="data.birthday"/>
+                                <input id="birthday" class="form-control" type="date" data-model="data.birthday"
+                                       value="1999-05-24"/>
                                 
                                 <button class="btn btn-secondary" data-ref="set" data-field="birthday">
                                     Set from JS
@@ -105,7 +108,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="color" value="yellow"
-                                           data-model="data.color" id="color.yellow">
+                                           data-model="data.color" id="color.yellow" checked>
                                     <label for="color.yellow" class="form-check-label">Yellow</label>
                                 </div>
                                 <div class="btn-group">
@@ -120,7 +123,7 @@
                             
                             <label for="bio">Bio</label>
                             <div class="input-group">
-                                <textarea id="bio" class="form-control" data-model="data.bio"></textarea>
+                                <textarea id="bio" class="form-control" data-model="data.bio">Having the time of my life ⏰🎉</textarea>
                                 
                                 <button class="btn btn-secondary" data-ref="set" data-field="bio">
                                     Set from JS
@@ -140,7 +143,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" value="js"
-                                           data-model="data.languages" id="lang.js">
+                                           data-model="data.languages" id="lang.js" checked>
                                     <label for="lang.js" class="form-check-label">Javascript</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -150,7 +153,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" value="java"
-                                           data-model="data.languages" id="lang.java">
+                                           data-model="data.languages" id="lang.java" checked>
                                     <label for="lang.java" class="form-check-label">Java</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -172,11 +175,11 @@
                             <div class="input-group">
                                 <select class="form-select" data-model="data.workDays" id="workDays" multiple>
                                     <option value="0">Monday</option>
-                                    <option value="1">Tuesday</option>
+                                    <option value="1" selected>Tuesday</option>
                                     <option value="2">Wednesday</option>
                                     <option value="3">Thursday</option>
                                     <option value="4">Friday</option>
-                                    <option value="5">Saturday</option>
+                                    <option value="5" selected>Saturday</option>
                                     <option value="6">Sunday</option>
                                 </select>
                                 
@@ -198,8 +201,6 @@
                         </div>
                     
                     </div>
-                
-                
                 </div>
             </b-mount>
         </div>

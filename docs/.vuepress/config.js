@@ -34,17 +34,30 @@ module.exports = {
                 '/guide/',
                 {
                     title: 'Essentials',
+                    collapsable: false,
+                    sidebarDepth: 3,
                     children: [
                         'Lifecycle',
                         'Reactivity',
                         'DomAccess',
                         'ClassAndStyle',
-                        'FormBinding'
+                        'FormBinding',
+                        'EventsAndProxy'
+                    ]
+                },
+                {
+                    title: 'Advanced',
+                    sidebarDepth: 3,
+                    collapsable: false,
+                    children: [
+                        'AdvancedReactivity',
+                        'BitInteraction',
+                        'HtmlAndTemplates',
+                        'Mixins'
                     ]
                 }
             ]
         }
-        
     },
     plugins: [
         [

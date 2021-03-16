@@ -22,10 +22,11 @@ import 'bootstrap/dist/css/bootstrap-reboot.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import {Child} from './Bits/Context/Child';
 import {Parent} from './Bits/Context/Parent';
-import {Reactivity} from './Bits/Docs/Reactivity';
-import {ReactivityAlternative} from './Bits/Docs/ReactivityAlternative';
-import {ReactivityButton} from './Bits/Docs/ReactivityButton';
-import {ReactivityComputed} from './Bits/Docs/ReactivityComputed';
+import {FormBasic} from './Bits/Docs/Form/FormBasic';
+import {Reactivity} from './Bits/Docs/Reactivity/Reactivity';
+import {ReactivityAlternative} from './Bits/Docs/Reactivity/ReactivityAlternative';
+import {ReactivityButton} from './Bits/Docs/Reactivity/ReactivityButton';
+import {ReactivityComputed} from './Bits/Docs/Reactivity/ReactivityComputed';
 import {Escape} from './Bits/Escape';
 import {Forms} from './Bits/Forms';
 import {HtmlBit} from './Bits/HtmlBit';
@@ -62,10 +63,15 @@ new BitApp({
         html: HtmlBit,
         
         docs: {
-            reactivity: Reactivity,
-            'reactivity/withButton': ReactivityButton,
-            'reactivity/computed': ReactivityComputed,
-            'reactivity/alternative': ReactivityAlternative
+            reactivity: {
+                '': Reactivity,
+                withButton: ReactivityButton,
+                computed: ReactivityComputed,
+                alternative: ReactivityAlternative
+            },
+            form: {
+                basic: FormBasic
+            }
         }
     },
     

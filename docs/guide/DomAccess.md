@@ -59,12 +59,17 @@ You can select a single element by its id:
 You can select a single element by its class name:
 ```this.$find('.exampleClass')```
 
-**BEWARE:** This will only return the first "LI" in your list, because by default only a
-single element is retrieved. If you want to find all elements with the class (aka. querySelectorAll),
-set the second parameter to true:
-```this.$find('.exampleClass', true)```
+**BEWARE:** This will only return the first "LI" in your list, because **$find() will only retrieve a single element**!
 
-This will return an **array** (yes, an array not a NodeList!) containing both "LI" elements.
+::: tip Selecting multiple elements
+
+If you want to find all elements for a given selector (aka. querySelectorAll)
+you can use ```this.$findAll('.exampleClass')``` instead :)
+
+**PRO-tip:**
+$findAll() will always return an **Array** (yes, an Array not a NodeList!) containing your elements.
+
+:::
 
 ### Select by reference
 To make the selection of specific elements easier inside your bit, you can use "references".
