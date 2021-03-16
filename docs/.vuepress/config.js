@@ -25,10 +25,10 @@ module.exports = {
                 text: 'Guide',
                 link: '/guide/'
             },
-            {
-                text: 'API',
-                link: '/api/'
-            },
+            // {
+            //     text: 'API',
+            //     link: '/api/'
+            // },
             {
                 text: 'GitHub',
                 link: 'https://github.com/labor-digital/bits'
