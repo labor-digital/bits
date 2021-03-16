@@ -17,7 +17,7 @@
  */
 
 import {ComponentProxy, emitDomEvent, forEach, isNumber} from '@labor-digital/helferlein';
-import {autorun, IReactionDisposer} from 'mobx';
+import {autorun, IReactionDisposer, runInAction} from 'mobx';
 import type {AbstractBit} from '../Core/AbstractBit';
 import type {BitDefinition} from '../Core/Definition/BitDefinition';
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
@@ -36,6 +36,7 @@ export class Binder
     
     protected _delayedActions?: Set<Function> = new Set();
     protected _foreignModelBinders: Map<string, Function> = new Map();
+    protected _pullableProperties?: Array<Array<string>>;
     
     /**
      * We use our own proxy in the binder, so we don't conflict with any listeners
@@ -135,15 +136,19 @@ export class Binder
             // TwoWay: Model binding on elements
             + '*[data-model]';
         
-        forEach(this._bit!.$find(selector, true), target => {
-            // OneWay: Escaped data binding
-            this.bindOneWayContent(target, false);
-            // OneWay: Unescaped data binding
-            this.bindOneWayContent(target, true);
-            // OneWay: Attribute binding
-            this.bindOneWayAttributes(target);
-            // TwoWay: Model binding on elements
-            this.bindTwoWayValue(target);
+        runInAction(() => {
+            this._pullableProperties = [];
+            forEach(this._bit!.$find(selector, true), target => {
+                // OneWay: Escaped data binding
+                this.bindOneWayContent(target, false);
+                // OneWay: Unescaped data binding
+                this.bindOneWayContent(target, true);
+                // OneWay: Attribute binding
+                this.bindOneWayAttributes(target);
+                // TwoWay: Model binding on elements
+                this.bindTwoWayValue(target);
+            });
+            delete this._pullableProperties;
         });
     }
     
@@ -242,7 +247,20 @@ export class Binder
         bind('change');
         bind('keyup');
         
-        setElementValue(target, prop.value);
+        // If the value is NULL we register this property as nullable, meaning
+        // even if we pull multiple instances (options, checkbox,...) for the same property
+        // it will pull all variants
+        const propertyValue = prop.value;
+        if (propertyValue === null) {
+            this._pullableProperties!.push(prop.path);
+        }
+        
+        // Either pull the value into the property (property is NULL), or set the value of the input field (not NULL)
+        if (this._pullableProperties!.indexOf(prop.path) !== -1) {
+            prop.value = getElementValue(target, prop);
+        } else {
+            setElementValue(target, propertyValue);
+        }
         
         this._disposers.push(
             autorun(() => setElementValue(target, prop.value))

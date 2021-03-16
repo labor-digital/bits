@@ -263,6 +263,10 @@ export function getElementValue(target: HTMLElement, prop: IPropertyAccessor): a
     
     if (target.tagName === 'INPUT') {
         const el: HTMLInputElement = target as any;
+        if (el.type === 'radio') {
+            return el.checked ? el.value : '';
+        }
+        
         if (el.type === 'checkbox') {
             const val = prop.value;
             
