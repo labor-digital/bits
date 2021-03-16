@@ -16,7 +16,7 @@
  * Last modified: 2021.03.16 at 18:07
  */
 
-import {asArray, closest, forEach} from '@labor-digital/helferlein';
+import {asArray, closest, ComponentProxyEventTarget, forEach} from '@labor-digital/helferlein';
 import type {BitMountHTMLElement} from './Mount/types';
 
 /**
@@ -68,4 +68,17 @@ export function elementFinder(
     } else {
         return asArray(list);
     }
+}
+
+/**
+ * Internal helper to translate a given (or omitted) event target into a real event target
+ * @param target
+ * @internal
+ */
+export function translateEventTarget(
+    this: any,
+    target: ComponentProxyEventTarget | true
+): ComponentProxyEventTarget
+{
+    return target === true ? this.$app.eventBus : target;
 }

@@ -37,21 +37,7 @@ import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {BitMountHTMLElement} from './Mount/types';
 import type {IHtmlTemplateProvider, IPropertyWatcher} from './types';
-import {elementFinder} from './util';
-
-/**
- * Internal helper to translate a given (or omitted) event target into a real event target
- * @param target
- * @internal
- */
-function translateEventTarget(
-    this: any,
-    target: ComponentProxyEventTarget | true | undefined
-): ComponentProxyEventTarget
-{
-    target = target ?? this.$el;
-    return target === true ? this.$app.eventBus : target;
-}
+import {elementFinder, translateEventTarget} from './util';
 
 export interface AbstractBit
 {
@@ -198,33 +184,67 @@ export class AbstractBit
     /**
      * Binds a given listener to a certain event
      *
+     * @param target A target to bind the event on.
+     *               - mount (default): Bound to the mount dom node itself
+     *               - true: Bound to the global this.$app.eventBus, that allows cross-bit events
+     *               - ComponentProxyEventTarget: Any of the valid options, like DOM elements
      * @param event The name of the event to bind the listener to. If you use "@mutation" a MutationObserver will track
      * any changes of the dom and call the listener on it
      * @param listener The listener which is called when the event is emitted on the given target
-     * @param target An optional target to bind the event on.
-     *                  - mount (default): Bound to the mount dom node itself
-     *                  - true: Bound to the global this.$app.eventBus, that allows cross-bit events
-     *                  - ComponentProxyEventTarget: Any of the valid options, like DOM elements
      */
-    protected $on(event: string, listener: ComponentProxyListener, target?: ComponentProxyEventTarget | true): this
+    protected $on(target: ComponentProxyEventTarget | true, event: string, listener: ComponentProxyListener): this
+    
+    /**
+     * Binds a given listener to a certain event
+     *
+     * @param event The name of the event to bind the listener to. If you use "@mutation" a MutationObserver will track
+     * any changes of the dom and call the listener on it
+     * @param listener The listener which is called when the event is emitted on the given target
+     */
+    protected $on(event: string, listener: ComponentProxyListener): this
+    
+    protected $on(
+        a: ComponentProxyEventTarget | true | string,
+        b: string | ComponentProxyListener,
+        c?: ComponentProxyListener
+    ): this
     {
-        this.$proxy.bind(translateEventTarget.call(this, target), event, listener);
+        const hasTarget = !isUndefined(c);
+        const target = hasTarget ? translateEventTarget.call(this, a) : this.$el;
+        const event = hasTarget ? b : a;
+        const listener = hasTarget ? c : b;
+        this.$proxy.bind(target, event as string, listener as ComponentProxyListener);
         return this;
     }
     
     /**
-     * Emits a dom event on this element
+     * Emits a dom event on the selected target
+     *
+     *
+     * @param target A target to emit the event on.
+     *               - mount (default): Bound to the mount dom node itself
+     *               - true: Bound to the global this.$app.eventBus, that allows cross-bit events
+     *               - ComponentProxyEventTarget: Any of the valid options, like DOM elements
+     * @param event the name of the event to emit
+     * @param args additional arguments to pass to the event
+     */
+    protected $emit(target: ComponentProxyEventTarget | true, event: string, args?: PlainObject): this
+    
+    /**
+     * Emits a dom event on this bits b-mount node
      *
      * @param event the name of the event to emit
      * @param args additional arguments to pass to the event
-     * @param target An optional target to bind the event on.
-     *                  - mount (default): Bound to the mount dom node itself
-     *                  - true: Bound to the global this.$app.eventBus, that allows cross-bit events
-     *                  - ComponentProxyEventTarget: Any of the valid options, like DOM elements
      */
-    protected $emit(event: string, args?: PlainObject, target?: ComponentProxyEventTarget | true): this
+    protected $emit(event: string, args?: PlainObject): this
+    
+    protected $emit(a: ComponentProxyEventTarget | true, b?: PlainObject | string, c?: PlainObject): this
     {
-        this.$proxy.emit(translateEventTarget.call(this, target), event, args);
+        const hasTarget = isString(b);
+        const target = hasTarget ? translateEventTarget.call(this, a) : this.$el;
+        const event = hasTarget ? b : a;
+        const args = hasTarget ? c : b;
+        this.$proxy.emit(target, event as string, args as PlainObject);
         return this;
     }
     
