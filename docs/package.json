@@ -9,7 +9,7 @@
 		"demo:make:examples": "cd ../demo && npm i && npm run build",
 		"demo:copy": "copyfiles \"../demo/dist/**\" ./.vuepress/public/demo && copyfiles \"../demo/examples/**\" ./.vuepress/public/demo",
 		"build:demo": "npm run demo:clean && npm run demo:make:lib && npm run demo:make:examples && npm run demo:copy",
-		"build:vuepress": "rimraf api && vuepress build .",
+		"build:vuepress": "vuepress build .",
 		"build": "npm run build:demo && npm run api:clean && npm run build:vuepress",
 		"dev": "npm run demo:copy && npm run api:clean && vuepress dev ."
 	},

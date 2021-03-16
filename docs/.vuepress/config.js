@@ -64,7 +64,7 @@ module.exports = {
             'vuepress-plugin-typedoc',
             {
                 entryPoints: ['../src/index.ts'],
-                tsconfig: '../tsconfig.watch.json',
+                tsconfig: '../tsconfig.json',
                 excludeInternal: true,
                 excludePrivate: true,
                 readme: 'none',
