@@ -1,4 +1,10 @@
-# LABOR - Bits
+---
+home: true
+heroImage: false,
+actionText: Get Started →
+actionLink: /guide/index.html
+footer: Apache 2.0 licence | Copyright © 2021-present LABOR.digital
+---
 
 Data binding and reactive re-rendering of HTML is a concept that lies at the foundation of all modern javascript frameworks like, react, vue or angular. While
 their component based architecture and rendering of HTML in a virtual DOM (or whatever your framework calls it) is quite convenient, it is a commitment - If you

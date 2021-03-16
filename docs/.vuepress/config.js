@@ -18,6 +18,7 @@
 
 module.exports = {
     title: 'Bits - A reactive JS micro framework',
+    description: 'Only a little bit inspired by vue.js',
     themeConfig: {
         nav: [
             {
