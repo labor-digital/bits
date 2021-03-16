@@ -164,7 +164,7 @@ export class BitDefinition
         if (isUndefined(provider)) {
             provider = function () { return this.$el; };
         } else if (isString(provider)) {
-            provider = function () { return elementFinder(this.$el, provider as string, true, deep); };
+            provider = function () { return elementFinder(this.$el, selector as string, true, deep); };
         }
         
         this._listeners.add({
