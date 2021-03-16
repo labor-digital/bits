@@ -17,7 +17,6 @@
  */
 
 import {
-    closest,
     ComponentProxy,
     ComponentProxyEventTarget,
     ComponentProxyListener,
@@ -36,7 +35,9 @@ import {setElementContent} from '../Binding/util';
 import type {Translator} from '../Tool/Translator';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
+import type {BitMountHTMLElement} from './Mount/types';
 import type {IHtmlTemplateProvider, IPropertyWatcher} from './types';
+import {elementFinder} from './util';
 
 /**
  * Internal helper to translate a given (or omitted) event target into a real event target
@@ -123,7 +124,7 @@ export class AbstractBit
      * Returns the instance of the bit mount / root dom node for this bit
      * @protected
      */
-    public get $el(): HTMLElement
+    public get $el(): BitMountHTMLElement
     {
         return this._context.mount.el!;
     }
@@ -167,55 +168,31 @@ export class AbstractBit
         return this._context.proxy;
     }
     
-    public $find(selector: string, multiple: true, deep?: boolean): Array<HTMLElement>
-    public $find(selector: string, multiple: false, deep?: boolean): HTMLElement | null
-    public $find(selector: string, multiple?: boolean, deep?: boolean): HTMLElement | null
-    
     /**
      * Allows you to find elements inside the dom elements of this bit' mount.
      *
      * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
-     * that will be converted into '*[data-ref="my-ref"]' internally before the query is resolved.
-     * @param multiple By default only a single element is returned "querySelector", if set to true "querySelectorAll"
-     * is used instead.
      * @param deep By default only elements inside the current mount are resolved, but children
      * are ignored while retrieving elements. If you set this to true, even elements in child-mounts are returned
      */
-    public $find(selector: string, multiple?: boolean, deep?: boolean)
+    protected $find(selector: string, deep?: boolean)
     {
-        if (selector.substr(0, 1) === '@') {
-            selector = '*[data-ref="' + selector.substr(1) + '"]';
-        }
-        
-        let list: any = this.$el.querySelectorAll(selector);
-        const mount = this.$el;
-        const mountTag = this.$app.mountTag;
-        
-        // We need to check if an element is currently inside this elements root in order
-        // to simulate the behaviour of a component.
-        if (!deep) {
-            const filtered: Array<HTMLElement> = [];
-            forEach(list as any, (el) => {
-                const closestEl = closest(mountTag, el);
-                if (!closestEl) {
-                    return false;
-                }
-                
-                if (closestEl === mount ||
-                    // We also want to include child-mounts that are in our domain
-                    closestEl === el && closest(mountTag, closestEl.parentElement!) === mount) {
-                    filtered.push(el);
-                    if (!multiple) {
-                        return false;
-                    }
-                }
-            });
-            list = filtered;
-        } else {
-            list = [...list];
-        }
-        
-        return multiple ? list : list[0] ?? null;
+        return elementFinder(this.$el, selector, false, deep)[0] ?? null;
+    }
+    
+    /**
+     * A shortcode for this.$find(selector, true).
+     *
+     * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
+     * that will be converted into '*[data-ref="my-ref"]' internally before the query is resolved.
+     * @param deep By default only elements inside the current mount are resolved, but children
+     * are ignored while retrieving elements. If you set this to true, even elements in child-mounts are returned
+     *
+     * @see $find
+     */
+    protected $findAll(selector: string, deep?: boolean): Array<HTMLElement>
+    {
+        return elementFinder(this.$el, selector, true, deep);
     }
     
     /**

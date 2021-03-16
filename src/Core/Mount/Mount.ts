@@ -21,10 +21,11 @@ import {Provider} from '../../Reactivity/Provider';
 import type {AbstractBit} from '../AbstractBit';
 import type {BitApp} from '../BitApp';
 import {BitContext} from '../BitContext';
+import type {BitMountHTMLElement} from './types';
 
 export class Mount
 {
-    protected _el?: HTMLElement;
+    protected _el?: BitMountHTMLElement;
     
     /**
      * The instance of the bit used in this mount
@@ -68,7 +69,7 @@ export class Mount
     /**
      * Returns the html element this mount is bound to
      */
-    public get el(): HTMLElement | undefined
+    public get el(): BitMountHTMLElement | undefined
     {
         return this._el;
     }
@@ -84,7 +85,7 @@ export class Mount
     /**
      * Connects the mounted html element with the configured bit class
      */
-    public async connect(el: HTMLElement)
+    public async connect(el: BitMountHTMLElement)
     {
         this._el = el;
         

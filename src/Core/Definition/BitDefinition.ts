@@ -26,6 +26,7 @@ import {
     merge
 } from '@labor-digital/helferlein';
 import type {IPropertyOptions} from '../../Reactivity/types';
+import {elementFinder} from '../util';
 import type {
     IListenerSelectorProvider,
     TBitAnnotations,
@@ -147,10 +148,10 @@ export class BitDefinition
     
     /**
      * Registers a new static event listener
-     * @param method
-     * @param selector
-     * @param event
-     * @param deep
+     * @param method The name of the method on the bit class that should be used as listener handler
+     * @param selector The element selector to bind the events on
+     * @param event The name of the event/list of events to bind the listener to
+     * @param deep Only used if $selector is a string -> Will determine if the elements are resolved "deep" or only inside the boundaries
      */
     public addEventListener(
         method: string,
@@ -163,7 +164,7 @@ export class BitDefinition
         if (isUndefined(provider)) {
             provider = function () { return this.$el; };
         } else if (isString(provider)) {
-            provider = function () { return this.$find(selector as string, true, deep); };
+            provider = function () { return elementFinder(this.$el, provider as string, true, deep); };
         }
         
         this._listeners.add({
