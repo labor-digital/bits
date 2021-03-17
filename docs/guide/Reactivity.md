@@ -154,7 +154,7 @@ This would look like: data-bind-attr="title:counter,aria-label:labelProperty"
 ::: warning
 
 You can't add attribute binding to the containing `b-mount` tag! You can add attribute binding
-to child `b-mount` tags, tho! Read more about this in the [props section](#props).
+to child `b-mount` tags, tho! Read more about this in the [props section](/guide/BitInteraction.md#props-on-bits).
 
 :::
 

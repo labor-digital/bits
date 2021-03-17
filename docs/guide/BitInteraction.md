@@ -2,6 +2,5 @@
 
 ## Context
 
-## Events $on / $emit
-
-## data-model on child bits
+## Props on Bits
+## Model Bits

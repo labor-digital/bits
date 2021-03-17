@@ -1,6 +1,6 @@
 # Getting started
 
-If you are not the reading kind of person, there is also a working list of examples, including a webpack setup in the [demo directory](#demo)
+If you are not the reading kind of person, there is also a working list of examples, including a webpack setup in the [demo directory](https://github.com/labor-digital/bits/tree/master/demo)
 
 ::: tip 
 

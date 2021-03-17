@@ -16,6 +16,39 @@
  * Last modified: 2021.03.09 at 15:25
  */
 
+const isDevMode = (
+                      process.argv[2] ?? null
+                  ) === 'dev';
+
+function makePlugins()
+{
+    const plugins = [];
+    
+    if (!isDevMode) {
+        // This keeps on crashing when vuepress runs in continuous watch mode,
+        // therefore I disabled it there.
+        plugins.push([
+            'vuepress-plugin-typedoc',
+            {
+                entryPoints: ['../src/index.ts'],
+                tsconfig: '../tsconfig.json',
+                excludeInternal: true,
+                excludePrivate: true,
+                readme: 'none',
+                out: 'api',
+                hideInPageTOC: true,
+                sidebar: {
+                    fullNames: true,
+                    parentCategory: 'API'
+                }
+            }
+        ])
+        ;
+    }
+    
+    return plugins;
+}
+
 module.exports = {
     title: 'Bits - A reactive JS micro framework',
     description: 'Only a little bit inspired by vue.js',
@@ -64,22 +97,5 @@ module.exports = {
             ]
         }
     },
-    plugins: [
-        [
-            'vuepress-plugin-typedoc',
-            {
-                entryPoints: ['../src/index.ts'],
-                tsconfig: '../tsconfig.json',
-                excludeInternal: true,
-                excludePrivate: true,
-                readme: 'none',
-                out: 'api',
-                hideInPageTOC: true,
-                sidebar: {
-                    fullNames: true,
-                    parentCategory: 'API'
-                }
-            }
-        ]
-    ]
+    plugins: makePlugins()
 };
