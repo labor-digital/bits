@@ -35,7 +35,7 @@ import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {BitMountHTMLElement} from './Mount/types';
 import type {IEventListener, IHtmlTemplateProvider, IPropertyWatcher, TEventList, TEventTarget} from './types';
-import {bindEventsOnProxy, elementFinder, resolveEventTarget} from './util';
+import {bindEventsOnProxy, findElement, resolveEventTarget} from './util';
 
 export interface AbstractBit
 {
@@ -161,7 +161,7 @@ export class AbstractBit
      */
     protected $find(selector: string, deep?: boolean)
     {
-        return elementFinder(this.$el, selector, false, deep)[0] ?? null;
+        return findElement(this.$el, selector, false, deep)[0] ?? null;
     }
     
     /**
@@ -176,7 +176,7 @@ export class AbstractBit
      */
     protected $findAll(selector: string, deep?: boolean): Array<HTMLElement>
     {
-        return elementFinder(this.$el, selector, true, deep);
+        return findElement(this.$el, selector, true, deep);
     }
     
     /**

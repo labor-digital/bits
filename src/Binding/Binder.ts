@@ -22,7 +22,7 @@ import type {AbstractBit} from '../Core/AbstractBit';
 import type {BitDefinition} from '../Core/Definition/BitDefinition';
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
 import type {Mount} from '../Core/Mount/Mount';
-import {bindEventsOnProxy, elementFinder} from '../Core/util';
+import {bindEventsOnProxy, findElement} from '../Core/util';
 import {getPropertyAccessor} from './propertyAccess';
 import type {IPropertyAccessor} from './types';
 import {getElementValue, setElementAttribute, setElementContent, setElementValue, splitMapString} from './util';
@@ -139,7 +139,7 @@ export class Binder
         
         runInAction(() => {
             this._pullableProperties = [];
-            forEach(elementFinder(this._mount!.el!, selector, true), target => {
+            forEach(findElement(this._mount!.el!, selector, true), target => {
                 // OneWay: Escaped data binding
                 this.bindOneWayContent(target, false);
                 // OneWay: Unescaped data binding

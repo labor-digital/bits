@@ -43,7 +43,7 @@ import type {IEventListener, TEventList, TEventTarget} from './types';
  * are ignored while retrieving elements. If you set this to true, even elements in child-mounts are returned
  * @internal
  */
-export function elementFinder(
+export function findElement(
     mount: BitMountHTMLElement,
     selector: string,
     multiple: boolean,
