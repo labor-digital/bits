@@ -28,67 +28,12 @@ This library aims to do three things:
 * Simplify the data-binding between javascript and your dom
 * Keep your head free from unbinding listeners or data when your bit/component is destroyed
 
-## A word of caution
+::: tip Typescript
 
-This is library is designed to be used with **typescript** and decorators. While you could use it without typescript, it is currently clearly not optimized to
+This is library is designed to be used with **typescript** and **decorators**. While you could use it without typescript, it is currently clearly not optimized to
 run without it. If you like what you see, but typescript is a no-go for you, give me a shout, and we will figure something out :)
 
-## Source Code
-
-The source code can be found on [github](https://github.com/labor-digital/bits).
-
-## Installation
-
-Install this package using npm:
-
-```
-npm install @labor-digital/bits
-```
-
-## Browser support
-
-The library supports all **modern** browsers, that have at least the most basic implementation of web-components. It also has a built-in polyfill for browsers
-without the web-component api.
-
-### Internet Explorer
-
-Yes, you can use this library with the IE11, however you need to install some polyfills in you bundle if you want to support it. To install the polyfills you
-need to install the following dependencies:
-
-```
-npm install @webcomponents/template core-js
-```
-
-If you are using webpack you can now add the following elements in your "entry" configuration:
-
-```javascript
-module.exports = {
-    entry: [
-        '@webcomponents/template/template.js',
-        'core-js/features/object/assign',
-        'core-js/features/object/is',
-        'core-js/features/object/entries',
-        'core-js/features/promise',
-        'core-js/features/symbol',
-        // This is your real entry point. Make sure the polyfills are added before
-        // your main entry, otherwise they might not trigger correctly.
-        './src/main.ts'
-    ]
-    // ... Your other webpack config
-}
-```
-
-If you are not running webpack, simply import those files in your main.ts file
-
-```typescript
-import '@webcomponents/template/template.js';
-import 'core-js/features/object/assign';
-import 'core-js/features/object/is';
-import 'core-js/features/object/entries';
-import 'core-js/features/promise';
-import 'core-js/features/symbol';
-// Your other imports and code should be below those lines
-```
+:::
 
 ## Postcardware
 

@@ -43,7 +43,7 @@ meaning your form-engine will probably insert values in input fields. So, it mak
 sense that the frontend js should actively PULL the value from a data binding into it's model,
 instead of providing the data to the element.
 
-Every property you bind using `data-model` which as a NULL as value, will be assumed to be pullable from your HTML.
+Every property you bind using `data-model` which has NULL as value, will be assumed to be pullable from your HTML.
 To see this in action, we slightly modify the code from above: 
 
 ```typescript

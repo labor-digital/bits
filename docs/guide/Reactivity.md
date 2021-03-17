@@ -8,7 +8,7 @@ user inputs or state changes without worrying about the output will help you a l
 ## State management
 
 Under the hood bits uses [mobx](https://mobx.js.org/) to handle the state management inside your bit. It is a battle tested library
-that does most of the heavy lifting under the hood. 
+that does most of the heavy lifting for us. 
 
 ## Data
 
