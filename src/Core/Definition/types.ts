@@ -20,18 +20,14 @@ import type {PlainObject} from '@labor-digital/helferlein';
 import type {IObservableFactory} from 'mobx';
 import type {IComputedFactory} from 'mobx/dist/api/computed';
 import type {IPropertyOptions} from '../../Reactivity/types';
-import type {AbstractBit} from '../AbstractBit';
-
-export interface IListenerSelectorProvider
-{
-    (this: AbstractBit): HTMLElement | NodeListOf<HTMLElement> | Array<HTMLElement>
-}
+import type {TEventList, TEventTarget} from '../types';
 
 export interface IBitStaticListenerDefinition
 {
-    provider: IListenerSelectorProvider
+    target?: TEventTarget
+    deep?: boolean,
     method: string,
-    events: Array<string>
+    events: TEventList
 }
 
 export type TBitPropertyOptionMap = Map<string, IPropertyOptions>;

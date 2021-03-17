@@ -17,7 +17,7 @@
  */
 
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
-import type {IListenerSelectorProvider} from '../Core/Definition/types';
+import type {TEventList, TEventTarget} from '../Core/types';
 
 
 /**
@@ -32,8 +32,8 @@ import type {IListenerSelectorProvider} from '../Core/Definition/types';
  *                  If you set this to true, even elements in child-mounts are returned
  */
 export function Listener(
-    event: string | Array<string>,
-    selector?: string | IListenerSelectorProvider,
+    event: TEventList,
+    selector?: TEventTarget,
     deep?: boolean
 ): any
 {

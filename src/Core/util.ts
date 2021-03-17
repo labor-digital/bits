@@ -16,8 +16,22 @@
  * Last modified: 2021.03.16 at 18:07
  */
 
-import {asArray, closest, ComponentProxyEventTarget, forEach} from '@labor-digital/helferlein';
+import {
+    asArray,
+    closest,
+    ComponentProxy,
+    ComponentProxyEventTarget,
+    ComponentProxyListener,
+    forEach,
+    isArray,
+    isFunction,
+    isNumber,
+    isString,
+    isUndefined
+} from '@labor-digital/helferlein';
+import type {AbstractBit} from './AbstractBit';
 import type {BitMountHTMLElement} from './Mount/types';
+import type {TEventList, TEventTarget} from './types';
 
 /**
  * Internal helper to resolve the "find" request inside a single mount
@@ -71,14 +85,57 @@ export function elementFinder(
 }
 
 /**
- * Internal helper to translate a given (or omitted) event target into a real event target
+ * Internal helper to translate the given event target into an array of valid component proxy event targets
  * @param target
- * @internal
+ * @param deep
  */
-export function translateEventTarget(
-    this: any,
-    target: ComponentProxyEventTarget | true
-): ComponentProxyEventTarget
+export function resolveEventTarget(
+    this: AbstractBit,
+    target: TEventTarget | undefined,
+    deep?: boolean
+): Array<ComponentProxyEventTarget>
 {
-    return target === true ? this.$app.eventBus : target;
+    if (isUndefined(target)) {
+        return [this.$el];
+    }
+    
+    if (isFunction(target)) {
+        return resolveEventTarget.call(this, target.call(this), deep);
+    }
+    
+    if (target === true) {
+        return [this.$app.eventBus];
+    } else if (isString(target)) {
+        return this.$findAll(target, deep);
+    } else if (isNumber((target as any).length) && !(target as any).addEventListener) {
+        return asArray(target);
+    }
+    
+    return [target as any];
+}
+
+/**
+ * Internal helper to translate all possible event target definitions and event name lists
+ * and bind them using the provided component proxy instance
+ *
+ * @param proxy
+ * @param target
+ * @param deep
+ * @param events
+ * @param listener
+ */
+export function bindEventsOnProxy(
+    this: AbstractBit,
+    proxy: ComponentProxy,
+    target: TEventTarget | undefined,
+    deep: boolean | undefined,
+    events: TEventList,
+    listener: ComponentProxyListener
+): void
+{
+    forEach(resolveEventTarget.call(this, target, deep), function (el) {
+        forEach(isArray(events) ? events : [events], function (event) {
+            proxy.bind(el, event, listener);
+        });
+    });
 }

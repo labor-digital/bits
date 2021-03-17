@@ -16,13 +16,13 @@
  * Last modified: 2021.03.05 at 13:39
  */
 
-import {ComponentProxy, emitDomEvent, forEach, isNumber} from '@labor-digital/helferlein';
+import {ComponentProxy, emitDomEvent, forEach} from '@labor-digital/helferlein';
 import {autorun, IReactionDisposer, runInAction} from 'mobx';
 import type {AbstractBit} from '../Core/AbstractBit';
 import type {BitDefinition} from '../Core/Definition/BitDefinition';
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
 import type {Mount} from '../Core/Mount/Mount';
-import {elementFinder} from '../Core/util';
+import {bindEventsOnProxy, elementFinder} from '../Core/util';
 import {getPropertyAccessor} from './propertyAccess';
 import type {IPropertyAccessor} from './types';
 import {getElementValue, setElementAttribute, setElementContent, setElementValue, splitMapString} from './util';
@@ -343,26 +343,15 @@ export class Binder
      */
     protected bindEventListeners(): void
     {
-        // Bind all listeners based on their targets
-        const proxy = this._proxy!;
-        const bit = this._bit!;
-        
         forEach(this._definition!.getEventListeners()!, definition => {
-            const targets = definition.provider.call(this._bit!);
-            
-            if (targets === null) {
-                return;
-            }
-            
-            const isList = !!targets && isNumber((targets as any).length) && !(targets as any).addEventListener;
-            
-            forEach((isList ? targets : [targets]) as Array<HTMLElement>, function (el): void {
-                forEach(definition.events, function (event) {
-                    proxy.bind(el, event, function (...args) {
-                        bit[definition.method].call(bit, ...args);
-                    });
-                });
-            });
+            bindEventsOnProxy.call(
+                this._bit!,
+                this._proxy!,
+                definition.target,
+                definition.deep,
+                definition.events,
+                this._bit![definition.method]
+            );
         });
     }
     

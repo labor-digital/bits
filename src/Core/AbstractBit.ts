@@ -18,7 +18,6 @@
 
 import {
     ComponentProxy,
-    ComponentProxyEventTarget,
     ComponentProxyListener,
     EventEmitter,
     forEach,
@@ -36,8 +35,8 @@ import type {Translator} from '../Tool/Translator';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {BitMountHTMLElement} from './Mount/types';
-import type {IHtmlTemplateProvider, IPropertyWatcher} from './types';
-import {elementFinder, translateEventTarget} from './util';
+import type {IHtmlTemplateProvider, IPropertyWatcher, TEventList, TEventTarget} from './types';
+import {bindEventsOnProxy, elementFinder, resolveEventTarget} from './util';
 
 export interface AbstractBit
 {
@@ -192,7 +191,7 @@ export class AbstractBit
      * any changes of the dom and call the listener on it
      * @param listener The listener which is called when the event is emitted on the given target
      */
-    protected $on(target: ComponentProxyEventTarget | true, event: string, listener: ComponentProxyListener): this
+    protected $on(target: TEventTarget, event: TEventList, listener: ComponentProxyListener): this
     
     /**
      * Binds a given listener to a certain event
@@ -201,19 +200,26 @@ export class AbstractBit
      * any changes of the dom and call the listener on it
      * @param listener The listener which is called when the event is emitted on the given target
      */
-    protected $on(event: string, listener: ComponentProxyListener): this
+    protected $on(event: TEventList, listener: ComponentProxyListener): this
     
     protected $on(
-        a: ComponentProxyEventTarget | true | string,
-        b: string | ComponentProxyListener,
+        a: TEventTarget | TEventList,
+        b: TEventList | ComponentProxyListener,
         c?: ComponentProxyListener
     ): this
     {
         const hasTarget = !isUndefined(c);
-        const target = hasTarget ? translateEventTarget.call(this, a) : this.$el;
         const event = hasTarget ? b : a;
         const listener = hasTarget ? c : b;
-        this.$proxy.bind(target, event as string, listener as ComponentProxyListener);
+        
+        bindEventsOnProxy.call(
+            this,
+            this.$proxy,
+            hasTarget ? a : undefined,
+            false,
+            event as TEventList,
+            listener as ComponentProxyListener);
+        
         return this;
     }
     
@@ -228,7 +234,7 @@ export class AbstractBit
      * @param event the name of the event to emit
      * @param args additional arguments to pass to the event
      */
-    protected $emit(target: ComponentProxyEventTarget | true, event: string, args?: PlainObject): this
+    protected $emit(target: TEventTarget, event: string, args?: PlainObject): this
     
     /**
      * Emits a dom event on this bits b-mount node
@@ -238,13 +244,16 @@ export class AbstractBit
      */
     protected $emit(event: string, args?: PlainObject): this
     
-    protected $emit(a: ComponentProxyEventTarget | true, b?: PlainObject | string, c?: PlainObject): this
+    protected $emit(a: TEventTarget, b?: PlainObject | string, c?: PlainObject): this
     {
         const hasTarget = isString(b);
-        const target = hasTarget ? translateEventTarget.call(this, a) : this.$el;
         const event = hasTarget ? b : a;
         const args = hasTarget ? c : b;
-        this.$proxy.emit(target, event as string, args as PlainObject);
+        
+        forEach(resolveEventTarget.call(this, hasTarget ? a : undefined), target => {
+            this.$proxy.emit(target, event as string, args as PlainObject);
+        });
+        
         return this;
     }
     

@@ -17,10 +17,26 @@
  */
 
 
+import type {ComponentProxyEventTarget} from '@labor-digital/helferlein';
 import type {TemplateResult} from 'lit-html';
 import type {AbstractBit} from './AbstractBit';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
+
+export type TEventTarget =
+    ComponentProxyEventTarget
+    | IEventTargetProvider
+    | Array<ComponentProxyEventTarget>
+    | NodeListOf<any>
+    | true
+    | string;
+
+export interface IEventTargetProvider
+{
+    (this: AbstractBit): TEventTarget
+}
+
+export type TEventList = 'string' | Array<string>;
 
 export interface IPropertyWatcher
 {
@@ -56,7 +72,6 @@ export interface IBitRegistryResolver
 {
     (type: string): Promise<IBitConstructor | null>;
 }
-
 
 export interface IBitAppOptions
 {

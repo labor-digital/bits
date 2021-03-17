@@ -26,14 +26,8 @@ import {
     merge
 } from '@labor-digital/helferlein';
 import type {IPropertyOptions} from '../../Reactivity/types';
-import {elementFinder} from '../util';
-import type {
-    IListenerSelectorProvider,
-    TBitAnnotations,
-    TBitAttributeMap,
-    TBitListeners,
-    TBitPropertyOptionMap
-} from './types';
+import type {TEventList, TEventTarget} from '../types';
+import type {TBitAnnotations, TBitAttributeMap, TBitListeners, TBitPropertyOptionMap} from './types';
 import {extractComputedProperties, injectPropertyAnnotations, makeObservableAnnotationsFor} from './util';
 
 export class BitDefinition
@@ -149,29 +143,18 @@ export class BitDefinition
     /**
      * Registers a new static event listener
      * @param method The name of the method on the bit class that should be used as listener handler
-     * @param selector The element selector to bind the events on
-     * @param event The name of the event/list of events to bind the listener to
+     * @param target The element selector to bind the events on
+     * @param events The name of the event/list of events to bind the listener to
      * @param deep Only used if $selector is a string -> Will determine if the elements are resolved "deep" or only inside the boundaries
      */
     public addEventListener(
         method: string,
-        selector: string | IListenerSelectorProvider | undefined,
-        event: string | Array<string>,
+        target: TEventTarget | undefined,
+        events: TEventList,
         deep?: boolean
     ): void
     {
-        let provider = selector;
-        if (isUndefined(provider)) {
-            provider = function () { return this.$el; };
-        } else if (isString(provider)) {
-            provider = function () { return elementFinder(this.$el, selector as string, true, deep); };
-        }
-        
-        this._listeners.add({
-            provider,
-            events: isString(event) ? [event] : event,
-            method: method
-        });
+        this._listeners.add({target, deep, events, method});
     }
     
     /**
