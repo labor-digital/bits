@@ -18,6 +18,7 @@
 
 
 import type {ComponentProxyEventTarget} from '@labor-digital/helferlein';
+import type {EventEmitterEvent} from '@labor-digital/helferlein/dist/Events/EventEmitter';
 import type {TemplateResult} from 'lit-html';
 import type {AbstractBit} from './AbstractBit';
 import type {BitApp} from './BitApp';
@@ -34,6 +35,13 @@ export type TEventTarget =
 export interface IEventTargetProvider
 {
     (this: AbstractBit): TEventTarget
+}
+
+export type TCustomEvent = Event | EventEmitterEvent | any;
+
+export interface IEventListener
+{
+    (event: TCustomEvent): void | any;
 }
 
 export type TEventList = 'string' | Array<string>;

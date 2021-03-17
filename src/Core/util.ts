@@ -21,7 +21,6 @@ import {
     closest,
     ComponentProxy,
     ComponentProxyEventTarget,
-    ComponentProxyListener,
     forEach,
     isArray,
     isFunction,
@@ -31,7 +30,7 @@ import {
 } from '@labor-digital/helferlein';
 import type {AbstractBit} from './AbstractBit';
 import type {BitMountHTMLElement} from './Mount/types';
-import type {TEventList, TEventTarget} from './types';
+import type {IEventListener, TEventList, TEventTarget} from './types';
 
 /**
  * Internal helper to resolve the "find" request inside a single mount
@@ -130,7 +129,7 @@ export function bindEventsOnProxy(
     target: TEventTarget | undefined,
     deep: boolean | undefined,
     events: TEventList,
-    listener: ComponentProxyListener
+    listener: IEventListener
 ): void
 {
     forEach(resolveEventTarget.call(this, target, deep), function (el) {

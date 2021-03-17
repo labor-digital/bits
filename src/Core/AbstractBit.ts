@@ -18,7 +18,6 @@
 
 import {
     ComponentProxy,
-    ComponentProxyListener,
     EventEmitter,
     forEach,
     isPlainObject,
@@ -35,7 +34,7 @@ import type {Translator} from '../Tool/Translator';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {BitMountHTMLElement} from './Mount/types';
-import type {IHtmlTemplateProvider, IPropertyWatcher, TEventList, TEventTarget} from './types';
+import type {IEventListener, IHtmlTemplateProvider, IPropertyWatcher, TEventList, TEventTarget} from './types';
 import {bindEventsOnProxy, elementFinder, resolveEventTarget} from './util';
 
 export interface AbstractBit
@@ -191,7 +190,7 @@ export class AbstractBit
      * any changes of the dom and call the listener on it
      * @param listener The listener which is called when the event is emitted on the given target
      */
-    protected $on(target: TEventTarget, event: TEventList, listener: ComponentProxyListener): this
+    protected $on(target: TEventTarget, event: TEventList, listener: IEventListener): this
     
     /**
      * Binds a given listener to a certain event
@@ -200,12 +199,12 @@ export class AbstractBit
      * any changes of the dom and call the listener on it
      * @param listener The listener which is called when the event is emitted on the given target
      */
-    protected $on(event: TEventList, listener: ComponentProxyListener): this
+    protected $on(event: TEventList, listener: IEventListener): this
     
     protected $on(
         a: TEventTarget | TEventList,
-        b: TEventList | ComponentProxyListener,
-        c?: ComponentProxyListener
+        b: TEventList | IEventListener,
+        c?: IEventListener
     ): this
     {
         const hasTarget = !isUndefined(c);
@@ -218,7 +217,7 @@ export class AbstractBit
             hasTarget ? a : undefined,
             false,
             event as TEventList,
-            listener as ComponentProxyListener);
+            listener as IEventListener);
         
         return this;
     }
