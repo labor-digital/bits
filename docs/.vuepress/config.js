@@ -53,23 +53,23 @@ module.exports = {
     title: 'Bits - A reactive JS micro framework',
     description: 'Only a little bit inspired by vue.js',
     themeConfig: {
+        repo: 'labor-digital/bits',
+        docsRepo: 'labor-digital/bits',
+        docsDir: 'docs',
+        editLinks: true,
         nav: [
             {
                 text: 'Guide',
                 link: '/guide/'
-            },
+            }
             // {
             //     text: 'API',
             //     link: '/api/'
             // },
-            {
-                text: 'GitHub',
-                link: 'https://github.com/labor-digital/bits'
-            }
         ],
         sidebar: {
             '/guide/': [
-                '/guide/',
+                '',
                 {
                     title: 'Essentials',
                     collapsable: false,
