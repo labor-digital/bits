@@ -21,14 +21,12 @@ import {AbstractBit} from './AbstractBit';
 import type {BitContext} from './BitContext';
 import {DefinitionRegistry} from './Definition/DefinitionRegistry';
 
+// Those four lines are heavily inspired/copied from the implementation in vue-class-component.
+// @see https://github.com/vuejs/vue-class-component/blob/master/src/util.ts#L35
+// This is some serious, ninja level typescript, if I may say so myself... o.o
 type BitClass<V> = { new(...args: any[]): V & AbstractBit } & typeof AbstractBit
-
-type UnionToIntersection<U> = (U extends any
-    ? (k: U) => void : never) extends (k: infer I) => void
-    ? I : never
-
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never
 type ExtractInstance<T> = T extends BitClass<infer V> ? V : never
-
 type MixedBitClass<Mixins extends BitClass<AbstractBit>[]> = Mixins extends (infer T)[]
     ? BitClass<UnionToIntersection<ExtractInstance<T>>>
     : never
@@ -37,7 +35,6 @@ type MixedBitClass<Mixins extends BitClass<AbstractBit>[]> = Mixins extends (inf
  * The list of lifecycle hooks that must be merged when a new mixin instance is created
  */
 const lifecycleHooks = ['created', 'mounted', 'unmounted', 'remounted', 'beforeDestroy', 'destroyed', 'domChanged'];
-
 
 export function mixins<T extends BitClass<AbstractBit>[]>(...ctors: T): MixedBitClass<T>
 
