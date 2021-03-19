@@ -61,7 +61,7 @@ export const defaultConverter: IPropertyConverter = {
         switch (type) {
             case Boolean:
                 if (isString(value)) {
-                    return ['false', '0', 'off'].indexOf(value.toLowerCase().trim()) !== -1;
+                    return ['false', '0', 'off'].indexOf(value.toLowerCase().trim()) === -1;
                 }
                 return value !== null;
             case Number:
