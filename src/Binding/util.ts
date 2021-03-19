@@ -249,12 +249,19 @@ export function setElementAttribute(target: HTMLElement, attribute: string, valu
 export function getElementValue(target: HTMLElement, prop: IPropertyAccessor): any
 {
     if (isBitMount(target) && target.bit) {
+        const modelProperty = 'value';
+        const error = 'Failed to read the data-model to a prop-mount! Did you create a property with name "value" on it, with the "@Property()" decorator applied? Failed mount:';
+        const binder = target.bit.$context.binder;
+        
+        if (!binder.isPublicProperty(modelProperty)) {
+            console.error(error, target);
+            return;
+        }
+        
         const foreignProp = target.bit.$context.binder.getAccessor('value');
         
         if (foreignProp === null) {
-            console.error(
-                'Failed to read the data-model to a prop-mount! Did you create a property with name "value" on it? Failed mount:',
-                target);
+            console.error(error, target);
             return;
         }
         

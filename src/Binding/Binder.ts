@@ -165,6 +165,14 @@ export class Binder
     public setForeignProperty(property: string, value: any, forModel: boolean): void
     {
         this.callOrDelay(() => {
+            if (!this.isPublicProperty(property)) {
+                console.error(
+                    'You can\'t bind property: "' + property + '" externally'
+                    + ', because it was not registered publicly as prop using the @Property() decorator!'
+                );
+                return;
+            }
+            
             const prop = this.getAccessor(property);
             
             if (prop === null) {
@@ -198,6 +206,15 @@ export class Binder
             
             prop.value = value;
         });
+    }
+    
+    /**
+     * Returns true if the given property name a.) exists and b.) has a registered, public attribute
+     * @param property
+     */
+    public isPublicProperty(property: string): boolean
+    {
+        return this._definition?.hasAttribute(property) ?? false;
     }
     
     /**
