@@ -136,7 +136,7 @@ Which will look somewhat like this:
 ## $tpl()
 
 Where `$html` is your swiss army knife of generating HTML, `$tpl` is basically the little toothpick on the side. 
-It does no real template rendering itself, but load the content of a "template" tag into a new sub-node which will be returned.
+It does no real template rendering itself, but loads the content of a "template" tag into a new sub-node which will be returned by it.
 
 To be selectable, your template should have a data-ref="$ref" attribute. The method allows you to provide a one-dimensional list of values that should be injected
 while the template is loaded. NOTE: This is not reactive, but merely an initial state.
