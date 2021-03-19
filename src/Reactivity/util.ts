@@ -92,8 +92,13 @@ export interface IMountAttrWatcher
  *
  * @param mountEl
  * @param callback
+ * @param attributes An array of attribute names that should be watched
  */
-export function makeMountMutationObserver(mountEl: HTMLElement, callback: IMountAttrWatcher): MutationObserver
+export function makeMountMutationObserver(
+    mountEl: HTMLElement,
+    callback: IMountAttrWatcher,
+    attributes: Array<string>
+): MutationObserver
 {
     const observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
@@ -104,7 +109,8 @@ export function makeMountMutationObserver(mountEl: HTMLElement, callback: IMount
     });
     
     observer.observe(mountEl, {
-        attributes: true
+        attributes: true,
+        attributeFilter: attributes
     });
     
     return observer;

@@ -95,7 +95,11 @@ export class Provider
         this._disposers.push(disposer as any);
         
         if (def.getAttributes().length > 0) {
-            this._observer = makeMountMutationObserver(this._mount.el!, this.onAttributeUpdate.bind(this));
+            this._observer = makeMountMutationObserver(
+                this._mount.el!,
+                this.onAttributeUpdate.bind(this),
+                def.getAttributes()
+            );
         }
     }
     
