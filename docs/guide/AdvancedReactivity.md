@@ -34,6 +34,11 @@ export class ReactivityWatcher extends AbstractBit
 
 <Example href="/demo/examples/docs-reactivity-watcher.html" :height="250"/>
 
+::: tip
+
+Statically defined watchers (using `@Watch`) will always be executed before dynamically defined watchers using `$watch()`
+
+:::
 
 ## $autoRun()
 "The `$autoRun` function accepts one function that should run every time anything it observes changes. It also runs once when you create the autorun itself."

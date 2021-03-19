@@ -23,6 +23,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import {Child} from './Bits/Context/Child';
 import {Parent} from './Bits/Context/Parent';
 import {FormBasic} from './Bits/Docs/Form/FormBasic';
+import {Html} from './Bits/Docs/Html/Html';
+import {HtmlBinding} from './Bits/Docs/Html/HtmlBinding';
+import {HtmlModel} from './Bits/Docs/Html/HtmlModel';
 import {Reactivity} from './Bits/Docs/Reactivity/Reactivity';
 import {ReactivityAlternative} from './Bits/Docs/Reactivity/ReactivityAlternative';
 import {ReactivityButton} from './Bits/Docs/Reactivity/ReactivityButton';
@@ -76,6 +79,11 @@ new BitApp({
             },
             form: {
                 basic: FormBasic
+            },
+            html: {
+                '': Html,
+                binding: HtmlBinding,
+                model: HtmlModel
             }
         }
     },

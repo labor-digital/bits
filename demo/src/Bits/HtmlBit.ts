@@ -103,11 +103,11 @@ export class HtmlBit extends AbstractBit
                         Therefore this library provides an additional glue layer in form of the "dataModel" directive,
                         to ease the pain a bit. It is not perfect, but the best I can currently provide.
                         
-                        To get it wo work, you define the input event to listen for (change/keydown for the most part),
+                        To get it wo work, you define the input event to listen for (change/keyup for the most part),
                         like any other event listener and then, tell the directive which property you want to bind it to.
                         The binding will automatically update the input value in the same way data-model would.
                         -->
-                        <input type="text" class="form-control" @keydown="${dataModel('data.model')}" id="textInput"/>
+                        <input type="text" class="form-control" @keyup="${dataModel('data.model')}" id="textInput"/>
                         <label for="textInput">Two-way data binding</label>
                     </div>
                     
