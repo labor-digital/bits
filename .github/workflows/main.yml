@@ -23,23 +23,23 @@ jobs:
           TARGET_BRANCH: gh-pages
           BUILD_SCRIPT: cd docs && npm i && npm run build
           BUILD_DIR: .vuepress/dist/
-#  release:
-#    runs-on: ubuntu-latest
-#    steps:
-#      -
-#        uses: actions/checkout@v1
-#      -
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: 10
-#          registry-url: https://registry.npmjs.org/
-#      -
-#        name: Create Changelog and bump release version
-#        uses: labor-digital/conventional-release-action@master
-#        with:
-#          github-token: ${{ secrets.github_token }}
-#      -
-#        name: Publish library on npm
-#        run: npm publish --access public
-#        env:
-#          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        uses: actions/checkout@v1
+      -
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+          registry-url: https://registry.npmjs.org/
+      -
+        name: Create Changelog and bump release version
+        uses: labor-digital/conventional-release-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+      -
+        name: Publish library on npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
