@@ -15,64 +15,36 @@
   ~
   ~ Last modified: 2021.03.03 at 14:35
   -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="../dist/bundle.js"></script>
-    <title>Example: Bit lifecycle hooks</title>
+    <title>Docs: Reactivity (Watcher)</title>
 </head>
 <body>
 
 <div class="container">
     <div class="row">
         <div class="col-12">
-            
             <b-mount type="util/display" id="displayElement">
-                
-                <!-- Parent bit -->
-                <b-mount type="lifecycle/parent" class="card bg-light mt-3" context="my-parent">
-                    
-                    <div class="card-header">
-                        Parent
-                    </div>
-                    
+                <b-mount type="docs/reactivity/watcher" class="card bg-light mt-3">
                     <div class="card-body">
-                        
-                        <template data-ref="childTpl">
-                            <b-mount type="lifecycle/child" class="card bg-secondary mt-3">
-                                
-                                <div class="card-header text-white">
-                                    Child
-                                </div>
-                                
-                                <div class="card-body" data-ref="content">
-                                
-                                </div>
-                            
-                            </b-mount>
-                        </template>
-                        
-                        <div class="btn-group">
-                            <button data-ref="addChild" class="btn btn-primary">Add child</button>
-                        </div>
-                        
-                        <div data-ref="childList"></div>
+                        <input type="text" data-model="value" placeholder="Type something">
                     </div>
                 </b-mount>
                 
                 <div class="card bg-primary mt-3">
                     <div class="card-header text-white">
-                        Triggered lifecycle hooks
+                        Watcher Output
                     </div>
                     
                     <div class="card-body" data-ref="content"></div>
                 </div>
             
             </b-mount>
-        
-        
         </div>
     </div>
 </div>

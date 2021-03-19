@@ -27,17 +27,18 @@ import {Reactivity} from './Bits/Docs/Reactivity/Reactivity';
 import {ReactivityAlternative} from './Bits/Docs/Reactivity/ReactivityAlternative';
 import {ReactivityButton} from './Bits/Docs/Reactivity/ReactivityButton';
 import {ReactivityComputed} from './Bits/Docs/Reactivity/ReactivityComputed';
+import {ReactivityWatcher} from './Bits/Docs/Reactivity/ReactivityWatcher';
 import {Escape} from './Bits/Escape';
 import {Forms} from './Bits/Forms';
 import {HtmlBit} from './Bits/HtmlBit';
 import {Child as ChildCycle} from './Bits/Lifecycle/Child';
-import {Display as DisplayCycle} from './Bits/Lifecycle/Display';
 import {Parent as ParentCycle} from './Bits/Lifecycle/Parent';
 import {ExtendedBit} from './Bits/Mixins/ExtendedBit';
 import {Child as ChildProp} from './Bits/Props/Child';
 import {Parent as ParentProp} from './Bits/Props/Parent';
 import {Style} from './Bits/Style';
 import {Templates} from './Bits/Templates';
+import {Display} from './Bits/Util/Display';
 
 new BitApp({
     bits: {
@@ -53,8 +54,7 @@ new BitApp({
         },
         lifecycle: {
             parent: ParentCycle,
-            child: ChildCycle,
-            display: DisplayCycle
+            child: ChildCycle
         },
         extended: ExtendedBit,
         templates: Templates,
@@ -62,12 +62,17 @@ new BitApp({
         escape: Escape,
         html: HtmlBit,
         
+        util: {
+            display: Display
+        },
+        
         docs: {
             reactivity: {
                 '': Reactivity,
                 withButton: ReactivityButton,
                 computed: ReactivityComputed,
-                alternative: ReactivityAlternative
+                alternative: ReactivityAlternative,
+                watcher: ReactivityWatcher
             },
             form: {
                 basic: FormBasic
