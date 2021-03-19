@@ -160,7 +160,7 @@ export class AbstractBit
      * @param deep By default only elements inside the current mount are resolved, but children
      * are ignored while retrieving elements. If you set this to true, even elements in child-mounts are returned
      */
-    protected $find(selector: string, deep?: boolean)
+    protected $find(selector: string, deep?: boolean): HTMLElement | null
     {
         return findElement(this.$el, selector, false, deep)[0] ?? null;
     }
@@ -429,7 +429,7 @@ export class AbstractBit
      * NOTE: If your template contains binding attributes like data-bind or data-model, you have to execute
      * the $domChanged() method once, after the node was attached to the dom tree!
      *
-     * ADVICE: For advanced templating tasks I would strongly advice to use $html() instead, as it is reactive
+     * ADVICE: For advanced templating tasks I would strongly advise you, to use $html() instead, as it is reactive
      * to any data changes and allows special features like event-listeners.
      *
      * @param ref The key to find the template with. Set data-ref="$ref" on your template tag
