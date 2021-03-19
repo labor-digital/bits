@@ -30,6 +30,7 @@ export * from './Core/Mount/types';
 export * from './Decorators/Property';
 export * from './Decorators/Data';
 export * from './Decorators/Listener';
+export * from './Decorators/Watch';
 
 export {html, svg} from 'lit-html';
 export {dataModel} from './Binding/directives';
