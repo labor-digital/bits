@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.03.14 at 15:52
+ * Last modified: 2021.03.14 at 22:34
  */
 
-import {AbstractBit, Data, html, Listener} from '@labor-digital/bits';
+import {AbstractBit, Data, html, Listener, Property} from '@labor-digital/bits';
 import {map} from '@labor-digital/helferlein';
 
 export class Display extends AbstractBit
 {
+    /**
+     * If set to false, the messages received will not vanish after 2 seconds
+     * @protected
+     */
+    @Property({type: Boolean})
+    protected useTimeout: boolean = true;
     
     @Data()
     protected entries: Array<string> = [];
@@ -29,9 +35,11 @@ export class Display extends AbstractBit
     protected onMessageReceived(e: any): void
     {
         this.entries.push(e.args.message);
-        this.$proxy.setTimeout(() => {
-            this.entries.shift();
-        }, 2000);
+        if (this.useTimeout) {
+            this.$proxy.setTimeout(() => {
+                this.entries.shift();
+            }, 2000);
+        }
     }
     
     public mounted()

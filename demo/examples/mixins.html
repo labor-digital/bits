@@ -29,13 +29,25 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <b-mount type="extended" class="card bg-light mt-3">
-                <div class="card-body">
-                    <button class="btn btn-primary">Click for alert</button>
+            <b-mount type="util/display" use-timeout="false">
+                
+                <b-mount type="extended" class="card bg-light mt-3">
+                    <div class="card-body">
+                        <button class="btn btn-primary">Click for alert</button>
+                        
+                        <div class="btn btn-primary" data-ref="mixinButton">Click to trigger function</div>
+                    </div>
+                </b-mount>
+                
+                <div class="card bg-primary mt-3">
+                    <div class="card-header text-white">
+                        Triggered lifecycle hooks
+                    </div>
                     
-                    <div class="btn btn-primary" data-ref="mixinButton">Click to trigger function</div>
+                    <div class="card-body" data-ref="content"></div>
                 </div>
             </b-mount>
+        
         </div>
     </div>
 </div>

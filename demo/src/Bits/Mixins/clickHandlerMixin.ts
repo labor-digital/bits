@@ -16,7 +16,7 @@
  * Last modified: 2021.03.14 at 22:25
  */
 
-import {AbstractBit, Listener} from '../../../../dist';
+import {AbstractBit, Listener} from '@labor-digital/bits';
 
 export class ClickHandlerMixin extends AbstractBit
 {
@@ -33,6 +33,8 @@ export class ClickHandlerMixin extends AbstractBit
     
     public mounted()
     {
-        console.log('Mixin "mounted" lifecycle hook was executed');
+        const msg = 'Mixin "mounted" lifecycle hook was executed';
+        this.$emit('showMessage', {message: msg});
+        console.log(msg);
     }
 }

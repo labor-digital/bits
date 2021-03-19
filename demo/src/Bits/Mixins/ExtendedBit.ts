@@ -29,6 +29,8 @@ export class ExtendedBit extends mixins(ClickHandlerMixin)
     
     public mounted()
     {
-        console.log('Bit "mounted" lifecycle hook was executed');
+        const msg = 'Bit "mounted" lifecycle hook was executed';
+        this.$emit('showMessage', {message: msg});
+        console.log(msg);
     }
 }
