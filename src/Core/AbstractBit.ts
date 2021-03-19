@@ -28,8 +28,9 @@ import {
 import {render} from 'lit-html';
 import {ClassInfo, classMap} from 'lit-html/directives/class-map';
 import {StyleInfo, styleMap} from 'lit-html/directives/style-map';
-import type {IReactionDisposer, IReactionPublic} from 'mobx';
+import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {setElementContent} from '../Binding/util';
+import type {TWatchTarget} from '../Reactivity/types';
 import type {Translator} from '../Tool/Translator';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
@@ -258,15 +259,28 @@ export class AbstractBit
     
     /**
      * Registers a callback which is executed every time the property was updated
+     * @see https://mobx.js.org/reactions.html#reaction
      *
      * @param target  Either the name of the property to watch, or an expression to define the watchable target,
      *                like () => this.computed
      * @param watcher The callback to execute when the property was updated.
      *                It will receive the new and the old value as parameters.
      */
-    protected $watch(target: string | ((r: IReactionPublic) => any), watcher: IPropertyWatcher): IReactionDisposer
+    protected $watch(target: TWatchTarget, watcher: IPropertyWatcher): IReactionDisposer
     {
         return this._context.reactivityProvider.addWatcher(target, watcher);
+    }
+    
+    /**
+     * Registers a new auto-runner for this bit, and automatically adds it to the garbage collection
+     * @see https://mobx.js.org/reactions.html#autorun
+     *
+     * @param watcher The function to execute, when one or more of the used observables changed
+     * @param options Additional options
+     */
+    public $autoRun(watcher: (r: IReactionPublic) => any, options?: IAutorunOptions): IReactionDisposer
+    {
+        return this._context.reactivityProvider.addAutoRun(watcher, options);
     }
     
     /**

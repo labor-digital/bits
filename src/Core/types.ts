@@ -44,7 +44,7 @@ export interface IEventListener
     (event: TCustomEvent): void | any;
 }
 
-export type TEventList = 'string' | Array<string>;
+export type TEventList = string | Array<string>;
 
 export interface IPropertyWatcher
 {

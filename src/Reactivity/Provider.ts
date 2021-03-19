@@ -67,6 +67,14 @@ export class Provider
             }
         });
         
+        forEach(def.getWatchers(), watcher => {
+            if (isFunction(this._bit![watcher.method])) {
+                this.addWatcher(watcher.target, (...args: any) => {
+                    this._bit![watcher.method](...args);
+                });
+            }
+        });
+        
         makeObservable(this._bit, def.getObservableAnnotations());
         
         const disposer = observe(this._bit, change => {
@@ -107,6 +115,7 @@ export class Provider
     
     /**
      * Registers a new watcher for a property or another observable inside the bit
+     * @see https://mobx.js.org/reactions.html#reaction
      *
      * @param target Either the name of a property to watch, or a closure to define the reactive data
      * @param watcher The watcher to execute when a change occurred

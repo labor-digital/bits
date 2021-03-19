@@ -31,6 +31,10 @@
  * http://polymer.github.io/PATENTS.txt
  */
 
+import type {IReactionPublic} from 'mobx';
+
+export type TWatchTarget = string | ((r: IReactionPublic) => any);
+
 export interface IPropertyToAttrConverter<Type = unknown, TypeHint = unknown>
 {
     (value: Type, type: TypeHint): unknown;

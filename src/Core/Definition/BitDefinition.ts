@@ -25,9 +25,9 @@ import {
     isUndefined,
     merge
 } from '@labor-digital/helferlein';
-import type {IPropertyOptions} from '../../Reactivity/types';
+import type {IPropertyOptions, TWatchTarget} from '../../Reactivity/types';
 import type {TEventList, TEventTarget} from '../types';
-import type {TBitAnnotations, TBitAttributeMap, TBitListeners, TBitPropertyOptionMap} from './types';
+import type {TBitAnnotations, TBitAttributeMap, TBitListeners, TBitPropertyOptionMap, TBitWatchers} from './types';
 import {extractComputedProperties, injectPropertyAnnotations, makeObservableAnnotationsFor} from './util';
 
 export class BitDefinition
@@ -36,6 +36,7 @@ export class BitDefinition
     protected _attributeMap: TBitAttributeMap;
     protected _annotations: TBitAnnotations;
     protected _listeners: TBitListeners;
+    protected _watchers: TBitWatchers;
     protected _computed: Array<string>;
     
     constructor(proto: any)
@@ -45,6 +46,7 @@ export class BitDefinition
         this._annotations = proto === null ? {} : makeObservableAnnotationsFor(proto);
         this._computed = extractComputedProperties(this._annotations);
         this._listeners = new Set();
+        this._watchers = new Set();
     }
     
     /**
@@ -166,6 +168,24 @@ export class BitDefinition
     }
     
     /**
+     * Adds a new static watcher to the definition
+     * @param method The name of the method that should be added as watcher
+     * @param target The target or target provider to watch
+     */
+    public addWatcher(method: string, target: TWatchTarget): void
+    {
+        this._watchers.add({target, method});
+    }
+    
+    /**
+     * Returns the list of all registered watchers
+     */
+    public getWatchers(): TBitWatchers
+    {
+        return this._watchers;
+    }
+    
+    /**
      * Returns the list of all generated observable annotations
      */
     public getObservableAnnotations(): TBitAnnotations
@@ -202,9 +222,8 @@ export class BitDefinition
         });
         
         n._annotations = merge(foreign._annotations, cloneList(this._annotations)) as any;
-        
-        n._listeners = new Set(this._listeners);
-        forEach(foreign._listeners, listener => n._listeners.add(listener));
+        n._listeners = merge(this._listeners, foreign._listeners) as any;
+        n._watchers = merge(this._watchers, foreign._watchers) as any;
         
         return n;
     }
