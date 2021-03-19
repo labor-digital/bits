@@ -32,8 +32,9 @@
  */
 
 import type {IReactionPublic} from 'mobx';
+import type {AbstractBit} from '../Core/AbstractBit';
 
-export type TWatchTarget = string | ((r: IReactionPublic) => any);
+export type TWatchTarget = string | ((this: AbstractBit | any, r: IReactionPublic) => any);
 
 export interface IPropertyToAttrConverter<Type = unknown, TypeHint = unknown>
 {

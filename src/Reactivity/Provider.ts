@@ -24,7 +24,7 @@ import type {BitDefinition} from '../Core/Definition/BitDefinition';
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
 import type {Mount} from '../Core/Mount/Mount';
 import type {IPropertyWatcher} from '../Core/types';
-import type {IAttrToPropertyConverter, TAttrToPropertyConverter, TPropertyToAttrConverter} from './types';
+import type {IAttrToPropertyConverter, TAttrToPropertyConverter, TPropertyToAttrConverter, TWatchTarget} from './types';
 import {defaultChangeDetector, defaultConverter, makeMountMutationObserver, readAttributeValue} from './util';
 
 export class Provider
@@ -67,15 +67,15 @@ export class Provider
             }
         });
         
+        makeObservable(this._bit, def.getObservableAnnotations());
+        
         forEach(def.getWatchers(), watcher => {
             if (isFunction(this._bit![watcher.method])) {
-                this.addWatcher(watcher.target, (...args: any) => {
-                    this._bit![watcher.method](...args);
+                this.addWatcher(watcher.target, function (...args: any) {
+                    return bit[watcher.method].call(bit, ...args);
                 });
             }
         });
-        
-        makeObservable(this._bit, def.getObservableAnnotations());
         
         const disposer = observe(this._bit, change => {
             const property = change.name as string;
@@ -120,14 +120,23 @@ export class Provider
      * @param target Either the name of a property to watch, or a closure to define the reactive data
      * @param watcher The watcher to execute when a change occurred
      */
-    public addWatcher(target: string | ((r: IReactionPublic) => any), watcher: IPropertyWatcher): IReactionDisposer
+    public addWatcher(target: TWatchTarget, watcher: IPropertyWatcher): IReactionDisposer
     {
+        const bit = this._bit!;
+        
         if (isString(target)) {
             const targetString = target;
-            target = () => this._bit![targetString];
+            target = function watchTargetResolver() {
+                return bit[targetString];
+            };
         }
         
-        const disposer = reaction(target, watcher);
+        const disposer = reaction(
+            function watchTargetThisWrapper(...args) {
+                return (target as any).call(bit, ...args);
+            },
+            watcher
+        );
         this._disposers.push(disposer);
         return disposer;
     }

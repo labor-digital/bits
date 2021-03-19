@@ -24,7 +24,8 @@ import type {TWatchTarget} from '../Reactivity/types';
  * @see https://mobx.js.org/reactions.html#reaction
  *
  * @param target Either the name of the property to watch, or an expression to define the watchable target,
- *                like () => this.computed
+ *                like function(){return this.computed}. ATTENTION: If you use a function as target, make sure to use function(){},
+ *                instead of a fat-arrow function!
  * @constructor
  */
 export function Watch(target: TWatchTarget)
