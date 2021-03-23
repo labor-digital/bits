@@ -61,11 +61,11 @@ module.exports = {
             {
                 text: 'Guide',
                 link: '/guide/'
+            },
+            {
+                text: 'API',
+                link: '/api/'
             }
-            // {
-            //     text: 'API',
-            //     link: '/api/'
-            // },
         ],
         sidebar: {
             '/guide/': [

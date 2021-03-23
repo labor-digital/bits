@@ -162,11 +162,11 @@ new BitApp({
 });
 ```
 
-[comment]: <> (::: tip)
+::: tip
 
-[comment]: <> (You can find the list of all supported options [here]&#40;/api/interfaces/ibitappoptions.md&#41;)
+You can find the list of all supported options [here](/api/interfaces/ibitappoptions.md)
 
-[comment]: <> (:::)
+:::
 
 The app is a central registry for all bits of your project, and acts as map between the "type" attribute on the b-mount tag and your actual class. It will also
 provide a global event bus to all your bits to allow cross-bit events independent of the dom.
