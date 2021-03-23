@@ -20,8 +20,8 @@
 		"rimraf": "^3.0.2"
 	},
 	"devDependencies": {
-		"typedoc": "^0.20.32",
+		"typedoc": "^0.20.33",
 		"typedoc-plugin-markdown": "^3.6.0",
-		"vuepress-plugin-typedoc": "^0.5.0"
+		"vuepress-plugin-typedoc": "^0.6.0"
 	}
 }
