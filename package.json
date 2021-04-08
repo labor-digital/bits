@@ -43,6 +43,7 @@
 	},
 	"devDependencies": {
 		"@labor-digital/helferlein": "^4.0.4",
+		"@types/webpack-env": "^1.16.0",
 		"rimraf": "^3.0.2",
 		"rollup": "^2.41.3",
 		"rollup-plugin-terser": "^7.0.2",

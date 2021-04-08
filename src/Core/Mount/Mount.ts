@@ -21,6 +21,7 @@ import {Provider} from '../../Reactivity/Provider';
 import type {AbstractBit} from '../AbstractBit';
 import type {BitApp} from '../BitApp';
 import {BitContext} from '../BitContext';
+import {HmrRegistry} from '../HmrRegistry';
 import type {BitMountHTMLElement} from './types';
 
 export class Mount
@@ -59,6 +60,12 @@ export class Mount
      */
     protected _changeListener?: Function | any;
     
+    /**
+     * Keeps track if the mount is currently connected to the DOM or not
+     * @protected
+     */
+    protected _isConnected: boolean = false;
+    
     constructor(app: BitApp)
     {
         this._contentFlushTimeout = 0;
@@ -83,10 +90,19 @@ export class Mount
     }
     
     /**
+     * Returns true if the bit is currently connected to the DOM, false if not
+     */
+    public get isConnected(): boolean
+    {
+        return this._isConnected;
+    }
+    
+    /**
      * Connects the mounted html element with the configured bit class
      */
     public async connect(el: BitMountHTMLElement)
     {
+        this._isConnected = true;
         this._el = el;
         
         clearTimeout(this._contentFlushTimeout);
@@ -136,7 +152,7 @@ export class Mount
     /**
      * Disconnects this mount from a bit instance, by destroying the instance and restoring the initial dom node
      */
-    public disconnect(): void
+    public disconnect(force?: boolean): void
     {
         if (!this._i || !this._el) {
             return;
@@ -148,9 +164,12 @@ export class Mount
             this._i.unmounted();
         }
         
-        if (!keepAlive) {
+        if (!keepAlive || force) {
+            HmrRegistry.unregisterMount(this._el);
+            
             this._i.$destroy();
             this._el.innerHTML = this._initialContent;
+            this._isConnected = false;
             
             if (this._i.destroyed) {
                 this._i.destroyed();
@@ -194,6 +213,8 @@ export class Mount
             console.error('Invalid bit type given!', type);
             return false;
         }
+        
+        HmrRegistry.registerMount(this._el, ctor);
         
         const react = new Provider();
         const binder = new Binder();

@@ -63,6 +63,30 @@ export class BitRegistry
     }
     
     /**
+     * Returns the map of all registered bit constructors by their type
+     */
+    public getAll(): Map<string, IBitConstructor>
+    {
+        return this._bits;
+    }
+    
+    /**
+     * Tries to find all types, that have been registered for the given constructor.
+     * This will only search in loaded constructors! Dynamic constructors that are not yet resolved, will be ignored!
+     * @param ctor
+     */
+    public getTypes(ctor: IBitConstructor): Array<string>
+    {
+        let result: Array<string> = [];
+        forEach(this._bits, (bitCtor, type) => {
+            if (ctor === bitCtor) {
+                result.push(type);
+            }
+        });
+        return result;
+    }
+    
+    /**
      * Internal helper that resolves a given bit type based on the registered dynamic resolver.
      * The result is either a bit constructor or null.
      *

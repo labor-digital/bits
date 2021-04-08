@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.03.01 at 18:07
+ * Last modified: 2021.03.01 at 18:23
  */
+const {merge} = require('webpack-merge');
+const common = require('./webpack.common.js');
+const WebpackDevServer = require('webpack-dev-server');
 
-declare global
-{
-    const __DEV__: any;
-}
+const devServerOptions = {
+    hot: true,
+    inline: true,
+    port: 8089,
+    publicPath: '/dist'
+};
 
-export * from './Core/BitRegistry';
-export * from './Core/AbstractBit';
-export * from './Core/BitApp';
-export * from './Core/mixins';
-export * from './Core/types';
-export * from './Core/Mount/types';
-export * from './Decorators/Property';
-export * from './Decorators/Data';
-export * from './Decorators/Listener';
-export * from './Decorators/Watch';
-export * from './Decorators/Hot';
+WebpackDevServer.addDevServerEntrypoints(common, devServerOptions);
 
-export {html, svg} from 'lit-html';
-export {dataModel} from './Binding/directives';
+module.exports = merge(common, {
+    output: {
+        publicPath: '/dist'
+    },
+    mode: 'development',
+    watch: true,
+    devServer: devServerOptions
+});

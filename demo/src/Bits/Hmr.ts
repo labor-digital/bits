@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.03.01 at 18:07
+ * Last modified: 2021.04.08 at 22:20
  */
 
-declare global
+import {AbstractBit, Data, Hot, Listener} from '@labor-digital/bits';
+
+@Hot(module)
+export class Hmr extends AbstractBit
 {
-    const __DEV__: any;
+    @Data()
+    protected value: string | null = null;
+    
+    @Listener('click', '@button')
+    protected onButtonClick(): void
+    {
+        const list = this.$find('@list');
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.innerText = 'List element no. ' + list?.children.length;
+        this.$find('@list')?.appendChild(li);
+    }
 }
-
-export * from './Core/BitRegistry';
-export * from './Core/AbstractBit';
-export * from './Core/BitApp';
-export * from './Core/mixins';
-export * from './Core/types';
-export * from './Core/Mount/types';
-export * from './Decorators/Property';
-export * from './Decorators/Data';
-export * from './Decorators/Listener';
-export * from './Decorators/Watch';
-export * from './Decorators/Hot';
-
-export {html, svg} from 'lit-html';
-export {dataModel} from './Binding/directives';

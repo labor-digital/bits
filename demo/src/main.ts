@@ -33,6 +33,7 @@ import {ReactivityComputed} from './Bits/Docs/Reactivity/ReactivityComputed';
 import {ReactivityWatcher} from './Bits/Docs/Reactivity/ReactivityWatcher';
 import {Escape} from './Bits/Escape';
 import {Forms} from './Bits/Forms';
+import {Hmr} from './Bits/Hmr';
 import {HtmlBit} from './Bits/HtmlBit';
 import {Child as ChildCycle} from './Bits/Lifecycle/Child';
 import {Parent as ParentCycle} from './Bits/Lifecycle/Parent';
@@ -64,6 +65,7 @@ new BitApp({
         forms: Forms,
         escape: Escape,
         html: HtmlBit,
+        hmr: Hmr,
         
         util: {
             display: Display

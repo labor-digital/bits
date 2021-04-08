@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "rimraf ./dist && npx webpack",
-		"watch": "rimraf ./dist && npx webpack --config ./webpack.watch.js"
+		"watch": "rimraf ./dist && npx webpack --config ./webpack.watch.js",
+		"dev": "webpack-dev-server --config ./webpack.dev.js"
 	},
 	"author": "",
 	"license": "Apache-2.0",
@@ -23,7 +24,8 @@
 		"ts-loader": "^8.0.18",
 		"typescript": "^4.2.2",
 		"webpack": "^4.41.23",
-		"webpack-cli": "^4.5.0",
+		"webpack-cli": "^3.3.12",
+		"webpack-dev-server": "~3.9.0",
 		"webpack-merge": "^5.7.3"
 	}
 }

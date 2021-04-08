@@ -19,6 +19,7 @@
 import {EventBus, EventEmitter, forEach, isPlainObject, makeOptions} from '@labor-digital/helferlein';
 import {configure} from 'mobx';
 import {BitRegistry} from './BitRegistry';
+import {HmrRegistry} from './HmrRegistry';
 import {Es5Adapter} from './Mount/Es5Adapter';
 import {Es6Adapter} from './Mount/Es6Adapter';
 import {canUseEs6Features} from './Mount/util';
@@ -42,6 +43,7 @@ export class BitApp
         this._mountTag = options.mountTag!;
         this._registry = this.makeRegistry(options);
         this.mount(options);
+        HmrRegistry.registerApp(this);
     }
     
     /**
@@ -142,7 +144,6 @@ export class BitApp
             configure({useProxies: 'never'});
             Es5Adapter.registerApp(this);
         }
-        
         
         return this;
     }

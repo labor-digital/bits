@@ -59,6 +59,11 @@ export interface IBitConstructor
      * @hidden
      */
     __bit: true
+    
+    /**
+     * @hidden
+     */
+    __hmrId?: string
 }
 
 export interface IHtmlTemplateProvider
