@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/labor-digital/bits/compare/v1.1.3...v1.2.0) (2021-04-09)
+
+
+### Features
+
+* implement hot module replacement ([e00f938](https://github.com/labor-digital/bits/commit/e00f938a04141b7198cf1d4a454c3ffc31245d71))
+
 ### [1.1.3](https://github.com/labor-digital/bits/compare/v1.1.2...v1.1.3) (2021-03-24)
 
 ### [1.1.2](https://github.com/labor-digital/bits/compare/v1.1.1...v1.1.2) (2021-03-23)
