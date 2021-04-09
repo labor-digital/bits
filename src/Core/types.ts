@@ -17,7 +17,7 @@
  */
 
 
-import type {ComponentProxyEventTarget} from '@labor-digital/helferlein';
+import type {ComponentProxyEventTarget, PlainObject} from '@labor-digital/helferlein';
 import type {EventEmitterEvent} from '@labor-digital/helferlein/dist/Events/EventEmitter';
 import type {TemplateResult} from 'lit-html';
 import type {AbstractBit} from './AbstractBit';
@@ -86,6 +86,34 @@ export interface IBitRegistryResolver
     (type: string): Promise<IBitConstructor | null>;
 }
 
+export interface IBitAppTranslationConfigurator
+{
+    (translator: any): any
+}
+
+export interface IBitAppTranslationOptions
+{
+    /**
+     * The two char iso code of the language the translation should work with.
+     * If this value is omitted, bits will try to read it from the HTML tag.
+     * Can be overwritten on a per-bit level using the "bt-locale" attribute
+     */
+    locale?: string
+    
+    /**
+     * Allows you to provide the phrases for the translator.
+     * If omitted, there is nothing you can translate, what else to say :D?
+     * Can be extended on a per-bit level using the "bt-phrases" attribute
+     */
+    phrases?: PlainObject
+    
+    /**
+     * Allows you to configure the actual translator instance on a low level.
+     * This method is executed every time a new translator instance is generated.
+     */
+    configurator?: IBitAppTranslationConfigurator
+}
+
 export interface IBitAppOptions
 {
     /**
@@ -105,4 +133,11 @@ export interface IBitAppOptions
      * This allows you, for example to resolve bits using webpack' dynamic import for chunk splitting
      */
     bitResolver?: IBitResolver
+    
+    /**
+     * Options for the translator and localization
+     */
+    translation?: IBitAppTranslationOptions
 }
+
+export type TLowLevelTranslator = typeof import('translate-js');

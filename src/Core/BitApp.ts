@@ -23,6 +23,7 @@ import {HmrRegistry} from './HmrRegistry';
 import {Es5Adapter} from './Mount/Es5Adapter';
 import {Es6Adapter} from './Mount/Es6Adapter';
 import {canUseEs6Features} from './Mount/util';
+import {TranslatorProvider} from './TranslatorProvider';
 import type {IBitAppOptions, IBitNs} from './types';
 
 export class BitApp
@@ -37,11 +38,14 @@ export class BitApp
      */
     protected _registry: BitRegistry;
     
+    protected _translatorProvider: TranslatorProvider;
+    
     constructor(options?: IBitAppOptions)
     {
         options = this.prepareOptions(options);
         this._mountTag = options.mountTag!;
         this._registry = this.makeRegistry(options);
+        this._translatorProvider = new TranslatorProvider(options.translation ?? {});
         this.mount(options);
         HmrRegistry.registerApp(this);
     }
@@ -71,6 +75,14 @@ export class BitApp
     }
     
     /**
+     * Internal access to the translator factory
+     */
+    public get translatorProvider(): TranslatorProvider
+    {
+        return this._translatorProvider;
+    }
+    
+    /**
      * Internal helper to validate given options against the interface schema
      * @param options
      * @protected
@@ -89,6 +101,24 @@ export class BitApp
             bitResolver: {
                 type: 'callable',
                 default: () => () => null
+            },
+            translator: {
+                type: 'plainObject',
+                default: () => ({}),
+                children: {
+                    locale: {
+                        type: ['string', 'undefined'],
+                        default: undefined
+                    },
+                    phrases: {
+                        type: 'plainObject',
+                        default: () => ({})
+                    },
+                    configurator: {
+                        type: ['callable', 'undefined'],
+                        default: undefined
+                    }
+                }
             }
         });
     }

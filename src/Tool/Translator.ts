@@ -16,33 +16,24 @@
  * Last modified: 2021.03.01 at 22:47
  */
 
-import {isArray, isEmpty, isPlainObject, isString} from '@labor-digital/helferlein';
-
-export interface LabelInterface
-{
-    [key: string]: string
-}
+import {isArray, isEmpty, PlainObject} from '@labor-digital/helferlein';
+import type {TLowLevelTranslator} from '../Core/types';
 
 export class Translator
 {
-    /**
-     * The list of loaded locales
-     * @protected
-     */
-    protected _labels: LabelInterface;
+    protected _concreteTranslator: TLowLevelTranslator;
     
-    constructor(labels: LabelInterface)
+    constructor(concreteTranslator: TLowLevelTranslator)
     {
-        this._labels = isPlainObject(labels) ? labels : {};
+        this._concreteTranslator = concreteTranslator;
     }
     
     /**
-     * Allows you to update the list of loaded labels on the fly
-     * @param labels
+     * Returns the current locale string (iso two char code) that is configured for this bit
      */
-    public setLabels(labels: LabelInterface): void
+    public get locale(): string
     {
-        this._labels = labels;
+        return this._concreteTranslator.getLocale() ?? 'en';
     }
     
     /**
@@ -50,18 +41,13 @@ export class Translator
      * @param key The label key to use for translation
      * @param args An array of arguments to replace using sprintf in your label
      */
-    public translate(key: string, args?: Array<string | number>): string
+    public translate(key: string, args?: Array<string | number> | PlainObject<string>): string
     {
-        if (!isString(this._labels[key])) {
-            console.warn('Missing translation for key: "' + key + '"');
-            return key;
-        }
-        
         if (!isEmpty(args) && isArray(args)) {
-            return this.sprintf(this._labels[key], args);
+            return this.sprintf(this._concreteTranslator(key), args);
+        } else {
+            return this._concreteTranslator(key, args);
         }
-        
-        return this._labels[key];
     }
     
     /**

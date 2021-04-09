@@ -42,6 +42,7 @@ import {Child as ChildProp} from './Bits/Props/Child';
 import {Parent as ParentProp} from './Bits/Props/Parent';
 import {Style} from './Bits/Style';
 import {Templates} from './Bits/Templates';
+import {Translation} from './Bits/Translation';
 import {Display} from './Bits/Util/Display';
 
 new BitApp({
@@ -66,6 +67,7 @@ new BitApp({
         escape: Escape,
         html: HtmlBit,
         hmr: Hmr,
+        translation: Translation,
         
         util: {
             display: Display

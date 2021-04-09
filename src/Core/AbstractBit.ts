@@ -477,7 +477,7 @@ export class AbstractBit
      *
      * @see Translator::translate()
      */
-    protected $t(key: string, args?: Array<string | number>): string
+    protected $t(key: string, args?: Array<string | number> | PlainObject<string>): string
     {
         return this.$translator().translate(key, args);
     }

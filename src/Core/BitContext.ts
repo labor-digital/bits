@@ -16,11 +16,11 @@
  * Last modified: 2021.03.09 at 13:39
  */
 
-import {ComponentProxy, getData} from '@labor-digital/helferlein';
+import {ComponentProxy, isPlainObject, isString, PlainObject} from '@labor-digital/helferlein';
 import {runInAction} from 'mobx';
 import type {Binder} from '../Binding/Binder';
 import type {Provider} from '../Reactivity/Provider';
-import {Translator} from '../Tool/Translator';
+import type {Translator} from '../Tool/Translator';
 import type {BitApp} from './BitApp';
 import type {Mount} from './Mount/Mount';
 
@@ -101,7 +101,21 @@ export class BitContext
     public get translator(): Translator
     {
         if (!this._translator) {
-            this._translator = new Translator(getData(this._mount.el!, 'locale', {}));
+            const locale: string | undefined = this._mount.el!.getAttribute('bt-locale') ?? undefined;
+            let phrases: string | PlainObject | undefined = this._mount.el!.getAttribute('bt-phrases') ?? undefined;
+            if (isString(phrases)) {
+                try {
+                    phrases = JSON.parse(phrases);
+                    if (!isPlainObject(phrases)) {
+                        // noinspection ExceptionCaughtLocallyJS
+                        throw new Error();
+                    }
+                } catch (e) {
+                    console.warn('Invalid phrases object on bit:', this._mount.el);
+                    phrases = undefined;
+                }
+            }
+            this._translator = this._app.translatorProvider.requireTranslator(locale, phrases);
         }
         
         return this._translator;
