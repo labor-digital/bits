@@ -91,7 +91,8 @@ module.exports = {
                         'AdvancedReactivity',
                         'BitInteraction',
                         'HtmlAndTemplates',
-                        'Mixins'
+                        'Mixins',
+                        'HotReload'
                     ]
                 }
             ]
