@@ -92,7 +92,8 @@ module.exports = {
                         'BitInteraction',
                         'HtmlAndTemplates',
                         'Mixins',
-                        'HotReload'
+                        'HotReload',
+                        'CodeTemplate'
                     ]
                 }
             ]
