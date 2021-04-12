@@ -101,6 +101,11 @@ export interface IBitAppTranslationOptions
     locale?: string
     
     /**
+     * The default locale to use as a fallback if a certain label was not found
+     */
+    defaultLocale?: string;
+    
+    /**
      * Allows you to provide the phrases for the translator.
      * If omitted, there is nothing you can translate, what else to say :D?
      * Can be extended on a per-bit level using the "bt-phrases" attribute
@@ -112,6 +117,12 @@ export interface IBitAppTranslationOptions
      * This method is executed every time a new translator instance is generated.
      */
     configurator?: IBitAppTranslationConfigurator
+    
+    /**
+     * By default the app will load additional options from the DOM on script[data-bit-translation] tags,
+     * to extend the options given when the app is created. If you set this to true, this feature can be disabled.
+     */
+    disableJsOptions?: boolean
 }
 
 export interface IBitAppOptions

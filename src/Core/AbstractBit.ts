@@ -32,6 +32,7 @@ import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {setElementContent} from '../Binding/util';
 import type {TWatchTarget} from '../Reactivity/types';
 import type {Translator} from '../Tool/Translator';
+import type {ITranslateOptions} from '../Tool/types';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {BitMountHTMLElement} from './Mount/types';
@@ -474,12 +475,14 @@ export class AbstractBit
      *
      * @param key The label key to use for translation
      * @param args An array of arguments to replace using sprintf in your label.
+     * @param options Advanced translation options
      *
      * @see Translator::translate()
      */
-    protected $t(key: string, args?: Array<string | number> | PlainObject<string>): string
+    protected $t(key: string, args?: Array<string | number> | PlainObject<string>, options?: ITranslateOptions
+    ): string
     {
-        return this.$translator().translate(key, args);
+        return this.$translator().translate(key, args, options);
     }
     
     /**

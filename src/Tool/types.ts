@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.04.09 at 21:35
+ * Last modified: 2021.04.12 at 11:53
  */
 
-import {AbstractBit} from '@labor-digital/bits';
-
-export class Translation extends AbstractBit
+export interface ITranslateOptions
 {
-    public mounted()
-    {
-        this.$find('@globalLabel')!.innerText = this.$t('globalString');
-        this.$find('@localLabel')!.innerText = this.$t('translated.label');
-        this.$find('@locale')!.innerText = this.$translator().locale;
-    }
+    /**
+     * An enforced locale to use for this translation
+     */
+    locale?: string,
+    
+    /**
+     * Used to determine which plural version to use
+     */
+    count?: number
 }

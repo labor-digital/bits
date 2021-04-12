@@ -26,31 +26,62 @@
 </head>
 <body>
 
+<!-- Translation data can be applied either as object (like in the js api, including "locale", "defaultLocale", "phrases"...),
+as plain object, with a locale -> phrases mapping, or as plain object with only the phrases for the default locale -->
+<script type="application/json" data-bit-translation>
+    {
+        "phrases": {
+            "en": {
+                "globalString": "I am everywhere!",
+                "translated": {
+                    "label": "Hello World"
+                }
+            },
+            "de": {
+                "globalString": "Ich bin überall!",
+                "translated": {
+                    "label": "Hallo Welt"
+                }
+            }
+        }
+    }
+</script>
+
+<!-- You can also provide translation labels for a single language per script tag, and define the locale using the "lang" attribute -->
+<script type="application/json" data-bit-translation lang="es">
+    {
+        "globalString": "¡Estoy en todas partes!",
+        "translated": {
+            "label": "Hola, mundo"
+        }
+    }
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <b-mount type="translation" class="card bg-light mt-3"
-                     bt-phrases="{&quot;translated&quot;:{&quot;label&quot;:&quot;Hello World!&quot;}}">
-                <div class="card-body">
-                    Locale: <strong data-ref="locale"></strong><br>
-                    Value: <strong data-ref="output"></strong>
-                </div>
-            </b-mount>
-            
-            <!-- bt-locale acts as an override, otherwise it is inferred from the html lang attribute -->
-            <b-mount type="translation" class="card bg-light mt-3"
-                     bt-locale="de"
-                     bt-phrases="{&quot;translated&quot;:{&quot;label&quot;:&quot;Hallo Welt!&quot;}}">
-                <div class="card-body">
-                    Locale: <strong data-ref="locale"></strong><br>
-                    Value: <strong data-ref="output"></strong>
-                </div>
-            </b-mount>
-            
             <b-mount type="translation" class="card bg-light mt-3">
                 <div class="card-body">
                     Locale: <strong data-ref="locale"></strong><br>
-                    Value: <strong data-ref="output"></strong>
+                    Global label: <strong data-ref="globalLabel"></strong><br>
+                    Local label: <strong data-ref="localLabel"></strong>
+                </div>
+            </b-mount>
+            
+            <!-- You can use the "lang" attribute to set the locale for a single bit -->
+            <b-mount type="translation" class="card bg-light mt-3" lang="de">
+                <div class="card-body">
+                    Locale: <strong data-ref="locale"></strong><br>
+                    Global label: <strong data-ref="globalLabel"></strong><br>
+                    Local label: <strong data-ref="localLabel"></strong>
+                </div>
+            </b-mount>
+            
+            <b-mount type="translation" class="card bg-light mt-3" lang="es">
+                <div class="card-body">
+                    Locale: <strong data-ref="locale"></strong><br>
+                    Global label: <strong data-ref="globalLabel"></strong><br>
+                    Fallback label: <strong data-ref="localLabel"></strong>
                 </div>
             </b-mount>
         </div>

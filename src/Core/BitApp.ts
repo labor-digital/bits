@@ -23,7 +23,7 @@ import {HmrRegistry} from './HmrRegistry';
 import {Es5Adapter} from './Mount/Es5Adapter';
 import {Es6Adapter} from './Mount/Es6Adapter';
 import {canUseEs6Features} from './Mount/util';
-import {TranslatorProvider} from './TranslatorProvider';
+import {TranslatorFactory} from './TranslatorFactory';
 import type {IBitAppOptions, IBitNs} from './types';
 
 export class BitApp
@@ -38,14 +38,17 @@ export class BitApp
      */
     protected _registry: BitRegistry;
     
-    protected _translatorProvider: TranslatorProvider;
+    /**
+     * @hidden
+     */
+    protected _translatorFactory: TranslatorFactory;
     
     constructor(options?: IBitAppOptions)
     {
         options = this.prepareOptions(options);
         this._mountTag = options.mountTag!;
         this._registry = this.makeRegistry(options);
-        this._translatorProvider = new TranslatorProvider(options.translation ?? {});
+        this._translatorFactory = new TranslatorFactory(options.translation ?? {});
         this.mount(options);
         HmrRegistry.registerApp(this);
     }
@@ -77,9 +80,9 @@ export class BitApp
     /**
      * Internal access to the translator factory
      */
-    public get translatorProvider(): TranslatorProvider
+    public get translatorFactory(): TranslatorFactory
     {
-        return this._translatorProvider;
+        return this._translatorFactory;
     }
     
     /**

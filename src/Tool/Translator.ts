@@ -18,14 +18,17 @@
 
 import {isArray, isEmpty, PlainObject} from '@labor-digital/helferlein';
 import type {TLowLevelTranslator} from '../Core/types';
+import type {ITranslateOptions} from './types';
 
 export class Translator
 {
-    protected _concreteTranslator: TLowLevelTranslator;
+    protected _locale: string;
+    protected _lowLevelTranslator: TLowLevelTranslator;
     
-    constructor(concreteTranslator: TLowLevelTranslator)
+    constructor(locale: string, concreteTranslator: TLowLevelTranslator)
     {
-        this._concreteTranslator = concreteTranslator;
+        this._locale = locale;
+        this._lowLevelTranslator = concreteTranslator;
     }
     
     /**
@@ -33,21 +36,48 @@ export class Translator
      */
     public get locale(): string
     {
-        return this._concreteTranslator.getLocale() ?? 'en';
+        return this._locale;
     }
     
     /**
      * Translates a single key using the loaded labels and returns the matched value.
      * @param key The label key to use for translation
      * @param args An array of arguments to replace using sprintf in your label
+     * @param options Advanced translation options
      */
-    public translate(key: string, args?: Array<string | number> | PlainObject<string>): string
+    public translate(
+        key: string,
+        args?: Array<string | number> | PlainObject<string>,
+        options?: ITranslateOptions
+    ): string
     {
         if (!isEmpty(args) && isArray(args)) {
-            return this.sprintf(this._concreteTranslator(key), args);
+            return this.sprintf(
+                this._lowLevelTranslator(
+                    key,
+                    (options?.count ? {count: options.count} : undefined),
+                    {locale: options?.locale ?? this._locale}
+                ), args);
         } else {
-            return this._concreteTranslator(key, args);
+            return this._lowLevelTranslator(
+                key,
+                (options?.count ? {...(args ?? {}), count: options.count} : args),
+                {locale: options?.locale ?? this._locale}
+            );
         }
+    }
+    
+    /**
+     * Allows you to add additional phrases for a certain locale.
+     * Note: This affects ALL bit instances of this app!
+     * @param locale The locale key to add the phrases to. Two Char iso code
+     * @param phrases The phrases to add
+     */
+    public addPhrases(locale: string, phrases: PlainObject): this
+    {
+        this._lowLevelTranslator.add(phrases, locale);
+        
+        return this;
     }
     
     /**
