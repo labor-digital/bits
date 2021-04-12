@@ -92,15 +92,13 @@ export class TranslatorFactory
         options = this.validateOptions(options);
         
         const locale = this._locale = options.locale!;
-        const phrases = options.phrases!;
         const defaultLocale = options.defaultLocale!;
         
         const lowLevel = translate.createRegistry();
         
         lowLevel.whenUndefined = (key, locale) => {
-            const defaultPhrases = phrases[defaultLocale!] ?? {};
-            if (defaultPhrases[key]) {
-                return defaultPhrases[key];
+            if (defaultLocale && locale !== defaultLocale) {
+                return lowLevel(key, undefined, {locale: defaultLocale});
             }
             
             console.warn('Missing translation for key: "' + key + '" in locale: "' + locale + '"');
