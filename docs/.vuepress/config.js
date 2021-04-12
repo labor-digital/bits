@@ -75,12 +75,12 @@ module.exports = {
                     collapsable: false,
                     sidebarDepth: 3,
                     children: [
-                        'Lifecycle',
-                        'Reactivity',
-                        'DomAccess',
-                        'ClassAndStyle',
-                        'FormBinding',
-                        'EventsAndProxy'
+                        'essentials/Lifecycle',
+                        'essentials/Reactivity',
+                        'essentials/DomAccess',
+                        'essentials/ClassAndStyle',
+                        'essentials/FormBinding',
+                        'essentials/EventsAndProxy'
                     ]
                 },
                 {
@@ -88,12 +88,19 @@ module.exports = {
                     sidebarDepth: 3,
                     collapsable: false,
                     children: [
-                        'AdvancedReactivity',
-                        'BitInteraction',
-                        'HtmlAndTemplates',
-                        'Mixins',
-                        'HotReload',
-                        'CodeTemplate'
+                        'advanced/AdvancedReactivity',
+                        'advanced/BitInteraction',
+                        'advanced/HtmlAndTemplates',
+                        'advanced/Mixins',
+                        'advanced/HotReload',
+                        'advanced/CodeTemplate'
+                    ]
+                }, {
+                    title: 'Tools',
+                    sidebarDepth: 3,
+                    collapsable: false,
+                    children: [
+                        'tools/Translations'
                     ]
                 }
             ]
