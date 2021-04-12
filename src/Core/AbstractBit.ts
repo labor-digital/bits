@@ -31,11 +31,11 @@ import {StyleInfo, styleMap} from 'lit-html/directives/style-map';
 import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {setElementContent} from '../Binding/util';
 import type {TWatchTarget} from '../Reactivity/types';
-import type {Translator} from '../Tool/Translator';
-import type {ITranslateOptions} from '../Tool/types';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {BitMountHTMLElement} from './Mount/types';
+import type {Translator} from './Translator/Translator';
+import type {ITranslateOptions} from './Translator/types';
 import type {IEventListener, IHtmlTemplateProvider, IPropertyWatcher, TEventList, TEventTarget} from './types';
 import {bindEventsOnProxy, findElement, resolveEventTarget} from './util';
 
@@ -465,7 +465,7 @@ export class AbstractBit
      * Returns the translator instance for this bit
      * @protected
      */
-    protected $translator(): Translator
+    protected get $translator(): Translator
     {
         return this._context.translator;
     }
@@ -479,10 +479,13 @@ export class AbstractBit
      *
      * @see Translator::translate()
      */
-    protected $t(key: string, args?: Array<string | number> | PlainObject<string>, options?: ITranslateOptions
+    protected $t(
+        key: string,
+        args?: Array<string | number> | PlainObject<string | number>,
+        options?: ITranslateOptions
     ): string
     {
-        return this.$translator().translate(key, args, options);
+        return this.$translator.translate(key, args, options);
     }
     
     /**

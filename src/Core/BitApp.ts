@@ -23,7 +23,7 @@ import {HmrRegistry} from './HmrRegistry';
 import {Es5Adapter} from './Mount/Es5Adapter';
 import {Es6Adapter} from './Mount/Es6Adapter';
 import {canUseEs6Features} from './Mount/util';
-import {TranslatorFactory} from './TranslatorFactory';
+import {TranslatorFactory} from './Translator/TranslatorFactory';
 import type {IBitAppOptions, IBitNs} from './types';
 
 export class BitApp

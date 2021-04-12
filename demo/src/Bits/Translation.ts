@@ -23,7 +23,7 @@ export class Translation extends AbstractBit
     public mounted()
     {
         this.$find('@globalLabel')!.innerText = this.$t('globalString');
-        this.$find('@localLabel')!.innerText = this.$t('translated.label');
-        this.$find('@locale')!.innerText = this.$translator().locale;
+        this.$find('@localLabel')!.innerText = this.$t('translated.label', ['foo'], {count: 1});
+        this.$find('@lang')!.innerText = this.$translator.lang;
     }
 }

@@ -17,7 +17,7 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,7 +40,10 @@ as plain object, with a locale -> phrases mapping, or as plain object with only 
             "de": {
                 "globalString": "Ich bin überall!",
                 "translated": {
-                    "label": "Hallo Welt"
+                    "label": [
+                        "Hallo Welt {{count}} %s Tag",
+                        "Hallo Welt {{count}} %s Tage"
+                    ]
                 }
             }
         }
@@ -50,10 +53,7 @@ as plain object, with a locale -> phrases mapping, or as plain object with only 
 <!-- You can also provide translation labels for a single language per script tag, and define the locale using the "lang" attribute -->
 <script type="application/json" data-bit-translation lang="es">
     {
-        "globalString": "¡Estoy en todas partes!",
-        "translated": {
-            "label": "Hola, mundo"
-        }
+        "globalString": "¡Estoy en todas partes!"
     }
 </script>
 
@@ -62,7 +62,7 @@ as plain object, with a locale -> phrases mapping, or as plain object with only 
         <div class="col-12">
             <b-mount type="translation" class="card bg-light mt-3">
                 <div class="card-body">
-                    Locale: <strong data-ref="locale"></strong><br>
+                    Language code: <strong data-ref="lang"></strong><br>
                     Global label: <strong data-ref="globalLabel"></strong><br>
                     Local label: <strong data-ref="localLabel"></strong>
                 </div>
@@ -71,7 +71,7 @@ as plain object, with a locale -> phrases mapping, or as plain object with only 
             <!-- You can use the "lang" attribute to set the locale for a single bit -->
             <b-mount type="translation" class="card bg-light mt-3" lang="de">
                 <div class="card-body">
-                    Locale: <strong data-ref="locale"></strong><br>
+                    Language code: <strong data-ref="lang"></strong><br>
                     Global label: <strong data-ref="globalLabel"></strong><br>
                     Local label: <strong data-ref="localLabel"></strong>
                 </div>
@@ -79,7 +79,7 @@ as plain object, with a locale -> phrases mapping, or as plain object with only 
             
             <b-mount type="translation" class="card bg-light mt-3" lang="es">
                 <div class="card-body">
-                    Locale: <strong data-ref="locale"></strong><br>
+                    Language code: <strong data-ref="lang"></strong><br>
                     Global label: <strong data-ref="globalLabel"></strong><br>
                     Fallback label: <strong data-ref="localLabel"></strong>
                 </div>

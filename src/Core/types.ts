@@ -17,12 +17,13 @@
  */
 
 
-import type {ComponentProxyEventTarget, PlainObject} from '@labor-digital/helferlein';
+import type {ComponentProxyEventTarget} from '@labor-digital/helferlein';
 import type {EventEmitterEvent} from '@labor-digital/helferlein/dist/Events/EventEmitter';
 import type {TemplateResult} from 'lit-html';
 import type {AbstractBit} from './AbstractBit';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
+import type {IBitAppTranslationOptions} from './Translator/types';
 
 export type TEventTarget =
     ComponentProxyEventTarget
@@ -86,45 +87,6 @@ export interface IBitRegistryResolver
     (type: string): Promise<IBitConstructor | null>;
 }
 
-export interface IBitAppTranslationConfigurator
-{
-    (translator: any): any
-}
-
-export interface IBitAppTranslationOptions
-{
-    /**
-     * The two char iso code of the language the translation should work with.
-     * If this value is omitted, bits will try to read it from the HTML tag.
-     * Can be overwritten on a per-bit level using the "bt-locale" attribute
-     */
-    locale?: string
-    
-    /**
-     * The default locale to use as a fallback if a certain label was not found
-     */
-    defaultLocale?: string;
-    
-    /**
-     * Allows you to provide the phrases for the translator.
-     * If omitted, there is nothing you can translate, what else to say :D?
-     * Can be extended on a per-bit level using the "bt-phrases" attribute
-     */
-    phrases?: PlainObject
-    
-    /**
-     * Allows you to configure the actual translator instance on a low level.
-     * This method is executed every time a new translator instance is generated.
-     */
-    configurator?: IBitAppTranslationConfigurator
-    
-    /**
-     * By default the app will load additional options from the DOM on script[data-bit-translation] tags,
-     * to extend the options given when the app is created. If you set this to true, this feature can be disabled.
-     */
-    disableJsOptions?: boolean
-}
-
 export interface IBitAppOptions
 {
     /**
@@ -150,5 +112,3 @@ export interface IBitAppOptions
      */
     lang?: IBitAppTranslationOptions
 }
-
-export type TLowLevelTranslator = typeof import('translate-js');

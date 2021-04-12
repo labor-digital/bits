@@ -20,9 +20,9 @@ import {ComponentProxy} from '@labor-digital/helferlein';
 import {runInAction} from 'mobx';
 import type {Binder} from '../Binding/Binder';
 import type {Provider} from '../Reactivity/Provider';
-import type {Translator} from '../Tool/Translator';
 import type {BitApp} from './BitApp';
 import type {Mount} from './Mount/Mount';
+import type {Translator} from './Translator/Translator';
 
 export class BitContext
 {
