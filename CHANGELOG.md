@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/labor-digital/bits/compare/v1.2.1...v1.3.0) (2021-04-12)
+
+
+### Features
+
+* implement extended translation and locale handling ([5033343](https://github.com/labor-digital/bits/commit/50333438755908a2860b51d373434cd48c150104))
+* make translations more intuitive ([3b20700](https://github.com/labor-digital/bits/commit/3b20700351210e3a6c73c86322031170540cdaa9))
+* remove translate-js library, and rewrite functionality in the core ([7bbc008](https://github.com/labor-digital/bits/commit/7bbc00867319cef8de5a407e4e552d32dd6b6c5f))
+* validate translator options in the TranslatorFactory ([881fbca](https://github.com/labor-digital/bits/commit/881fbca896c3169c1838e781e46033ead2fe81fb))
+
+
+### Bug Fixes
+
+* **TranslatorFactory:** correctly resolve default key ([0b217f8](https://github.com/labor-digital/bits/commit/0b217f8ac1bd22bb534f04369f8e756263d63b93))
+
 ### [1.2.1](https://github.com/labor-digital/bits/compare/v1.2.0...v1.2.1) (2021-04-09)
 
 ## [1.2.0](https://github.com/labor-digital/bits/compare/v1.1.3...v1.2.0) (2021-04-09)
