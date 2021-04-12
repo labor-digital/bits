@@ -16,7 +16,16 @@
  * Last modified: 2021.04.09 at 20:17
  */
 
-import {cloneList, forEach, isFunction, isPlainObject, isString, isUndefined, merge} from '@labor-digital/helferlein';
+import {
+    cloneList,
+    forEach,
+    isFunction,
+    isPlainObject,
+    isString,
+    isUndefined,
+    makeOptions,
+    merge
+} from '@labor-digital/helferlein';
 import * as translate from 'translate-js';
 import {Translator} from '../Tool/Translator';
 import type {BitMountHTMLElement} from './Mount/types';
@@ -80,6 +89,8 @@ export class TranslatorFactory
             options = this.findDomOptions(options);
         }
         
+        options = this.validateOptions(options);
+        
         const locale = this._locale = options.locale!;
         const phrases = options.phrases!;
         const defaultLocale = options.defaultLocale!;
@@ -106,6 +117,47 @@ export class TranslatorFactory
         }
         
         this._lowLevelTranslator = lowLevel;
+    }
+    
+    /**
+     * Validates the translation options based on our schema
+     * @param options
+     * @protected
+     */
+    protected validateOptions(options: IBitAppTranslationOptions): IBitAppTranslationOptions
+    {
+        const maxLength = function (v: string | undefined, k: string): string | boolean {
+            if (!isUndefined(v) && v.length !== 2) {
+                return 'The given "' + k + '" (' + v
+                       + ') must be exactly two characters long!';
+            }
+            return true;
+        };
+        
+        return makeOptions(options, {
+            locale: {
+                type: ['string', 'undefined'],
+                default: undefined,
+                validator: maxLength
+            },
+            defaultLocale: {
+                type: ['string', 'undefined'],
+                default: undefined,
+                validator: maxLength
+            },
+            disableJsOptions: {
+                type: 'boolean',
+                default: false
+            },
+            phrases: {
+                type: 'plainObject',
+                default: () => ({})
+            },
+            configurator: {
+                type: ['callable', 'undefined'],
+                default: undefined
+            }
+        });
     }
     
     /**

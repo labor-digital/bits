@@ -48,7 +48,7 @@ export class BitApp
         options = this.prepareOptions(options);
         this._mountTag = options.mountTag!;
         this._registry = this.makeRegistry(options);
-        this._translatorFactory = new TranslatorFactory(options.translation ?? {});
+        this._translatorFactory = new TranslatorFactory(options.lang ?? {});
         this.mount(options);
         HmrRegistry.registerApp(this);
     }
@@ -105,23 +105,10 @@ export class BitApp
                 type: 'callable',
                 default: () => () => null
             },
-            translator: {
+            // These options are validated by the TranslatorFactory
+            lang: {
                 type: 'plainObject',
-                default: () => ({}),
-                children: {
-                    locale: {
-                        type: ['string', 'undefined'],
-                        default: undefined
-                    },
-                    phrases: {
-                        type: 'plainObject',
-                        default: () => ({})
-                    },
-                    configurator: {
-                        type: ['callable', 'undefined'],
-                        default: undefined
-                    }
-                }
+                default: () => ({})
             }
         });
     }

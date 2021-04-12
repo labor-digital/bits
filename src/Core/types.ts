@@ -148,7 +148,7 @@ export interface IBitAppOptions
     /**
      * Options for the translator and localization
      */
-    translation?: IBitAppTranslationOptions
+    lang?: IBitAppTranslationOptions
 }
 
 export type TLowLevelTranslator = typeof import('translate-js');
