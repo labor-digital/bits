@@ -68,12 +68,14 @@ export class TranslatorContext
         
         const flattener = function (v: PlainObject, path: string) {
             forEach(v, function (_v, _k) {
+                const _path = path === '' ? _k : path + '.' + _k;
+                
                 if (isPlainObject(_v)) {
-                    flattener(_v, path === '' ? _k + '.' : path + '.' + _k + '.');
+                    flattener(_v, _path);
                     return;
                 }
                 
-                list[path + _k] = _v;
+                list[_path] = _v;
             });
         };
         
