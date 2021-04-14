@@ -29,6 +29,7 @@ import {render} from 'lit-html';
 import {ClassInfo, classMap} from 'lit-html/directives/class-map';
 import {StyleInfo, styleMap} from 'lit-html/directives/style-map';
 import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
+import {runInAction} from 'mobx';
 import {setElementContent} from '../Binding/util';
 import type {TWatchTarget} from '../Reactivity/types';
 import type {BitApp} from './BitApp';
@@ -255,6 +256,21 @@ export class AbstractBit
             this.$proxy.emit(target, event as string, args as PlainObject);
         });
         
+        return this;
+    }
+    
+    /**
+     * Will update the this.value property to the given value and automatically emit the "change" event.
+     * Helpful if you want to create bit interaction through a model binding on this bit.
+     * @param value
+     * @protected
+     */
+    protected $emitChange(value: any): this
+    {
+        runInAction(() => {
+            this['value'] = value;
+            this.$emit('change');
+        });
         return this;
     }
     
