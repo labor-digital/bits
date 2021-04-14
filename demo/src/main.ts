@@ -40,6 +40,8 @@ import {Parent as ParentCycle} from './Bits/Lifecycle/Parent';
 import {ExtendedBit} from './Bits/Mixins/ExtendedBit';
 import {Child as ChildProp} from './Bits/Props/Child';
 import {Parent as ParentProp} from './Bits/Props/Parent';
+import {ProgChild} from './Bits/Props/Programmatic/ProgChild';
+import {ProgParent} from './Bits/Props/Programmatic/ProgParent';
 import {Style} from './Bits/Style';
 import {Templates} from './Bits/Templates';
 import {Translation} from './Bits/Translation';
@@ -54,6 +56,10 @@ new BitApp({
         'context/child': Child,
         // ...or as nested list of definitions
         props: {
+            prog: {
+                parent: ProgParent,
+                child: ProgChild
+            },
             parent: ParentProp,
             child: ChildProp
         },

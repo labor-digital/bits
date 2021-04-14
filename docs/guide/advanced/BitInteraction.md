@@ -126,6 +126,48 @@ If this property is not present on the bit you try to bind to, an error will be 
 
 <Example href="/demo/examples/docs-model.html" :height="190"/>
 
+### Programmatic updates
+If you don't want to just bind the value to a dom done in the child, you can also set the value property programmatically.
+This allows you to create custom form elements that automatically update the parent and propagate changes.
+
+Parent:
+```typescript
+import {AbstractBit, Data} from '@labor-digital/bits';
+export class Parent extends AbstractBit
+{
+    @Data()
+    prop: string = '';
+}
+```
+
+Child:
+```typescript
+import {AbstractBit, Property} from '@labor-digital/bits';
+export class Child extends AbstractBit
+{
+    @Property()
+    value: string = '';
+    
+    @Listener('click', '@button')
+    onClick(){
+        this.value = 'My value';
+    }
+}
+```
+
+HTML:
+```html
+<b-mount type="parent">
+    <span data-bind="model"></span>
+    
+    <b-mount type="child" data-model="model">
+        <button data-ref="button">Click me</button>
+    </b-mount>
+</b-mount>
+```
+
+<Example href="/demo/examples/props-programmatic.html" :height="300"/>
+
 ## Props & Model extended example:
 
 This is an extended example, that puts both props and models in a comparable example.
