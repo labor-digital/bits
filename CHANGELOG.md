@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/labor-digital/bits/compare/v1.3.0...v1.3.1) (2021-04-13)
+
+
+### Bug Fixes
+
+* **TranslatorContext:** make sure the label path is generated correctly ([3597b6a](https://github.com/labor-digital/bits/commit/3597b6a843427c334b081be4c080841719a5482c))
+
 ## [1.3.0](https://github.com/labor-digital/bits/compare/v1.2.1...v1.3.0) (2021-04-12)
 
 
