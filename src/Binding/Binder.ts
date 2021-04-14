@@ -22,7 +22,7 @@ import type {AbstractBit} from '../Core/AbstractBit';
 import type {BitDefinition} from '../Core/Definition/BitDefinition';
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
 import type {Mount} from '../Core/Mount/Mount';
-import {bindEventsOnProxy, findElement} from '../Core/util';
+import {findElement, runOnEventProxy} from '../Core/util';
 import {getPropertyAccessor} from './propertyAccess';
 import type {IPropertyAccessor} from './types';
 import {getElementValue, setElementAttribute, setElementContent, setElementValue, splitMapString} from './util';
@@ -361,13 +361,14 @@ export class Binder
     protected bindEventListeners(): void
     {
         forEach(this._definition!.getEventListeners()!, definition => {
-            bindEventsOnProxy.call(
+            runOnEventProxy.call(
                 this._bit!,
                 this._proxy!,
                 definition.target,
                 definition.deep,
                 definition.events,
-                this._bit![definition.method]
+                this._bit![definition.method],
+                'bind'
             );
         });
     }

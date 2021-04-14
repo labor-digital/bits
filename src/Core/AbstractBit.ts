@@ -38,7 +38,7 @@ import type {BitMountHTMLElement} from './Mount/types';
 import type {Translator} from './Translator/Translator';
 import type {ITranslateOptions} from './Translator/types';
 import type {IEventListener, IHtmlTemplateProvider, IPropertyWatcher, TEventList, TEventTarget} from './types';
-import {bindEventsOnProxy, findElement, resolveEventTarget} from './util';
+import {bitEventActionWrap, findElement, resolveEventTarget} from './util';
 
 export interface AbstractBit
 {
@@ -210,19 +210,36 @@ export class AbstractBit
         c?: IEventListener
     ): this
     {
-        const hasTarget = !isUndefined(c);
-        const event = hasTarget ? b : a;
-        const listener = hasTarget ? c : b;
-        
-        bindEventsOnProxy.call(
-            this,
-            this.$proxy,
-            hasTarget ? a : undefined,
-            false,
-            event as TEventList,
-            listener as IEventListener);
-        
-        return this;
+        return bitEventActionWrap.call(this, 'bind', a, b, c);
+    }
+    
+    /**
+     * Unbinds a given listener to a certain event
+     *
+     * @param target A target to unbind the event from.
+     *               - mount (default): Unbind from the mount dom node itself
+     *               - true: Unbind from the global this.$app.eventBus, that allows cross-bit events
+     *               - ComponentProxyEventTarget: Any of the valid options, like DOM elements
+     * @param event The name of the event to unbind the listener from.
+     * @param listener The listener to unbind
+     */
+    protected $off(target: TEventTarget, event: TEventList, listener: IEventListener): this
+    
+    /**
+     * Unbinds a given listener to a certain event
+     *
+     * @param event The name of the event to unbind the listener from.
+     * @param listener The listener to unbind
+     */
+    protected $off(event: TEventList, listener: IEventListener): this
+    
+    protected $off(
+        a: TEventTarget | TEventList,
+        b: TEventList | IEventListener,
+        c?: IEventListener
+    ): this
+    {
+        return bitEventActionWrap.call(this, 'unbind', a, b, c);
     }
     
     /**

@@ -115,26 +115,60 @@ export function resolveEventTarget(
 
 /**
  * Internal helper to translate all possible event target definitions and event name lists
- * and bind them using the provided component proxy instance
+ * and bind or unbind them using the provided component proxy instance
  *
  * @param proxy
  * @param target
  * @param deep
  * @param events
  * @param listener
+ * @param method
  */
-export function bindEventsOnProxy(
+export function runOnEventProxy(
     this: AbstractBit,
     proxy: ComponentProxy,
     target: TEventTarget | undefined,
     deep: boolean | undefined,
     events: TEventList,
-    listener: IEventListener
+    listener: IEventListener,
+    method: 'bind' | 'unbind'
 ): void
 {
     forEach(resolveEventTarget.call(this, target, deep), function (el) {
         forEach(isArray(events) ? events : [events], function (event) {
-            proxy.bind(el, event, listener);
+            proxy[method](el, event, listener);
         });
     });
+}
+
+/**
+ * Internal helper to keep the event binding/unbinding code inside a single bit as DRY as possible
+ * @param method
+ * @param a
+ * @param b
+ * @param c
+ */
+export function bitEventActionWrap(
+    this: AbstractBit,
+    method: 'bind' | 'unbind',
+    a: TEventTarget | TEventList,
+    b: TEventList | IEventListener,
+    c: IEventListener | undefined
+): AbstractBit | any
+{
+    
+    const hasTarget = !isUndefined(c);
+    const event = hasTarget ? b : a;
+    const listener = hasTarget ? c : b;
+    
+    runOnEventProxy.call(
+        this,
+        this.$proxy,
+        hasTarget ? a : undefined,
+        false,
+        event as TEventList,
+        listener as IEventListener,
+        method);
+    
+    return this;
 }
