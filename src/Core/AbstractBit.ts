@@ -280,7 +280,7 @@ export class AbstractBit
      * @param watcher The function to execute, when one or more of the used observables changed
      * @param options Additional options
      */
-    public $autoRun(watcher: (r: IReactionPublic) => any, options?: IAutorunOptions): IReactionDisposer
+    protected $autoRun(watcher: (r: IReactionPublic) => any, options?: IAutorunOptions): IReactionDisposer
     {
         return this._context.reactivityProvider.addAutoRun(watcher, options);
     }
