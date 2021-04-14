@@ -16,7 +16,7 @@
  * Last modified: 2021.04.08 at 22:46
  */
 
-import {forEach, getGuid} from '@labor-digital/helferlein';
+import {emitDomEvent, forEach, getGuid} from '@labor-digital/helferlein';
 import type {BitApp} from './BitApp';
 import type {BitMountHTMLElement} from './Mount/types';
 import type {IBitConstructor} from './types';
@@ -173,7 +173,7 @@ export class HmrRegistry
             return;
         }
         
-        forEach(mountMap.get(id)!, el => {
+        forEach(mountMap.get(id)!, async el => {
             const mount = el._bitMount;
             
             // We actively check if the mount is currently connected, this way mounts that have a "keep-alive"
@@ -183,7 +183,10 @@ export class HmrRegistry
             const isConnected = mount.isConnected;
             mount.disconnect(true);
             if (isConnected) {
-                mount.connect(el);
+                await mount.connect(el);
+                
+                // Make sure that all parent mounts get rebound
+                emitDomEvent(el, 'domChange');
             }
         });
     }
