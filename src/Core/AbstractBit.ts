@@ -29,6 +29,7 @@ import {render} from 'lit-html';
 import {ClassInfo, classMap} from 'lit-html/directives/class-map';
 import {StyleInfo, styleMap} from 'lit-html/directives/style-map';
 import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
+import {runInAction} from 'mobx';
 import {setElementContent} from '../Binding/util';
 import type {TWatchTarget} from '../Reactivity/types';
 import type {BitApp} from './BitApp';
@@ -282,6 +283,18 @@ export class AbstractBit
     public $autoRun(watcher: (r: IReactionPublic) => any, options?: IAutorunOptions): IReactionDisposer
     {
         return this._context.reactivityProvider.addAutoRun(watcher, options);
+    }
+    
+    /**
+     * Shortcut to mobx "runInAction" helper
+     * @see https://mobx.js.org/actions.html#runinaction
+     *
+     * @param fn The function to execute in an action
+     * @protected
+     */
+    protected $runInAction<T>(fn: () => T): T
+    {
+        return runInAction(fn);
     }
     
     /**
