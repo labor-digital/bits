@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/labor-digital/bits/compare/v1.3.1...v1.4.0) (2021-04-14)
+
+
+### Features
+
+* **AbstractBit:** add $runInAction() shortcut for mobx ([d60d0bd](https://github.com/labor-digital/bits/commit/d60d0bdd59540322ac9105572ccacdcdeebf4caa))
+* **AbstractBit:** implement $emitChange() helper ([4a83b82](https://github.com/labor-digital/bits/commit/4a83b82227935bf71f6a58b774d09097babcdada))
+* **AbstractBit:** implement $off() as counterpart to $on() ([8ad35f1](https://github.com/labor-digital/bits/commit/8ad35f19a2daf6fe74eeef5cedb7bb952c704e59))
+
+
+### Bug Fixes
+
+* **AbstractBit:** make $autoRun() protected ([3f995d1](https://github.com/labor-digital/bits/commit/3f995d1a1a14e212f5060ce4d1eea497ee94e489))
+* **HmrRegistry:** emit "domChange" after HMR patching ([61a9b53](https://github.com/labor-digital/bits/commit/61a9b5355016d08db46e78ca3748b56ab5b967e1))
+
 ### [1.3.1](https://github.com/labor-digital/bits/compare/v1.3.0...v1.3.1) (2021-04-13)
 
 
