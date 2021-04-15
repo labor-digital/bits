@@ -25,7 +25,8 @@ import {
     makeObservable,
     observable,
     observe,
-    reaction
+    reaction,
+    runInAction
 } from 'mobx';
 import {setElementAttribute} from '../Binding/util';
 import type {AbstractBit} from '../Core/AbstractBit';
@@ -137,7 +138,7 @@ export class Provider
     public reactToDomChanged(): void
     {
         if (this._metaDependencies) {
-            this._metaDependencies.dom++;
+            runInAction(() => this._metaDependencies!.dom++);
         }
     }
     
