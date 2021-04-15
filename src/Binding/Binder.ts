@@ -37,6 +37,8 @@ export class Binder
     
     protected _delayedActions?: Set<Function> = new Set();
     protected _foreignModelBinders: Map<string, Function> = new Map();
+    protected _foreignGetPromises: Map<number, Function> = new Map();
+    protected _foreignGetCount: number = 0;
     protected _pullableProperties?: Array<Array<string>>;
     
     /**
@@ -66,7 +68,6 @@ export class Binder
         this._mount = mount;
         this._bit = bit;
         this._definition = DefinitionRegistry.getDefinitionFor(Object.getPrototypeOf(bit));
-        
         this._proxy = new ComponentProxy(bit);
         
         // Bind foreign models to our children
@@ -154,6 +155,43 @@ export class Binder
     }
     
     /**
+     * Internal API that allows the parent bit to read a public property from the local bit.
+     * If the local bit is not yet mounted, a promise will be returned which resolves when the binding is ready.
+     *
+     * @param property the name of the local property to return the value for
+     */
+    public getForeignProperty(property: string): Promise<any>
+    {
+        const id: number = this._foreignGetCount++;
+        return new Promise<any>(resolve => {
+            this._foreignGetPromises.set(id, () => resolve(null));
+            
+            this.callOrDelay(() => {
+                this._foreignGetPromises.delete(id);
+                const renderError = () => console.error(
+                    'You can\'t read property: "' + property + '" externally'
+                    + ', because it was not registered publicly as prop using the @Property() decorator! '
+                    + 'Failed mount:',
+                    this._mount!.el!
+                );
+                
+                if (!this.isPublicProperty(property)) {
+                    renderError();
+                    return resolve(null);
+                }
+                
+                const prop = this.getAccessor('value');
+                if (prop === null) {
+                    renderError();
+                    return resolve(null);
+                }
+                
+                resolve(prop.get());
+            });
+        });
+    }
+    
+    /**
      * Internal API that allows bits to perform the data-binding between two bit-mount elements.
      *
      * @param property the name of the local property to set
@@ -168,7 +206,9 @@ export class Binder
             if (!this.isPublicProperty(property)) {
                 console.error(
                     'You can\'t bind property: "' + property + '" externally'
-                    + ', because it was not registered publicly as prop using the @Property() decorator!'
+                    + ', because it was not registered publicly as prop using the @Property() decorator! '
+                    + 'Failed mount:',
+                    this._mount!.el!
                 );
                 return;
             }
@@ -225,13 +265,17 @@ export class Binder
      * @param target The target element the property is bound to
      * @param prop
      */
-    public reactToChangeEvent(e: UIEvent | KeyboardEvent, target: HTMLElement, prop: IPropertyAccessor): void
+    public async reactToChangeEvent(
+        e: UIEvent | KeyboardEvent,
+        target: HTMLElement,
+        prop: IPropertyAccessor
+    ): Promise<void>
     {
         if (e.target !== target) {
             return;
         }
         
-        const n = getElementValue(target, prop);
+        const n = await getElementValue(target, prop);
         if (n === prop.get()) {
             return;
         }
@@ -245,7 +289,7 @@ export class Binder
      * @param target
      * @protected
      */
-    protected bindTwoWayValue(target: HTMLElement): void
+    protected async bindTwoWayValue(target: HTMLElement): Promise<void>
     {
         const property = target.dataset.model ?? null;
         
@@ -275,7 +319,7 @@ export class Binder
         
         // Either pull the value into the property (property is NULL), or set the value of the input field (not NULL)
         if (this._pullableProperties!.indexOf(prop.path) !== -1) {
-            prop.set(getElementValue(target, prop));
+            prop.set(await getElementValue(target, prop));
         } else {
             setElementValue(target, propertyValue);
         }
@@ -396,6 +440,8 @@ export class Binder
         this.unbindWatchers();
         this._proxy!.destroy();
         
+        forEach(this._foreignGetPromises, disposer => disposer());
+        
         delete this._mount;
         delete this._proxy;
         delete this._bit;
@@ -404,6 +450,8 @@ export class Binder
         this._disposers = null as any;
         this._accessors = null as any;
         this._foreignModelBinders = null as any;
+        this._foreignGetPromises = null as any;
+        this._foreignGetCount = null as any;
     }
     
     /**
