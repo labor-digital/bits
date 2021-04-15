@@ -64,17 +64,18 @@ export function getPropertyAccessor<T = any>(
         
         console.error('Can\'t bind data on unknown property: "' + propertyName + '" of element:', bit.$el,
             'allowed properties:', properties);
+        
         return null;
     }
     
     return {
         property: propertyName,
         path,
-        get value(): T
+        get(): T
         {
             return isPath ? getPath(bit as any, path, null) : bit[property] ?? null;
         },
-        set value(v)
+        set(v)
         {
             runInAction(() => {
                 if (isPath) {

@@ -275,7 +275,7 @@ export function getElementValue(target: HTMLElement, prop: IPropertyAccessor): a
         }
         
         if (el.type === 'checkbox') {
-            const val = prop.value;
+            const val = prop.get();
             
             if (!isArrayOrLOArray(val)) {
                 return el.checked ? [el.value] : [];

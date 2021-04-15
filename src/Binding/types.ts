@@ -32,9 +32,15 @@ export interface IPropertyAccessor<T = any>
     readonly path: Array<string>
     
     /**
-     * Allows you direct access to the property
+     * Sets the value of the property to the given value
+     * @param value
      */
-    value: T;
+    set(value: T): void;
+    
+    /**
+     * Retrieves the value of the property
+     */
+    get(): T;
 }
 
 export type TCssClass = string | PlainObject<string | null | boolean> | null

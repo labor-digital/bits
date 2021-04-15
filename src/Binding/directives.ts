@@ -67,7 +67,7 @@ export const dataModel = directive((property: string) => (part: any) => {
     }
     
     if (part.element._bitHtmlProp) {
-        setElementValue(part.element as HTMLElement, part.element._bitHtmlProp.value);
+        setElementValue(part.element as HTMLElement, part.element._bitHtmlProp.get());
     }
     
     part.setValue(part.element._bitHtmlListener);

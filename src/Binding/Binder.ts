@@ -194,7 +194,7 @@ export class Binder
                     let initial = true;
                     this._disposers.push(
                         autorun(() => {
-                            prop.value;
+                            prop.get();
                             if (!initial) {
                                 emitDomEvent(this._mount!.el!, 'change');
                             }
@@ -204,7 +204,7 @@ export class Binder
                 });
             }
             
-            prop.value = value;
+            prop.set(value);
         });
     }
     
@@ -232,11 +232,11 @@ export class Binder
         }
         
         const n = getElementValue(target, prop);
-        if (n === prop.value) {
+        if (n === prop.get()) {
             return;
         }
         
-        prop.value = n;
+        prop.set(n);
     }
     
     /**
@@ -268,20 +268,20 @@ export class Binder
         // If the value is NULL we register this property as nullable, meaning
         // even if we pull multiple instances (options, checkbox,...) for the same property
         // it will pull all variants
-        const propertyValue = prop.value;
+        const propertyValue = prop.get();
         if (propertyValue === null) {
             this._pullableProperties!.push(prop.path);
         }
         
         // Either pull the value into the property (property is NULL), or set the value of the input field (not NULL)
         if (this._pullableProperties!.indexOf(prop.path) !== -1) {
-            prop.value = getElementValue(target, prop);
+            prop.set(getElementValue(target, prop));
         } else {
             setElementValue(target, propertyValue);
         }
         
         this._disposers.push(
-            autorun(() => setElementValue(target, prop.value))
+            autorun(() => setElementValue(target, prop.get()))
         );
     }
     
@@ -309,7 +309,7 @@ export class Binder
         let initial = true;
         this._disposers.push(
             autorun(() => {
-                const val = prop.value;
+                const val = prop.get();
                 
                 if (initial) {
                     initial = false;
@@ -346,7 +346,7 @@ export class Binder
             
             this._disposers.push(
                 autorun(() => {
-                    setElementAttribute(target, pair.target, prop.value);
+                    setElementAttribute(target, pair.target, prop.get());
                 })
             );
         });
