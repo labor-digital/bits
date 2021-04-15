@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/labor-digital/bits/compare/v1.4.0...v1.5.0) (2021-04-15)
+
+
+### Features
+
+* **AbstractBit:** implement $attr() and $style() helpers ([24cd3c9](https://github.com/labor-digital/bits/commit/24cd3c9af3788a7ed9562f9ab70975a8d91edffb))
+* **AbstractBit:** refine $style and $attr helpers + introduce $class helper ([f8ce58b](https://github.com/labor-digital/bits/commit/f8ce58bb1e2f7eb2e3d1f8d893696cf4417b1a08))
+* **Binding:** use method instead of getter/setter in propertyAccess ([5bb6e09](https://github.com/labor-digital/bits/commit/5bb6e09e963f0d1edfe878149b79438294abd704))
+* **Reactivity:** handle $find() and $findAll() as reactive dependencies ([2598f4c](https://github.com/labor-digital/bits/commit/2598f4ce721ec01d632a8c31533638360e67f293))
+* implement @AutoRun and @NonAction decorators ([861d15c](https://github.com/labor-digital/bits/commit/861d15cf53fe98126771ec561be13cf04835164c))
+
 ## [1.4.0](https://github.com/labor-digital/bits/compare/v1.3.1...v1.4.0) (2021-04-14)
 
 
