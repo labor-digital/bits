@@ -58,7 +58,14 @@ export class Mount
      * Internal helper to listen to the domChange event and trigger the required actions for it.
      * @protected
      */
-    protected _changeListener?: Function | any;
+    protected _changeListener?: () => void;
+    
+    /**
+     * An internal helper to allow the lookup of "el" to trigger a dependency on the reactivity provider
+     * @hidden
+     * @protected
+     */
+    protected _onElGet?: () => void;
     
     /**
      * Keeps track if the mount is currently connected to the DOM or not
@@ -78,6 +85,10 @@ export class Mount
      */
     public get el(): BitMountHTMLElement | undefined
     {
+        if (this._onElGet) {
+            this._onElGet();
+        }
+        
         return this._el;
     }
     
@@ -119,16 +130,22 @@ export class Mount
                 
                 // Bind the internal helpers
                 const react = ctx.reactivityProvider;
+                const binder = ctx.binder;
                 react.bind(this, this._i);
-                ctx.binder.bind(this, this._i);
+                binder.bind(this, this._i);
+                
+                // Set up the dependency on "domChange" when el is used
+                this._onElGet = () => {
+                    react.domChangeDependency();
+                };
                 
                 // Bind listener to refresh the bindings when the domChange event was executed
-                const that = this;
-                this._changeListener = function () {
-                    ctx.binder.refresh();
+                this._changeListener = () => {
+                    binder.refresh();
+                    react.reactToDomChanged();
                     
-                    if (that._i?.domChanged) {
-                        that._i.domChanged();
+                    if (this._i?.domChanged) {
+                        this._i.domChanged();
                     }
                 };
                 this.el!.addEventListener('domChange', this._changeListener);
@@ -173,6 +190,7 @@ export class Mount
             this._i.$destroy();
             this._el.innerHTML = this._initialContent;
             this._isConnected = false;
+            delete this._onElGet;
             
             if (this._i.destroyed) {
                 this._i.destroyed();
@@ -180,7 +198,7 @@ export class Mount
             
             if (this._changeListener) {
                 this._el.removeEventListener('domChange', this._changeListener);
-                this._changeListener = null;
+                delete this._changeListener;
             }
             
             // We use a timeout workaround to make sure the content gets flushed after 200ms

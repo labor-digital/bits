@@ -173,6 +173,7 @@ export class AbstractBit
      */
     protected $find(selector: string, deep?: boolean): HTMLElement | null
     {
+        this.$context.reactivityProvider.domChangeDependency();
         return findElement(this.$el, selector, false, deep)[0] ?? null;
     }
     
@@ -188,6 +189,7 @@ export class AbstractBit
      */
     protected $findAll(selector: string, deep?: boolean): Array<HTMLElement>
     {
+        this.$context.reactivityProvider.domChangeDependency();
         return findElement(this.$el, selector, true, deep);
     }
     

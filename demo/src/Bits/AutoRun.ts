@@ -16,7 +16,7 @@
  * Last modified: 2021.04.15 at 11:56
  */
 
-import {AbstractBit, AutoRun, Data, Hot} from '@labor-digital/bits';
+import {AbstractBit, AutoRun, Data, Hot, Listener} from '@labor-digital/bits';
 import {forEach} from '@labor-digital/helferlein';
 
 @Hot(module)
@@ -34,17 +34,50 @@ export class AutoRunBit extends AbstractBit
         let found = false;
         
         if (!filter) {
-            this.$style(items, {display: null});
+            this.$class(items, {'d-none': false});
             found = true;
         } else {
             forEach(items, el => {
                 const text = (el.childNodes[1] as HTMLElement).innerText ?? '';
                 const isMatch = text.toLowerCase().indexOf(filter) !== -1;
-                this.$style(el, {display: isMatch ? null : 'none'});
+                this.$class(el, {'d-none': !isMatch});
                 found = found || isMatch;
             });
         }
         
         this.$class('@notFound', {'d-none': found});
+    }
+    
+    @Listener('click', '@clear')
+    protected clear(): void
+    {
+        this.filter = '';
+    }
+    
+    @Listener('click', '@button')
+    protected addCountry(): void
+    {
+        const countries = [
+            'Benin',
+            'Bermuda',
+            'Botswana',
+            'Bouvet Island',
+            'Greenland',
+            'Grenada',
+            'Guyana',
+            'Haiti',
+            'Iceland',
+            'India',
+            'Indonesia',
+            'Italy'
+        ];
+        
+        this.$find('@items')?.appendChild(
+            this.$tpl('itemTpl', {
+                country: countries[Math.floor(countries.length * Math.random())]
+            })
+        );
+        
+        this.$domChanged();
     }
 }

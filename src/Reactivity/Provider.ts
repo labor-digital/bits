@@ -17,7 +17,16 @@
  */
 
 import {forEach, isFunction, isString, isUndefined, PlainObject} from '@labor-digital/helferlein';
-import {autorun, IAutorunOptions, IReactionDisposer, IReactionPublic, makeObservable, observe, reaction} from 'mobx';
+import {
+    autorun,
+    IAutorunOptions,
+    IReactionDisposer,
+    IReactionPublic,
+    makeObservable,
+    observable,
+    observe,
+    reaction
+} from 'mobx';
 import {setElementAttribute} from '../Binding/util';
 import type {AbstractBit} from '../Core/AbstractBit';
 import type {BitDefinition} from '../Core/Definition/BitDefinition';
@@ -35,6 +44,7 @@ export class Provider
     protected _ignoreAttributeUpdateList: PlainObject = {};
     protected _disposers: Array<IReactionDisposer> = [];
     protected _observer?: MutationObserver;
+    protected _metaDependencies?: PlainObject;
     
     /**
      * Used to bind the provider as a bridge between the given mount and the bit instance.
@@ -69,6 +79,13 @@ export class Provider
         
         makeObservable(this._bit, def.getObservableAnnotations());
         
+        // Create meta dependencies
+        this._metaDependencies = makeObservable({
+            dom: 0
+        }, {
+            dom: observable
+        });
+        
         forEach(def.getWatchers(), watcher => {
             if (isFunction(this._bit![watcher.method])) {
                 this.addWatcher(watcher.target, function (...args: any) {
@@ -100,6 +117,27 @@ export class Provider
                 this.onAttributeUpdate.bind(this),
                 def.getAttributes()
             );
+        }
+    }
+    
+    /**
+     * If used in a computed property or autorun handler, it will react to a "domChange" event
+     * as if any other dependency had changed
+     */
+    public domChangeDependency(): void
+    {
+        // noinspection BadExpressionStatementJS
+        this._metaDependencies && this._metaDependencies.dom;
+    }
+    
+    /**
+     * Executed when the mount received a "domChange" event, and updates our internal dependencies
+     * to force a recalculation on autoRun or computed properties that use $find()
+     */
+    public reactToDomChanged(): void
+    {
+        if (this._metaDependencies) {
+            this._metaDependencies.dom++;
         }
     }
     
