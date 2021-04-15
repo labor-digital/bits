@@ -17,8 +17,9 @@
  */
 
 import type {PlainObject} from '@labor-digital/helferlein';
-import type {IObservableFactory} from 'mobx';
+import type {IAutorunOptions, IObservableFactory} from 'mobx';
 import type {IComputedFactory} from 'mobx/dist/api/computed';
+import type {TCssClass, TCssStyle} from '../../Binding/types';
 import type {IPropertyOptions, TWatchTarget} from '../../Reactivity/types';
 import type {TEventList, TEventTarget} from '../types';
 
@@ -41,3 +42,7 @@ export type TBitAttributeMap = Map<string, string | any>;
 export type TBitAnnotations = PlainObject<IComputedFactory | IObservableFactory>;
 export type TBitListeners = Set<IBitStaticListenerDefinition>;
 export type TBitWatchers = Set<IBitStaticWatcherDefinition>
+export type TBitAutoRunMap = Map<string, IAutorunOptions | undefined>
+export type TBitNonObservable = Set<string>;
+
+export type TBitAttrValue = string | number | boolean | TCssStyle | TCssClass | PlainObject | null

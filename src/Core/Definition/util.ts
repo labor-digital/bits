@@ -18,7 +18,7 @@
 
 import {forEach, isFunction} from '@labor-digital/helferlein';
 import {action, computed, observable} from 'mobx';
-import type {TBitAnnotations, TBitPropertyOptionMap} from './types';
+import type {TBitAnnotations, TBitNonObservable, TBitPropertyOptionMap} from './types';
 
 /**
  * Helper to generate the observable annotations for the mobx makeObservable() function of the
@@ -51,16 +51,22 @@ export function makeObservableAnnotationsFor(proto: any): TBitAnnotations
  * Late binding of the properties as observable annotations
  * @param annotations
  * @param properties
+ * @param nonObservable
  */
-export function injectPropertyAnnotations(
+export function prepareObservableAnnotations(
     annotations: TBitAnnotations,
-    properties: TBitPropertyOptionMap
+    properties: TBitPropertyOptionMap,
+    nonObservable: TBitNonObservable
 ): TBitAnnotations
 {
     const clone: TBitAnnotations = {...annotations};
     
     forEach(properties, (_, key) => {
         clone[key] = observable;
+    });
+    
+    forEach(nonObservable, (key) => {
+        delete clone[key];
     });
     
     return clone;

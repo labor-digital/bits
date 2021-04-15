@@ -25,10 +25,19 @@ import {
     isUndefined,
     merge
 } from '@labor-digital/helferlein';
+import type {IAutorunOptions} from 'mobx';
 import type {IPropertyOptions, TWatchTarget} from '../../Reactivity/types';
 import type {TEventList, TEventTarget} from '../types';
-import type {TBitAnnotations, TBitAttributeMap, TBitListeners, TBitPropertyOptionMap, TBitWatchers} from './types';
-import {extractComputedProperties, injectPropertyAnnotations, makeObservableAnnotationsFor} from './util';
+import type {
+    TBitAnnotations,
+    TBitAttributeMap,
+    TBitAutoRunMap,
+    TBitListeners,
+    TBitNonObservable,
+    TBitPropertyOptionMap,
+    TBitWatchers
+} from './types';
+import {extractComputedProperties, makeObservableAnnotationsFor, prepareObservableAnnotations} from './util';
 
 export class BitDefinition
 {
@@ -38,6 +47,8 @@ export class BitDefinition
     protected _listeners: TBitListeners;
     protected _watchers: TBitWatchers;
     protected _computed: Array<string>;
+    protected _autoRun: TBitAutoRunMap;
+    protected _nonObservable: TBitNonObservable;
     
     constructor(proto: any)
     {
@@ -47,6 +58,8 @@ export class BitDefinition
         this._computed = extractComputedProperties(this._annotations);
         this._listeners = new Set();
         this._watchers = new Set();
+        this._autoRun = new Map();
+        this._nonObservable = new Set();
     }
     
     /**
@@ -186,11 +199,40 @@ export class BitDefinition
     }
     
     /**
+     * Adds the given method as "autorun" for the instance
+     * @param method
+     * @param options
+     */
+    public addAutoRun(method: string, options?: IAutorunOptions): void
+    {
+        this._autoRun.set(method, options);
+        this._nonObservable.add(method);
+    }
+    
+    /**
+     * Returns all methods that have been annotated using the @AutoRun decorator
+     */
+    public getAutoRunMethods(): TBitAutoRunMap
+    {
+        return this._autoRun;
+    }
+    
+    /**
+     * Adds a new method name that should not be wrapped in an mobx action when being executed.
+     * Basically it terns the method invisible for mobx
+     * @param method
+     */
+    public addNonObservable(method: string): void
+    {
+        this._nonObservable.add(method);
+    }
+    
+    /**
      * Returns the list of all generated observable annotations
      */
     public getObservableAnnotations(): TBitAnnotations
     {
-        return injectPropertyAnnotations(this._annotations, this._properties);
+        return prepareObservableAnnotations(this._annotations, this._properties, this._nonObservable);
     }
     
     /**
@@ -224,6 +266,7 @@ export class BitDefinition
         n._annotations = merge(foreign._annotations, cloneList(this._annotations)) as any;
         n._listeners = merge(this._listeners, foreign._listeners) as any;
         n._watchers = merge(this._watchers, foreign._watchers) as any;
+        n._autoRun = merge(this._autoRun, foreign._autoRun) as any;
         
         return n;
     }

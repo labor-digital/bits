@@ -32,6 +32,8 @@ export * from './Decorators/Data';
 export * from './Decorators/Listener';
 export * from './Decorators/Watch';
 export * from './Decorators/Hot';
+export * from './Decorators/AutoRun';
+export * from './Decorators/NonAction';
 
 export {html, svg} from 'lit-html';
 export {dataModel} from './Binding/directives';

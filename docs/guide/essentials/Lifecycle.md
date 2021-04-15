@@ -20,7 +20,8 @@ through the `b-mount` tag. This means the boot process is handled by the mount i
         * The reactivity provider is bound to the instance
         * The instance gets connected to the DOM through the binder
         * The content of "innerHTML" of the mount node gets cloned and stored for the destruction
-        * "mounted" lifecycle hook is executed      
+        * "mounted" lifecycle hook is executed     
+        * Static "autoRun" methods (decorated using @AutoRun) are executed
   2. The mount node has the "keep-alive" attribute, and holds already existing bit instance. 
         * The mount re-uses the already stored bit instance
         * "remounted" lifecycle hook is executed

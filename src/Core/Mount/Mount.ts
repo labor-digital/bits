@@ -109,7 +109,7 @@ export class Mount
         
         const isNew = await this.instantiateBitIfRequired();
         
-        setTimeout(() => {
+        setTimeout(async () => {
             if (!this._i || !this._el) {
                 return;
             }
@@ -118,7 +118,8 @@ export class Mount
                 const ctx: BitContext = this._i.$context;
                 
                 // Bind the internal helpers
-                ctx.reactivityProvider.bind(this, this._i);
+                const react = ctx.reactivityProvider;
+                react.bind(this, this._i);
                 ctx.binder.bind(this, this._i);
                 
                 // Bind listener to refresh the bindings when the domChange event was executed
@@ -139,11 +140,13 @@ export class Mount
                 }
                 
                 if (this._i?.mounted) {
-                    this._i.mounted();
+                    await this._i.mounted();
                 }
+                
+                react.executeStaticAutoRun();
             } else {
                 if (this._i?.remounted) {
-                    this._i.remounted();
+                    await this._i.remounted();
                 }
             }
         });
@@ -229,7 +232,7 @@ export class Mount
         this._i = new ctor(context);
         
         if (this._i!.created) {
-            this._i!.created();
+            await this._i!.created();
         }
         
         return true;

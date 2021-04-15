@@ -20,6 +20,7 @@ import {BitApp} from '@labor-digital/bits';
 import {ucFirst} from '@labor-digital/helferlein';
 import 'bootstrap/dist/css/bootstrap-reboot.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import {AutoRunBit} from './Bits/AutoRun';
 import {Child} from './Bits/Context/Child';
 import {Parent} from './Bits/Context/Parent';
 import {FormBasic} from './Bits/Docs/Form/FormBasic';
@@ -68,6 +69,7 @@ new BitApp({
             child: ChildCycle
         },
         extended: ExtendedBit,
+        autorun: AutoRunBit,
         templates: Templates,
         forms: Forms,
         escape: Escape,

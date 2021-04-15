@@ -104,6 +104,25 @@ export class Provider
     }
     
     /**
+     * Executes all registered static autorun methods that have been decorated using @Autorun
+     */
+    public executeStaticAutoRun(): void
+    {
+        const def = this._definition;
+        if (!def || !this._bit) {
+            return;
+        }
+        
+        forEach(def.getAutoRunMethods(), (options, method) => {
+            if (isFunction(this._bit![method])) {
+                this.addAutoRun((reaction) => {
+                    this._bit![method](reaction);
+                }, options);
+            }
+        });
+    }
+    
+    /**
      * Registers a new auto-runner for this bit, and automatically adds it to the garbage collection
      * @see https://mobx.js.org/reactions.html#autorun
      *
