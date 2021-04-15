@@ -33,6 +33,8 @@ export type TEventTarget =
     | true
     | string;
 
+export type TElementOrList = HTMLElement | Element | NodeListOf<Element> | Array<Element>;
+
 export interface IEventTargetProvider
 {
     (this: AbstractBit): TEventTarget

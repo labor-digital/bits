@@ -30,14 +30,21 @@ import {ClassInfo, classMap} from 'lit-html/directives/class-map';
 import {StyleInfo, styleMap} from 'lit-html/directives/style-map';
 import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {runInAction} from 'mobx';
-import {setElementContent} from '../Binding/util';
+import {setElementAttribute, setElementContent} from '../Binding/util';
 import type {TWatchTarget} from '../Reactivity/types';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {BitMountHTMLElement} from './Mount/types';
 import type {Translator} from './Translator/Translator';
 import type {ITranslateOptions} from './Translator/types';
-import type {IEventListener, IHtmlTemplateProvider, IPropertyWatcher, TEventList, TEventTarget} from './types';
+import type {
+    IEventListener,
+    IHtmlTemplateProvider,
+    IPropertyWatcher,
+    TElementOrList,
+    TEventList,
+    TEventTarget
+} from './types';
 import {bitEventActionWrap, findElement, resolveEventTarget} from './util';
 
 export interface AbstractBit
@@ -409,6 +416,69 @@ export class AbstractBit
         return disposer;
     }
     
+    /**
+     * Sets / removes a given attribute from the list of given elements
+     * @param element the element / elements to set or remove the attribute for
+     * @param attributes An object where key is the name of the attribute and value is the value to set
+     */
+    protected $attr(
+        element: TElementOrList,
+        attributes: PlainObject<string | number | boolean | PlainObject<string | null> | null>
+    ): void
+    
+    /**
+     * Sets / removes a given attribute from the list of given elements
+     * @param element the element / elements to set or remove the attribute for
+     * @param attributeName The attribute to set / remove
+     * @param value If null is given the attribute will be removed, otherwise the attribute will be set to this value
+     */
+    protected $attr(
+        element: TElementOrList,
+        attributeName: string,
+        value: string | number | boolean | PlainObject<string | null> | null
+    ): void
+    
+    /**
+     * Sets / removes a given attribute from the list of given elements
+     * @param element the element / elements to set or remove the attribute for
+     * @param a
+     * @param b
+     */
+    protected $attr(
+        element: TElementOrList,
+        a: string | PlainObject<string | number | boolean | PlainObject<string | null> | null>,
+        b?: string | number | boolean | PlainObject<string | null> | null
+    ): void
+    {
+        if (!element) {
+            return;
+        }
+        
+        const setter = (element: HTMLElement) => {
+            if (isPlainObject(a)) {
+                forEach(a, (v, k) => setElementAttribute(element, k, v));
+            } else {
+                setElementAttribute(element, a, b ?? null);
+            }
+        };
+        
+        if (element instanceof HTMLElement || element instanceof Element) {
+            setter(element as HTMLElement);
+        } else {
+            forEach(element as any, el => setter(el as HTMLElement));
+        }
+    }
+    
+    /**
+     * Helper to update the style of a given element/list of given
+     * @param target
+     * @param styles
+     * @protected
+     */
+    protected $style(target: TElementOrList, styles: string | PlainObject<string | null> | null): void
+    {
+        this.$attr(target, 'style', styles);
+    }
     
     /**
      * Shortcut to the classMap directive of lit-html
