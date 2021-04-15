@@ -33,7 +33,7 @@ export function getPropertyAccessor<T = any>(
     bit: AbstractBit,
     property: string,
     properties: Array<string>
-): IPropertyAccessor<T> | null
+): Promise<IPropertyAccessor<T> | null>
 {
     const path = property.split('.');
     const propertyName = path[0];
@@ -49,13 +49,13 @@ export function getPropertyAccessor<T = any>(
                 console.error(
                     'Can\'t bind data for context: "' + context
                     + '", because the context is not a parent of this element!');
-                return null;
+                return Promise.resolve(null);
             }
             
             if (!isObject(contextMount.bit)) {
                 console.error(
                     'Mount for context: "' + context + '", was resolved, but does not look like a valid bit mount!');
-                return null;
+                return Promise.resolve(null);
             }
             
             const contextBit: AbstractBit = contextMount.bit;
@@ -65,26 +65,28 @@ export function getPropertyAccessor<T = any>(
         console.error('Can\'t bind data on unknown property: "' + propertyName + '" of element:', bit.$el,
             'allowed properties:', properties);
         
-        return null;
+        return Promise.resolve(null);
     }
     
-    return {
-        property: propertyName,
-        path,
-        get(): T
+    return Promise.resolve(
         {
-            return isPath ? getPath(bit as any, path, null) : bit[property] ?? null;
-        },
-        set(v)
-        {
-            runInAction(() => {
-                if (isPath) {
-                    setPath(bit, path, v);
-                } else {
-                    bit[property] = v;
-                }
-            });
+            property: propertyName,
+            path,
+            get(): T
+            {
+                return isPath ? getPath(bit as any, path, null) : bit[property] ?? null;
+            },
+            set(v)
+            {
+                runInAction(() => {
+                    if (isPath) {
+                        setPath(bit, path, v);
+                    } else {
+                        bit[property] = v;
+                    }
+                });
+            }
         }
-    };
+    );
     
 }

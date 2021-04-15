@@ -132,16 +132,14 @@ export class Mount
                 const react = ctx.reactivityProvider;
                 const binder = ctx.binder;
                 react.bind(this, this._i);
-                binder.bind(this, this._i);
-                
-                // Set up the dependency on "domChange" when el is used
                 this._onElGet = () => {
                     react.domChangeDependency();
                 };
+                await binder.bind(this, this._i);
                 
                 // Bind listener to refresh the bindings when the domChange event was executed
-                this._changeListener = () => {
-                    binder.refresh();
+                this._changeListener = async () => {
+                    await binder.refresh();
                     react.reactToDomChanged();
                     
                     if (this._i?.domChanged) {

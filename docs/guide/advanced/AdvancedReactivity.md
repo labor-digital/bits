@@ -121,7 +121,7 @@ export class AutoRunBit extends AbstractBit
 }
 ```
 
-<Example href="/demo/examples/autorun.html" :height="320"/>
+<Example href="/demo/examples/autorun.html" :height="380"/>
 
 ## @NonAction
 By default, every method in a bit, that is not a "computed" or decorated using "@Listener", "@AutoRun" or "@Watch" will be

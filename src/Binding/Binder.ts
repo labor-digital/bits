@@ -37,8 +37,9 @@ export class Binder
     
     protected _delayedActions?: Set<Function> = new Set();
     protected _foreignModelBinders: Map<string, Function> = new Map();
-    protected _foreignGetPromises: Map<number, Function> = new Map();
-    protected _foreignGetCount: number = 0;
+    protected _foreignModelBound: boolean = false;
+    protected _promises: Map<number, Function> = new Map();
+    protected _promiseIdCount: number = 0;
     protected _pullableProperties?: Array<Array<string>>;
     
     /**
@@ -59,7 +60,7 @@ export class Binder
      * @param mount The dom node of the bit mount
      * @param bit The instance of the bit class
      */
-    public bind(mount: Mount, bit: AbstractBit): void
+    public async bind(mount: Mount, bit: AbstractBit): Promise<void>
     {
         if (this._mount) {
             throw new Error('The binding provider was already bound, and can not be rebound!');
@@ -74,13 +75,13 @@ export class Binder
         forEach(this._delayedActions!, a => a());
         delete this._delayedActions;
         
-        this.refresh();
+        await this.refresh();
     }
     
     /**
      * Allows you to recreate all bindings on the dom, both for the data and static event listeners
      */
-    public refresh(): void
+    public async refresh(): Promise<void>
     {
         if (!this._mount) {
             return;
@@ -94,6 +95,7 @@ export class Binder
         // Rebind everything
         this.bindEventListeners();
         this.bindData();
+        this._foreignModelBound = true;
         forEach(this._foreignModelBinders, binder => binder());
     }
     
@@ -104,30 +106,45 @@ export class Binder
      * @param property
      * @see getPropertyAccessor for further details
      */
-    public getAccessor(property: string): IPropertyAccessor | null
+    public getAccessor(property: string): Promise<IPropertyAccessor | null>
     {
-        if (!this._bit) {
-            return null;
-        }
-        
-        if (!this._accessors.has(property)) {
-            const accessor = getPropertyAccessor(this._bit, property, this._definition!.getPropertyNames());
+        return this.makeDestroyablePromise<IPropertyAccessor | null>(resolve => {
+            this.callOrDelay(async () => {
+                if (!this._accessors.has(property)) {
+                    const accessor = await getPropertyAccessor(this._bit!, property,
+                        this._definition!.getPropertyNames());
+                    
+                    if (accessor === null) {
+                        return resolve(null);
+                    }
+                    
+                    this._accessors.set(property, accessor);
+                }
+                
+                resolve(this._accessors.get(property) ?? null);
+            });
+        });
+    }
+    
+    /**
+     * Does the same as getAccessor() but is designed as internal API between
+     * @param property
+     */
+    public getForeignAccessor(property: string): Promise<IPropertyAccessor | null>
+    {
+        const id: number = this._promiseIdCount++;
+        return new Promise<any>(resolve => {
+            this._promises.set(id, () => resolve(null));
             
-            if (accessor === null) {
-                return null;
-            }
-            
-            this._accessors.set(property, accessor);
-        }
-        
-        return this._accessors.get(property) ?? null;
+            resolve(this.getAccessor(property));
+        });
     }
     
     /**
      * Internal helper to find all data bindings and create the glue for the given specification
      * @protected
      */
-    protected bindData(): void
+    protected bindData(): Promise<void>
     {
         const selector = // OneWay: Escaped data binding
             '*[data-bind],'
@@ -138,20 +155,29 @@ export class Binder
             // TwoWay: Model binding on elements
             + '*[data-model]';
         
-        runInAction(() => {
-            this._pullableProperties = [];
-            forEach(findElement(this._mount!.el!, selector, true), target => {
-                // OneWay: Escaped data binding
-                this.bindOneWayContent(target, false);
-                // OneWay: Unescaped data binding
-                this.bindOneWayContent(target, true);
-                // OneWay: Attribute binding
-                this.bindOneWayAttributes(target);
-                // TwoWay: Model binding on elements
-                this.bindTwoWayValue(target);
+        return this.makeDestroyablePromise(resolve => {
+            const children: Array<Promise<any>> = [];
+            runInAction(() => {
+                this._pullableProperties = [];
+                forEach(findElement(this._mount!.el!, selector, true), target => {
+                    children.push((async () => {
+                        // OneWay: Escaped data binding
+                        await this.bindOneWayContent(target, false);
+                        // OneWay: Unescaped data binding
+                        await this.bindOneWayContent(target, true);
+                        // OneWay: Attribute binding
+                        await this.bindOneWayAttributes(target);
+                        // TwoWay: Model binding on elements
+                        await this.bindTwoWayValue(target);
+                    })());
+                });
             });
-            delete this._pullableProperties;
-        });
+            
+            Promise.all(children).then(() => {
+                delete this._pullableProperties;
+                resolve();
+            });
+        }).then();
     }
     
     /**
@@ -162,12 +188,8 @@ export class Binder
      */
     public getForeignProperty(property: string): Promise<any>
     {
-        const id: number = this._foreignGetCount++;
-        return new Promise<any>(resolve => {
-            this._foreignGetPromises.set(id, () => resolve(null));
-            
-            this.callOrDelay(() => {
-                this._foreignGetPromises.delete(id);
+        return this.makeDestroyablePromise(resolve => {
+            this.callOrDelay(async () => {
                 const renderError = () => console.error(
                     'You can\'t read property: "' + property + '" externally'
                     + ', because it was not registered publicly as prop using the @Property() decorator! '
@@ -180,7 +202,7 @@ export class Binder
                     return resolve(null);
                 }
                 
-                const prop = this.getAccessor('value');
+                const prop = await this.getAccessor('value');
                 if (prop === null) {
                     renderError();
                     return resolve(null);
@@ -202,7 +224,7 @@ export class Binder
      */
     public setForeignProperty(property: string, value: any, forModel: boolean): void
     {
-        this.callOrDelay(() => {
+        this.callOrDelay(async () => {
             if (!this.isPublicProperty(property)) {
                 console.error(
                     'You can\'t bind property: "' + property + '" externally'
@@ -213,7 +235,7 @@ export class Binder
                 return;
             }
             
-            const prop = this.getAccessor(property);
+            const prop = await this.getAccessor(property);
             
             if (prop === null) {
                 if (!forModel) {
@@ -230,18 +252,26 @@ export class Binder
             }
             
             if (forModel && !this._foreignModelBinders.has(property)) {
-                this._foreignModelBinders.set(property, () => {
+                const modelBinder = () => {
                     let initial = true;
                     this._disposers.push(
                         autorun(() => {
                             prop.get();
+                            
                             if (!initial) {
                                 emitDomEvent(this._mount!.el!, 'change');
                             }
+                            
                             initial = false;
                         })
                     );
-                });
+                };
+                
+                this._foreignModelBinders.set(property, modelBinder);
+                
+                if (this._foreignModelBound) {
+                    modelBinder();
+                }
             }
             
             prop.set(value);
@@ -297,7 +327,7 @@ export class Binder
             return;
         }
         
-        const prop = this.getAccessor(property);
+        const prop = await this.getAccessor(property);
         
         if (!prop) {
             return;
@@ -336,7 +366,7 @@ export class Binder
      * @param html True if html is allowed, false if the property data should be encoded
      * @protected
      */
-    protected bindOneWayContent(target: HTMLElement, html: boolean): void
+    protected async bindOneWayContent(target: HTMLElement, html: boolean): Promise<void>
     {
         const property = target.dataset[html ? 'bindHtml' : 'bind'] ?? null;
         
@@ -344,7 +374,7 @@ export class Binder
             return;
         }
         
-        const prop = this.getAccessor(property);
+        const prop = await this.getAccessor(property);
         
         if (!prop) {
             return;
@@ -373,28 +403,34 @@ export class Binder
      * @param target
      * @protected
      */
-    protected bindOneWayAttributes(target: HTMLElement): void
+    protected bindOneWayAttributes(target: HTMLElement): Promise<void>
     {
         const map = target.dataset.bindAttr ?? null;
         
         if (!map) {
-            return;
+            return Promise.resolve();
         }
         
+        const children: Array<Promise<any>> = [];
         forEach(splitMapString(map), pair => {
-            const prop = this.getAccessor(pair.source);
-            
-            if (!prop) {
-                return;
-            }
-            
-            this._disposers.push(
-                autorun(() => {
-                    setElementAttribute(target, pair.target, prop.get());
-                })
-            );
+            this.makeDestroyablePromise(async resolve => {
+                const prop = await this.getAccessor(pair.source);
+                
+                if (!prop) {
+                    return;
+                }
+                
+                this._disposers.push(
+                    autorun(() => {
+                        setElementAttribute(target, pair.target, prop.get());
+                    })
+                );
+                
+                resolve();
+            });
         });
         
+        return Promise.all(children).then();
     }
     
     /**
@@ -433,6 +469,26 @@ export class Binder
     }
     
     /**
+     * Internal helper that creates a new promise which automatically resolves when this binder gets destroyed.
+     * @param provider
+     * @protected
+     */
+    protected makeDestroyablePromise<T = any>(provider: (
+        resolve: (val?: T) => void,
+        reject: () => void
+    ) => void): Promise<T | null>
+    {
+        const id: number = this._promiseIdCount++;
+        return new Promise<any>((resolve, reject) => {
+            this._promises.set(id, () => resolve(null));
+            provider((v) => {
+                this._promises.delete(id);
+                resolve(v);
+            }, reject);
+        });
+    }
+    
+    /**
      * Destroys this data-binder by removing all references
      */
     public destroy(): void
@@ -440,7 +496,7 @@ export class Binder
         this.unbindWatchers();
         this._proxy!.destroy();
         
-        forEach(this._foreignGetPromises, disposer => disposer());
+        forEach(this._promises, disposer => disposer());
         
         delete this._mount;
         delete this._proxy;
@@ -450,8 +506,9 @@ export class Binder
         this._disposers = null as any;
         this._accessors = null as any;
         this._foreignModelBinders = null as any;
-        this._foreignGetPromises = null as any;
-        this._foreignGetCount = null as any;
+        this._foreignModelBound = null as any;
+        this._promises = null as any;
+        this._promiseIdCount = null as any;
     }
     
     /**

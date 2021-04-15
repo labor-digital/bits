@@ -46,7 +46,7 @@ declare global
  *   <input type="text" @keydown="${dataModel('data.model')}">
  * </label>
  */
-export const dataModel = directive((property: string) => (part: any) => {
+export const dataModel = directive((property: string) => async (part: any) => {
     if (!(part instanceof EventPart)) {
         throw new Error(
             'dataModel can only be used in event bindings! Use it like: @change="${dataModel(\'yourProperty\')}"');
@@ -54,7 +54,7 @@ export const dataModel = directive((property: string) => (part: any) => {
     
     if (!part.element._bitHtmlListener) {
         const bit: AbstractBit = part.eventContext as any;
-        const prop = bit.$context.binder.getAccessor(property);
+        const prop = await bit.$context.binder.getAccessor(property);
         
         if (prop === null) {
             return;
