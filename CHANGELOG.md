@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.1](https://github.com/labor-digital/bits/compare/v1.5.0...v1.5.1) (2021-04-15)
+
+
+### Bug Fixes
+
+* **Binding:** make cross-bit value lookup async ([014d943](https://github.com/labor-digital/bits/commit/014d9439d38a5bc970b057971c6dae09d6165cd9))
+
 ## [1.5.0](https://github.com/labor-digital/bits/compare/v1.4.0...v1.5.0) (2021-04-15)
 
 
