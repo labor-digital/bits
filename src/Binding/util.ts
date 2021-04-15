@@ -28,7 +28,7 @@ import {
     reduce
 } from '@labor-digital/helferlein';
 import type {BitMountHTMLElement} from '../Core/Mount/types';
-import type {IPropertyAccessor} from './types';
+import type {IPropertyAccessor, TCssClass, TCssStyle} from './types';
 
 declare global
 {
@@ -66,7 +66,7 @@ function isArrayOrLOArray(value: any): value is Array<any>
  * @param target The element to attach the classes to
  * @param classes Either a string or an object for dynamic class calculation
  */
-export function setNodeClasses(target: HTMLElement, classes: string | PlainObject | null): void
+export function setNodeClasses(target: HTMLElement, classes: TCssClass): void
 {
     if (isString(classes)) {
         const obj: PlainObject = {};
@@ -119,7 +119,7 @@ export function setNodeClasses(target: HTMLElement, classes: string | PlainObjec
  * @param target The element to attach the styles to
  * @param styles Either a normal, inline css style string, or a object representation of the styles
  */
-export function setNodeStyle(target: HTMLElement, styles: string | PlainObject | null): void
+export function setNodeStyle(target: HTMLElement, styles: TCssStyle): void
 {
     if (isString(styles)) {
         const obj: PlainObject = {};
@@ -142,8 +142,8 @@ export function setNodeStyle(target: HTMLElement, styles: string | PlainObject |
         return;
     }
     
-    forEach(styles, (v, k) => {
-        target.style[k] = v;
+    forEach(styles as any, (v, k) => {
+        target.style[k] = v ?? '';
     });
 }
 

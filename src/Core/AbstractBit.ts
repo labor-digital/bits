@@ -30,10 +30,12 @@ import {ClassInfo, classMap} from 'lit-html/directives/class-map';
 import {StyleInfo, styleMap} from 'lit-html/directives/style-map';
 import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {runInAction} from 'mobx';
+import type {TCssClass, TCssStyle} from '../Binding/types';
 import {setElementAttribute, setElementContent} from '../Binding/util';
 import type {TWatchTarget} from '../Reactivity/types';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
+import type {TBitAttrValue} from './Definition/types';
 import type {BitMountHTMLElement} from './Mount/types';
 import type {Translator} from './Translator/Translator';
 import type {ITranslateOptions} from './Translator/types';
@@ -423,8 +425,8 @@ export class AbstractBit
      */
     protected $attr(
         element: TElementOrList,
-        attributes: PlainObject<string | number | boolean | PlainObject<string | null> | null>
-    ): void
+        attributes: PlainObject<TBitAttrValue>
+    ): this
     
     /**
      * Sets / removes a given attribute from the list of given elements
@@ -435,8 +437,8 @@ export class AbstractBit
     protected $attr(
         element: TElementOrList,
         attributeName: string,
-        value: string | number | boolean | PlainObject<string | null> | null
-    ): void
+        value: TBitAttrValue
+    ): this
     
     /**
      * Sets / removes a given attribute from the list of given elements
@@ -446,12 +448,16 @@ export class AbstractBit
      */
     protected $attr(
         element: TElementOrList,
-        a: string | PlainObject<string | number | boolean | PlainObject<string | null> | null>,
-        b?: string | number | boolean | PlainObject<string | null> | null
-    ): void
+        a: string | PlainObject<TBitAttrValue>,
+        b?: TBitAttrValue
+    ): this
     {
         if (!element) {
-            return;
+            return this;
+        }
+        
+        if (isString(element)) {
+            element = this.$findAll(element);
         }
         
         const setter = (element: HTMLElement) => {
@@ -467,17 +473,35 @@ export class AbstractBit
         } else {
             forEach(element as any, el => setter(el as HTMLElement));
         }
+        
+        return this;
     }
     
     /**
-     * Helper to update the style of a given element/list of given
-     * @param target
-     * @param styles
+     * Sets / removes a the given css style properties from the list of given elements
+     * @param element the element / elements to set or remove the css properties for
+     * @param styles An object of css styles, with properties in the same naming schema
+     * like you would use in node using element.style.[fontFamily,display,...],
+     * or as a string (like in a html "style" attribute), or null to completely remove the style attribute.
      * @protected
      */
-    protected $style(target: TElementOrList, styles: string | PlainObject<string | null> | null): void
+    protected $style(element: TElementOrList, styles: TCssStyle): this
     {
-        this.$attr(target, 'style', styles);
+        return this.$attr(element, 'style', styles);
+    }
+    
+    /**
+     * Sets / removes css classes on the list of given elements
+     * @param element the element / elements to set or remove the css classes to/from
+     * @param classes An object of css classes where each property in the classInfo argument and adds the property name to the
+     * element's class if the property value is truthy; if the property value is falsey, the property name is removed
+     * from the element's class. For example {foo: bar} applies the class foo if the value of bar is truthy.
+     * or as a string (like in a html "class" attribute), or null to completely remove the class attribute.
+     * @protected
+     */
+    protected $class(element: TElementOrList, classes: TCssClass): this
+    {
+        return this.$attr(element, 'class', classes);
     }
     
     /**

@@ -16,6 +16,8 @@
  * Last modified: 2021.03.09 at 14:38
  */
 
+import type {PlainObject} from '@labor-digital/helferlein';
+
 export interface IPropertyAccessor<T = any>
 {
     /**
@@ -34,3 +36,6 @@ export interface IPropertyAccessor<T = any>
      */
     value: T;
 }
+
+export type TCssClass = string | PlainObject<string | null | boolean> | null
+export type TCssStyle = string | CSSStyleDeclaration | PlainObject<string | null> | null;
