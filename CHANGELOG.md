@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.2](https://github.com/labor-digital/bits/compare/v1.5.1...v1.5.2) (2021-04-15)
+
+
+### Bug Fixes
+
+* **Binding:** fully embrace async operations ([ae37b2b](https://github.com/labor-digital/bits/commit/ae37b2b643540882f7e945c85532fc4d4cc2df5f))
+* **Reactivity:** run reactToDomChanged in action ([fb38c83](https://github.com/labor-digital/bits/commit/fb38c831a3dd1164b342788608c9c092d9eefd4d))
+
 ### [1.5.1](https://github.com/labor-digital/bits/compare/v1.5.0...v1.5.1) (2021-04-15)
 
 
