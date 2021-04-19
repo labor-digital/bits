@@ -20,7 +20,7 @@ import type {PlainObject} from '@labor-digital/helferlein';
 import type {IAutorunOptions, IObservableFactory} from 'mobx';
 import type {IComputedFactory} from 'mobx/dist/api/computed';
 import type {TCssClass, TCssStyle} from '../../Binding/types';
-import type {IPropertyOptions, TWatchTarget} from '../../Reactivity/types';
+import type {IPropertyOptions, IWatchOptions, TWatchTarget} from '../../Reactivity/types';
 import type {TEventList, TEventTarget} from '../types';
 
 export interface IBitStaticListenerDefinition
@@ -35,6 +35,7 @@ export interface IBitStaticWatcherDefinition
 {
     target: TWatchTarget,
     method: string,
+    options?: IWatchOptions
 }
 
 export type TBitPropertyOptionMap = Map<string, IPropertyOptions>;

@@ -31,10 +31,16 @@
  * http://polymer.github.io/PATENTS.txt
  */
 
-import type {IReactionPublic} from 'mobx';
+import type {IEqualsComparer, IReactionPublic} from 'mobx';
 import type {AbstractBit} from '../Core/AbstractBit';
 
 export type TWatchTarget = string | ((this: AbstractBit | any, r: IReactionPublic) => any);
+
+export interface IWatchOptions
+{
+    immediately?: boolean,
+    equals?: IEqualsComparer<any>
+}
 
 export interface IPropertyToAttrConverter<Type = unknown, TypeHint = unknown>
 {

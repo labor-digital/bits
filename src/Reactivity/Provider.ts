@@ -21,6 +21,7 @@ import {
     autorun,
     IAutorunOptions,
     IReactionDisposer,
+    IReactionOptions,
     IReactionPublic,
     makeObservable,
     observable,
@@ -34,8 +35,20 @@ import type {BitDefinition} from '../Core/Definition/BitDefinition';
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
 import type {Mount} from '../Core/Mount/Mount';
 import type {IPropertyWatcher} from '../Core/types';
-import type {IAttrToPropertyConverter, TAttrToPropertyConverter, TPropertyToAttrConverter, TWatchTarget} from './types';
-import {defaultChangeDetector, defaultConverter, makeMountMutationObserver, readAttributeValue} from './util';
+import type {
+    IAttrToPropertyConverter,
+    IWatchOptions,
+    TAttrToPropertyConverter,
+    TPropertyToAttrConverter,
+    TWatchTarget
+} from './types';
+import {
+    defaultChangeDetector,
+    defaultConverter,
+    makeMountMutationObserver,
+    readAttributeValue,
+    valueComparer
+} from './util';
 
 export class Provider
 {
@@ -181,8 +194,9 @@ export class Provider
      *
      * @param target Either the name of a property to watch, or a closure to define the reactive data
      * @param watcher The watcher to execute when a change occurred
+     * @param options Additional options that define how the watcher is executed
      */
-    public addWatcher(target: TWatchTarget, watcher: IPropertyWatcher): IReactionDisposer
+    public addWatcher(target: TWatchTarget, watcher: IPropertyWatcher, options?: IWatchOptions): IReactionDisposer
     {
         const bit = this._bit!;
         
@@ -193,11 +207,19 @@ export class Provider
             };
         }
         
+        options = options ?? {};
+        
+        const reactionOptions: IReactionOptions = {
+            fireImmediately: options.immediately,
+            equals: (options.equals ?? valueComparer).bind(bit)
+        };
+        
         const disposer = reaction(
             function watchTargetThisWrapper(...args) {
                 return (target as any).call(bit, ...args);
             },
-            watcher
+            watcher,
+            reactionOptions
         );
         this._disposers.push(disposer);
         return disposer;

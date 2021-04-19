@@ -31,7 +31,8 @@
  * http://polymer.github.io/PATENTS.txt
  */
 
-import {isFunction, isString} from '@labor-digital/helferlein';
+import {isArray, isFunction, isObject, isString} from '@labor-digital/helferlein';
+import {comparer} from 'mobx';
 import type {
     IAttrToPropertyConverter,
     IChangeDetector,
@@ -139,4 +140,22 @@ export function readAttributeValue(target: HTMLElement, options: IPropertyOption
         target.getAttribute(options.attribute),
         options.type ?? String
     );
+}
+
+/**
+ * Helps mobx to compare values before it executes watchers
+ * @param a
+ * @param b
+ */
+export function valueComparer(a: any, b: any): boolean
+{
+    if (a === b || Object.is(a, b)) {
+        return true;
+    }
+    
+    if (isArray(a) || isArray(b) || isObject(a) || isObject(b)) {
+        return comparer.structural(a, b);
+    }
+    
+    return Object.is(a, b);
 }

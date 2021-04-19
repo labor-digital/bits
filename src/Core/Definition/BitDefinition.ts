@@ -26,7 +26,7 @@ import {
     merge
 } from '@labor-digital/helferlein';
 import type {IAutorunOptions} from 'mobx';
-import type {IPropertyOptions, TWatchTarget} from '../../Reactivity/types';
+import type {IPropertyOptions, IWatchOptions, TWatchTarget} from '../../Reactivity/types';
 import type {TEventList, TEventTarget} from '../types';
 import type {
     TBitAnnotations,
@@ -184,10 +184,11 @@ export class BitDefinition
      * Adds a new static watcher to the definition
      * @param method The name of the method that should be added as watcher
      * @param target The target or target provider to watch
+     * @param options Additional options that define how the watcher is executed
      */
-    public addWatcher(method: string, target: TWatchTarget): void
+    public addWatcher(method: string, target: TWatchTarget, options?: IWatchOptions): void
     {
-        this._watchers.add({target, method});
+        this._watchers.add({target, method, options});
     }
     
     /**

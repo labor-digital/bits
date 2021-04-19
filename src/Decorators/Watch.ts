@@ -17,7 +17,7 @@
  */
 
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
-import type {TWatchTarget} from '../Reactivity/types';
+import type {IWatchOptions, TWatchTarget} from '../Reactivity/types';
 
 /**
  * Registers the method it was applied to as watcher/reaction
@@ -26,11 +26,12 @@ import type {TWatchTarget} from '../Reactivity/types';
  * @param target Either the name of the property to watch, or an expression to define the watchable target,
  *                like function(){return this.computed}. ATTENTION: If you use a function as target, make sure to use function(){},
  *                instead of a fat-arrow function!
+ * @param options Additional options that define how the watcher is executed
  * @constructor
  */
-export function Watch(target: TWatchTarget)
+export function Watch(target: TWatchTarget, options?: IWatchOptions)
 {
     return (element: any, name: string) => {
-        DefinitionRegistry.getDefinitionFor(element).addWatcher(name, target);
+        DefinitionRegistry.getDefinitionFor(element).addWatcher(name, target, options);
     };
 }
