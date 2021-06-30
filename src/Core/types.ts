@@ -17,12 +17,12 @@
  */
 
 
-import type {ComponentProxyEventTarget} from '@labor-digital/helferlein';
-import type {EventEmitterEvent} from '@labor-digital/helferlein/dist/Events/EventEmitter';
+import type {ComponentProxyEventTarget, EventEmitterEvent, PlainObject} from '@labor-digital/helferlein';
 import type {TemplateResult} from 'lit-html';
 import type {AbstractBit} from './AbstractBit';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
+import type {IDiContainerOptions} from './Di/types';
 import type {IBitAppTranslationOptions} from './Translator/types';
 
 export type TEventTarget =
@@ -89,6 +89,23 @@ export interface IBitRegistryResolver
     (type: string): Promise<IBitConstructor | null>;
 }
 
+export interface IGetterProvider
+{
+    /**
+     * Adds a new getter to the target on the fly
+     * @param key The property to be registered as getter
+     */
+    add: (key: string) => void
+}
+
+export interface IAppEventListener
+{
+    (evt: EventEmitterEvent, app: BitApp): void;
+}
+
+export type IAppEventListenerWithPriority = [IAppEventListener, number]
+
+
 export interface IBitAppOptions
 {
     /**
@@ -113,4 +130,16 @@ export interface IBitAppOptions
      * Options for the translator and localization
      */
     lang?: IBitAppTranslationOptions
+    
+    /**
+     * The list of service definitions to register in the service container
+     */
+    services?: IDiContainerOptions;
+    
+    /**
+     * A list of event names and their matching listeners that should
+     * be registered when the frameworks creates the event emitter instance
+     */
+    events?: PlainObject<IAppEventListener | IAppEventListenerWithPriority>
+    
 }

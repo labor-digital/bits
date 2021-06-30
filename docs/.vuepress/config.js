@@ -100,7 +100,8 @@ module.exports = {
                     sidebarDepth: 3,
                     collapsable: false,
                     children: [
-                        'tools/Translations'
+                        'tools/Translations',
+                        'tools/DependencyInjection'
                     ]
                 }
             ]

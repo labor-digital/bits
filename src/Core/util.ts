@@ -26,11 +26,12 @@ import {
     isFunction,
     isNumber,
     isString,
-    isUndefined
+    isUndefined,
+    ReadList
 } from '@labor-digital/helferlein';
 import type {AbstractBit} from './AbstractBit';
 import type {BitMountHTMLElement} from './Mount/types';
-import type {IEventListener, TEventList, TEventTarget} from './types';
+import type {IEventListener, IGetterProvider, TEventList, TEventTarget} from './types';
 
 /**
  * Internal helper to resolve the "find" request inside a single mount
@@ -171,4 +172,42 @@ export function bitEventActionWrap(
         method);
     
     return this;
+}
+
+/**
+ * Utility to declare dynamic getters on the given target that are all handled by a "magic" handler method
+ *
+ * @param target The object to register the getters on
+ * @param handler The handler method is called when a getter is called. It receives the key of the property
+ * to resolve and must return the content for it
+ * @param initialKeys Optional list of initial keys that should be registered
+ */
+export function makeGetterProvider(
+    target: any,
+    handler: (key: string) => any,
+    initialKeys?: ReadList
+): IGetterProvider
+{
+    const registeredKeys: Array<string> = [];
+    const h: IGetterProvider = {
+        add: function (key: string): void {
+            if (registeredKeys.indexOf(key) !== -1) {
+                return;
+            }
+            
+            registeredKeys.push(key);
+            
+            Object.defineProperty(target, key, {
+                get: function () {
+                    return handler(key);
+                }
+            });
+        }
+    };
+    
+    if (initialKeys) {
+        forEach(initialKeys, k => h.add(k));
+    }
+    
+    return h;
 }

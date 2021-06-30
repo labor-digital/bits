@@ -149,7 +149,7 @@ export class HmrRegistry
     protected static patchApps(oldCtor: IBitConstructor, newCtor: IBitConstructor): void
     {
         forEach(HmrRegistry._apps, app => {
-            const bits = app.registry.getAll();
+            const bits = app.di.bitRegistry.getAll();
             
             forEach(bits, (ctor, type) => {
                 if (ctor !== oldCtor) {

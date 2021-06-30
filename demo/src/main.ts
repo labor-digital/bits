@@ -23,6 +23,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import {AutoRunBit} from './Bits/AutoRun';
 import {Child} from './Bits/Context/Child';
 import {Parent} from './Bits/Context/Parent';
+import {DependencyInjection} from './Bits/Di/DependencyInjection';
+import {ServiceA} from './Bits/Di/ServiceA';
+import {ServiceB} from './Bits/Di/ServiceB';
 import {FormBasic} from './Bits/Docs/Form/FormBasic';
 import {Html} from './Bits/Docs/Html/Html';
 import {HtmlBinding} from './Bits/Docs/Html/HtmlBinding';
@@ -76,6 +79,7 @@ new BitApp({
         html: HtmlBit,
         hmr: Hmr,
         translation: Translation,
+        dependencyInjection: DependencyInjection,
         
         util: {
             display: Display
@@ -102,5 +106,31 @@ new BitApp({
     
     bitResolver: type => {
         return import('./Bits/Async/' + ucFirst(type) + 'Bit');
+    },
+    
+    // You can listen on a per-app state on events triggered on the global event bus
+    // This can be quite useful for error handling. Other than normal event listeners
+    // app event listeners always retrieve the "app" instance as a second parameter.
+    events: {
+        globalEvent: (e, app) => {
+            console.log('Global event handler triggered', 'event', e, 'app', app);
+        }
+    },
+    
+    // This configures the available services in the dependency injection container.
+    // Note, that you only configure factories here. The actual instances will be created
+    // once the service is required. All service instances are singletons and are shared between
+    // all bits inside your application.
+    
+    // Take a look at the globals.d.ts to see how you can add auto-completion hints for the dependency
+    // injection container inside your bits. Please note, that extending the types there is optional
+    services: {
+        stringService: () => new ServiceB(),
+        
+        // Each factory receives the container instance you can use to retrieve other services with.
+        helloService: (c) => new ServiceA(c.stringService)
+        
+        // Note: Sadly the auto-completion does not work in this file. I can't, for the life of me
+        // figure out, why not, so if you have a solution for this, please give me a shout.
     }
 });

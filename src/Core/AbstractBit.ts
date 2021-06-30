@@ -36,6 +36,7 @@ import type {TWatchTarget} from '../Reactivity/types';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {TBitAttrValue} from './Definition/types';
+import type {DiContainer} from './Di/DiContainer';
 import type {BitMountHTMLElement} from './Mount/types';
 import type {Translator} from './Translator/Translator';
 import type {ITranslateOptions} from './Translator/types';
@@ -135,12 +136,21 @@ export class AbstractBit
     }
     
     /**
+     * Returns the di container instance of the application
+     * @protected
+     */
+    protected get $di(): DiContainer
+    {
+        return this._context.di;
+    }
+    
+    /**
      * Returns the root app this bit was linked with
      * @protected
      */
     protected get $app(): BitApp
     {
-        return this._context.app;
+        return this.$di.app;
     }
     
     /**
@@ -149,7 +159,7 @@ export class AbstractBit
      */
     protected get $eventBus(): EventEmitter
     {
-        return this.$app.eventBus;
+        return this.$di.eventBus;
     }
     
     /**

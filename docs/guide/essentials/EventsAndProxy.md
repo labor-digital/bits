@@ -1,5 +1,5 @@
 # Events and $proxy
-As a event driven language, listening for and emitting events is an integral part of your daily work.
+As an event driven language, listening for and emitting events is an integral part of your daily work.
 For that reason bits provides you some tools to keep your head free of chores like listener unbinding.
 
 ## DOM Events
@@ -204,4 +204,27 @@ Events on the event bus support additional data, like DOM events, too. So, this 
 this.$emit(true, 'customEvent', {someData: 123});
 ```
 
+:::
+
+## Global Event Listeners
+
+To take action on events emitted on the event bus, you can create listeners on a per-app level.
+It can be done easily using the "events" option inside the app configuration object. Inside the object,
+the "key" is the name of the event to listen to, and the value is the actual listener.
+
+```typescript
+import {BitApp} from '@labor-digital/bits';
+
+new BitApp({
+    // ... other options
+    events: {
+        globalEvent: (e, app) => {
+            console.log('Global event handler triggered', 'event', e, 'app', app);
+        }
+    }
+});
+```
+
+::: tip
+Other than normal event listeners app event listeners always retrieve the "app" instance as a second parameter.
 :::

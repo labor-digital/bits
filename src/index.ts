@@ -21,6 +21,8 @@ declare global
     const __DEV__: any;
 }
 
+export * from './Core/Di/DiContainer';
+export * from './Core/Di/types';
 export * from './Core/BitRegistry';
 export * from './Core/AbstractBit';
 export * from './Core/BitApp';

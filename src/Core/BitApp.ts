@@ -16,49 +16,47 @@
  * Last modified: 2021.03.09 at 13:37
  */
 
-import {EventBus, EventEmitter, forEach, isPlainObject, makeOptions} from '@labor-digital/helferlein';
+import {EventEmitter, isPlainObject, makeOptions} from '@labor-digital/helferlein';
 import {configure} from 'mobx';
-import {BitRegistry} from './BitRegistry';
+import type {BitRegistry} from './BitRegistry';
+import type {DiContainer} from './Di/DiContainer';
+import {DiFactory} from './Di/DiFactory';
 import {HmrRegistry} from './HmrRegistry';
 import {Es5Adapter} from './Mount/Es5Adapter';
 import {Es6Adapter} from './Mount/Es6Adapter';
 import {canUseEs6Features} from './Mount/util';
-import {TranslatorFactory} from './Translator/TranslatorFactory';
-import type {IBitAppOptions, IBitNs} from './types';
+import type {TranslatorFactory} from './Translator/TranslatorFactory';
+import type {IBitAppOptions} from './types';
 
 export class BitApp
 {
+    /**
+     * The instance of the dependency injection container
+     * @hidden
+     */
+    protected _di: DiContainer;
+    
     /**
      * @hidden
      */
     protected _mountTag: string;
     
-    /**
-     * @hidden
-     */
-    protected _registry: BitRegistry;
-    
-    /**
-     * @hidden
-     */
-    protected _translatorFactory: TranslatorFactory;
-    
     constructor(options?: IBitAppOptions)
     {
         options = this.prepareOptions(options);
         this._mountTag = options.mountTag!;
-        this._registry = this.makeRegistry(options);
-        this._translatorFactory = new TranslatorFactory(options.lang ?? {});
+        this._di = DiFactory.make(options, this);
         this.mount(options);
         HmrRegistry.registerApp(this);
     }
     
     /**
      * Returns the instance of the bit registry for this app
+     * @deprecated removed in the next major release - use di.bitRegistry instead
      */
     public get registry(): BitRegistry
     {
-        return this._registry;
+        return this._di.bitRegistry;
     }
     
     /**
@@ -70,19 +68,29 @@ export class BitApp
     }
     
     /**
+     * Returns the dependency injection container for this app
+     */
+    public get di(): DiContainer
+    {
+        return this._di;
+    }
+    
+    /**
      * Returns the global event bus for this app
+     * @deprecated removed in the next major release - use di.eventBus instead
      */
     public get eventBus(): EventEmitter
     {
-        return EventBus.getEmitter();
+        return this._di.eventBus;
     }
     
     /**
      * Internal access to the translator factory
+     * @deprecated removed in the next major release - use di.translatorFactory instead
      */
     public get translatorFactory(): TranslatorFactory
     {
-        return this._translatorFactory;
+        return this._di.translatorFactory;
     }
     
     /**
@@ -109,39 +117,16 @@ export class BitApp
             lang: {
                 type: 'plainObject',
                 default: () => ({})
+            },
+            services: {
+                type: 'plainObject',
+                default: () => ({})
+            },
+            events: {
+                type: 'plainObject',
+                default: () => ({})
             }
         });
-    }
-    
-    /**
-     * Internal helper to create the bit constructor registry
-     * @param options
-     * @protected
-     */
-    protected makeRegistry(options: IBitAppOptions): BitRegistry
-    {
-        const registry = new BitRegistry((type: string) => options.bitResolver!(type, this));
-        
-        const walker = function (bits: IBitNs, ns: string, walker: any) {
-            forEach(bits, (ctor, type) => {
-                if (isPlainObject(ctor)) {
-                    walker(ctor, ns + type + '/', walker);
-                    return;
-                }
-                
-                // If the "type" is empty, remove the trailing slash
-                registry.add(type === ''
-                    ? ns.substr(0, ns.length - 1)
-                    : ns + type,
-                    ctor);
-            });
-        };
-        
-        if (isPlainObject(options.bits)) {
-            walker(options.bits, '', walker);
-        }
-        
-        return registry;
     }
     
     /**

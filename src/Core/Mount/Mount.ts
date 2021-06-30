@@ -226,7 +226,8 @@ export class Mount
             return Promise.resolve(false);
         }
         
-        const ctor = await this._app.registry.get(type);
+        const di = this._app.di;
+        const ctor = await di.bitRegistry.get(type);
         
         if (ctor === null) {
             console.error('Invalid bit type given!', type);
@@ -240,7 +241,7 @@ export class Mount
         
         const context = new BitContext(
             this,
-            this._app,
+            di,
             react,
             binder
         );

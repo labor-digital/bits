@@ -53,6 +53,18 @@ export class TranslatorFactory
     }
     
     /**
+     * Returns the global translator instance, which is not bound to a specific mount
+     */
+    public requireGlobalTranslator(): Translator
+    {
+        const ctx = this.context;
+        return new Translator(
+            ctx.lang,
+            ctx
+        );
+    }
+    
+    /**
      * Public factory to require a translator instance for a single bit.
      */
     public requireTranslator(mount: BitMountHTMLElement): Translator
