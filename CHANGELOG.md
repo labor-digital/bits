@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/labor-digital/bits/compare/v1.5.2...v1.6.0) (2021-04-19)
+
+
+### Features
+
+* **Reactivity:** add watch options + better default value comparison ([d1399c4](https://github.com/labor-digital/bits/commit/d1399c42e5a7ea68d9852efd95bf284157f0adac))
+
 ### [1.5.2](https://github.com/labor-digital/bits/compare/v1.5.1...v1.5.2) (2021-04-15)
 
 
