@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/labor-digital/bits/compare/v1.8.0...v1.9.0) (2021-07-01)
+
+
+### Features
+
+* implement pivot element for $find and $findAll ([8f25066](https://github.com/labor-digital/bits/commit/8f250668c8c6ac7394ed713a387b9bec171dc543))
+
+
+### Bug Fixes
+
+* **$closest:** add dom change dependency to the closest method ([27e5476](https://github.com/labor-digital/bits/commit/27e5476a188cbb6536c9a2d4e85e745287276dfc))
+
 ## [1.8.0](https://github.com/labor-digital/bits/compare/v1.7.0...v1.8.0) (2021-07-01)
 
 
