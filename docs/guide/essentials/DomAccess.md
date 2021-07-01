@@ -25,11 +25,12 @@ For a simple example imagine this HTML code:
     <div id="example-id"></div>
     
     <ul>
-        <li class=".exampleClass"></li>
-        <li class=".exampleClass"></li>
+        <li class="exampleClass"></li>
+        <li class="exampleClass"></li>
     </ul>
     
     <div data-ref="reference"></div>
+    <div class="exampleClass"></div>
 </b-mount>
 ```
 
@@ -85,6 +86,13 @@ This includes the `@Listener()` decorator, the `$on()` method, or the `$html()` 
 
 :::
 
+### Select using a pivot element
+To find only elements contained inside another html element you can use the "pivot" parameter
+on both the `$find()` and `$findAll()` methods.
+
+```this.$findAll('.exampleClass', this.$find('ul'))``` will only resolve the two li elements,
+because the ul list is used as pivot, which does not include the div with the same class.
+
 ## Mount point boundary 
 
 As stated above, the mount point is a hard boundary, that will not be crossed using `$find()`. 
@@ -127,7 +135,7 @@ point boundaries.
 So, if you call ```this.$find('.exampleClass', true, true)``` in your **example** bit with the HTML structure from above,
 you will receive an array (yes, still an array) of all three divs inside its scope.
 
-## Finding the closest parents
+## Finding the $closest() parents
 
 Similarly to finding children, you can also resolve the "closest" elements to a specific node
 using the `$closest()` method. The method takes a css selector, and a "pivot" element, from which

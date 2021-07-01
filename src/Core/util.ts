@@ -23,6 +23,7 @@ import {
     ComponentProxyEventTarget,
     forEach,
     isArray,
+    isBool,
     isFunction,
     isNumber,
     isString,
@@ -87,6 +88,8 @@ export function findClosest(
  * that will be converted into '*[data-ref="my-ref"]' internally before the query is resolved.
  * @param multiple By default only a single element is returned "querySelector", if set to true "querySelectorAll"
  * is used instead.
+ * @param deepOrPivot Either a boolean value to define the "deep" property, or an html element defining the
+ * html element which is used as pivot element for the lookup
  * @param deep By default only elements inside the current mount are resolved, but children
  * are ignored while retrieving elements. If you set this to true, even elements in child-mounts are returned
  * @internal
@@ -95,13 +98,17 @@ export function findElement(
     mount: BitMountHTMLElement,
     selector: string,
     multiple: boolean,
+    deepOrPivot?: boolean | HTMLElement,
     deep?: boolean
 ): Array<HTMLElement>
 {
     selector = prepareCssSelector(selector);
     
+    const pivot = deepOrPivot instanceof HTMLElement ? deepOrPivot : mount;
+    deep = isBool(deepOrPivot) ? deepOrPivot : deep;
+    
     const mountTag = mount.tagName;
-    const list: NodeListOf<HTMLElement> = mount.querySelectorAll(selector);
+    const list: NodeListOf<HTMLElement> = pivot.querySelectorAll(selector);
     
     // We need to check if an element is currently inside this elements root in order
     // to simulate the behaviour of a component.

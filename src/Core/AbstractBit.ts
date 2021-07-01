@@ -193,14 +193,41 @@ export class AbstractBit
      * Allows you to find elements inside the dom elements of this bit mount.
      *
      * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
+     * @param pivot By default the lookup is done on the mount node, this property defines the pivot
+     * node which should be used for the lookup instead.
+     * @param deep By default only elements inside the current mount are resolved, but children
+     * are ignored while retrieving elements. If you set this to true, even elements in child-mounts are returned
+     */
+    protected $find(selector: string, pivot: HTMLElement, deep?: boolean): HTMLElement | null
+    
+    /**
+     * Allows you to find elements inside the dom elements of this bit mount.
+     *
+     * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
      * @param deep By default only elements inside the current mount are resolved, but children
      * are ignored while retrieving elements. If you set this to true, even elements in child-mounts are returned
      */
     protected $find(selector: string, deep?: boolean): HTMLElement | null
+    
+    protected $find(selector: string, deepOrPivot?: boolean | HTMLElement, deep?: boolean): HTMLElement | null
     {
         this.$context.reactivityProvider.domChangeDependency();
-        return findElement(this.$el, selector, false, deep)[0] ?? null;
+        return findElement(this.$el, selector, false, deepOrPivot, deep)[0] ?? null;
     }
+    
+    /**
+     * A shortcode for this.$find(selector, true).
+     *
+     * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
+     * that will be converted into '*[data-ref="my-ref"]' internally before the query is resolved.
+     * @param pivot By default the lookup is done on the mount node, this property defines the pivot
+     * node which should be used for the lookup instead.
+     * @param deep By default only elements inside the current mount are resolved, but children
+     * are ignored while retrieving elements. If you set this to true, even elements in child-mounts are returned
+     *
+     * @see $find
+     */
+    protected $findAll(selector: string, pivot: HTMLElement, deep?: boolean): Array<HTMLElement>
     
     /**
      * A shortcode for this.$find(selector, true).
@@ -213,9 +240,11 @@ export class AbstractBit
      * @see $find
      */
     protected $findAll(selector: string, deep?: boolean): Array<HTMLElement>
+    
+    protected $findAll(selector: string, deepOrPivot?: boolean | HTMLElement, deep?: boolean): Array<HTMLElement>
     {
         this.$context.reactivityProvider.domChangeDependency();
-        return findElement(this.$el, selector, true, deep);
+        return findElement(this.$el, selector, false, deepOrPivot, deep);
     }
     
     /**
