@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/labor-digital/bits/compare/v1.7.0...v1.8.0) (2021-07-01)
+
+
+### Features
+
+* implement $closest() helper ([748cd23](https://github.com/labor-digital/bits/commit/748cd23c5ecf88f6fb741e86e3ef03482720ac72))
+
 ## [1.7.0](https://github.com/labor-digital/bits/compare/v1.6.0...v1.7.0) (2021-06-30)
 
 
