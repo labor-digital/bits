@@ -186,6 +186,7 @@ export class AbstractBit
      */
     protected $closest(selector: string, to: HTMLElement, includeParents?: boolean): HTMLElement | null
     {
+        this.$context.reactivityProvider.domChangeDependency();
         return findClosest(this.$el, selector, to, includeParents);
     }
     
