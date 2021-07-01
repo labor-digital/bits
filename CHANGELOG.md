@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.1](https://github.com/labor-digital/bits/compare/v1.9.0...v1.9.1) (2021-07-01)
+
+
+### Bug Fixes
+
+* fix issue where only the first element was resolved using $findAll ([adb3593](https://github.com/labor-digital/bits/commit/adb3593b0a59979112830b3aa4a7b34398c40032))
+
 ## [1.9.0](https://github.com/labor-digital/bits/compare/v1.8.0...v1.9.0) (2021-07-01)
 
 
