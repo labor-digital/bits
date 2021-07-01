@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/labor-digital/bits/compare/v1.6.0...v1.7.0) (2021-06-30)
+
+
+### Features
+
+* implement dependency injection container ([b9afbfd](https://github.com/labor-digital/bits/commit/b9afbfda5ae4b8c67bd0db73b408391082eb0013))
+* update dependencies ([79c98b4](https://github.com/labor-digital/bits/commit/79c98b4d0b709235e9c0d655e892ad9327eaef3e))
+
 ## [1.6.0](https://github.com/labor-digital/bits/compare/v1.5.2...v1.6.0) (2021-04-19)
 
 
