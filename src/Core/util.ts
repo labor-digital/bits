@@ -117,7 +117,7 @@ export function findElement(
         forEach(list as any, (el) => {
             const closestEl = closest(mountTag, el);
             if (!closestEl) {
-                return false;
+                return;
             }
             
             if (closestEl === mount ||

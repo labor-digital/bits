@@ -245,7 +245,7 @@ export class AbstractBit
     protected $findAll(selector: string, deepOrPivot?: boolean | HTMLElement, deep?: boolean): Array<HTMLElement>
     {
         this.$context.reactivityProvider.domChangeDependency();
-        return findElement(this.$el, selector, false, deepOrPivot, deep);
+        return findElement(this.$el, selector, true, deepOrPivot, deep);
     }
     
     /**
