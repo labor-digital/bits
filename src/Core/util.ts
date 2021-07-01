@@ -34,6 +34,53 @@ import type {BitMountHTMLElement} from './Mount/types';
 import type {IEventListener, IGetterProvider, TEventList, TEventTarget} from './types';
 
 /**
+ * Prepares a css selector by checking if it begins with a magic prefix and automatically extends it
+ * to match the according selector
+ * @param selector
+ */
+export function prepareCssSelector(selector: string): string
+{
+    if (selector.substr(0, 1) === '@') {
+        selector = '*[data-ref="' + selector.substr(1) + '"]';
+    }
+    
+    return selector;
+}
+
+/**
+ * Resolves the "closest" parent element that matches the given selector.
+ *
+ * @param mount The mount element to resolve the request in
+ * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
+ * that will be converted into '*[data-ref="my-ref"]' internally before the query is resolved.
+ * @param to The pivot element from which the closest element should be resolved
+ * @param includeParents By default only elements inside the given mount are resolved.
+ * If you set this to true, results outside the bounds of the mount will be returned as well.
+ */
+export function findClosest(
+    mount: BitMountHTMLElement,
+    selector: string,
+    to: HTMLElement,
+    includeParents?: boolean
+)
+{
+    
+    selector = prepareCssSelector(selector);
+    const closestEl = closest(selector, to);
+    
+    if (includeParents || !closestEl) {
+        return closestEl;
+    }
+    
+    const mountTag = mount.tagName;
+    if (closest(mountTag, closestEl) !== mount) {
+        return null;
+    }
+    
+    return closestEl;
+}
+
+/**
  * Internal helper to resolve the "find" request inside a single mount
  * @param mount The mount element to resolve the request in
  * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
@@ -51,10 +98,7 @@ export function findElement(
     deep?: boolean
 ): Array<HTMLElement>
 {
-    
-    if (selector.substr(0, 1) === '@') {
-        selector = '*[data-ref="' + selector.substr(1) + '"]';
-    }
+    selector = prepareCssSelector(selector);
     
     const mountTag = mount.tagName;
     const list: NodeListOf<HTMLElement> = mount.querySelectorAll(selector);

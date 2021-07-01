@@ -48,7 +48,7 @@ import type {
     TEventList,
     TEventTarget
 } from './types';
-import {bitEventActionWrap, findElement, resolveEventTarget} from './util';
+import {bitEventActionWrap, findClosest, findElement, resolveEventTarget} from './util';
 
 export interface AbstractBit
 {
@@ -175,7 +175,22 @@ export class AbstractBit
     }
     
     /**
-     * Allows you to find elements inside the dom elements of this bit' mount.
+     * Allows you to find the "closest" parent element inside the dom elements of this bit mount
+     *
+     * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
+     * that will be converted into '*[data-ref="my-ref"]' internally before the query is resolved.
+     * @param to The pivot element from which the closest element should be resolved
+     * @param includeParents By default only elements inside the given mount are resolved.
+     * If you set this to true, results outside the bounds of the mount will be returned as well.
+     * @protected
+     */
+    protected $closest(selector: string, to: HTMLElement, includeParents?: boolean): HTMLElement | null
+    {
+        return findClosest(this.$el, selector, to, includeParents);
+    }
+    
+    /**
+     * Allows you to find elements inside the dom elements of this bit mount.
      *
      * @param selector any query selector to find your element with. As a "magic" helper you can provide "@my-ref"
      * @param deep By default only elements inside the current mount are resolved, but children

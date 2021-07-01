@@ -126,3 +126,34 @@ point boundaries.
 
 So, if you call ```this.$find('.exampleClass', true, true)``` in your **example** bit with the HTML structure from above,
 you will receive an array (yes, still an array) of all three divs inside its scope.
+
+## Finding the closest parents
+
+Similarly to finding children, you can also resolve the "closest" elements to a specific node
+using the `$closest()` method. The method takes a css selector, and a "pivot" element, from which
+it will traverse the DOM tree upwards until it finds a matching node. The results are also
+limited by the bounds of the mount point.
+
+```html
+<div class="outOfBounds" id="0">
+    <b-mount type="example">
+        <div class="exampleClass" id="1">
+            <div class="foo" data-ref="foo" id="2">
+                <div class="bar" data-ref="bar" id="3"></div
+            </div
+        </div
+    </b-mount>
+</div>
+```
+
+The following will retrieve the div with id 2, because it is the the closest foo reference
+to the bar node.
+```this.$closest('@foo', this.$find('bar'))```
+
+While this call will retrieve the div with id 1
+```this.$closest('.exampleClass', this.$find('bar'))```
+
+If you want to resolve the closest parent, ignoring the bounds of the current mount,
+set the third parameter to true. This will retrieve the div with id 0, even if it is not
+part of the currently active bit mount.
+```this.$closest('.outOfBounds', this.$find('bar'), true)```
