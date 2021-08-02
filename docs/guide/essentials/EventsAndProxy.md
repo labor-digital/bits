@@ -88,7 +88,7 @@ registers a callback, you get the gist. But what if your bit gets destroyed? You
 all callbacks, cancel all timeouts and intervals. 
 
 Have you ever tried to "un-register" a then() in a promise chain?
-Did you ever forget one a single listener that lead to a memory leak?
+Did you ever forget a single listener that lead to a memory leak?
 
 Not anymore, I tell you! Behold the sparkling new ComponentProxy-2000 and enter the world of proxying everything
 your bit does with the outside world.
