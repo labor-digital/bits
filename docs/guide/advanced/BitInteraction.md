@@ -132,25 +132,40 @@ This allows you to create custom form elements that automatically update the par
 
 Parent:
 ```typescript
-import {AbstractBit, Data} from '@labor-digital/bits';
+import {AbstractBit, Data, Hot, Watch} from '@labor-digital/bits';
+
 export class Parent extends AbstractBit
 {
     @Data()
-    prop: string = '';
+    protected model: string = '';
+    
+    @Watch('model')
+    protected onModelChange(n: any, o: any)
+    {
+        console.log('[Parent], Model changed!', n, o);
+    }
+    
+    public mounted()
+    {
+        this.$autoRun(() => {
+            console.log('Model value is', this.model);
+        });
+    }
 }
 ```
 
 Child:
 ```typescript
-import {AbstractBit, Property} from '@labor-digital/bits';
+import {AbstractBit, Hot, Listener, Property} from '@labor-digital/bits';
 export class Child extends AbstractBit
 {
     @Property()
-    value: string = '';
+    protected value: string | null = '';
     
     @Listener('click', '@button')
-    onClick(){
-        this.value = 'My value';
+    protected onClick()
+    {
+        this.value = 'Value: ' + Math.random();
     }
 }
 ```
