@@ -147,9 +147,9 @@ limited by the bounds of the mount point.
     <b-mount type="example">
         <div class="exampleClass" id="1">
             <div class="foo" data-ref="foo" id="2">
-                <div class="bar" data-ref="bar" id="3"></div
-            </div
-        </div
+                <div class="bar" data-ref="bar" id="3"></div>
+            </div>
+        </div>
     </b-mount>
 </div>
 ```
