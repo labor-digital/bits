@@ -55,7 +55,7 @@ advance example ([Parent code](https://github.com/labor-digital/bits/blob/master
 While "context" is great to share data between bits while you create templates, you might want not only bind data,
 but also react to data in some way inside the child bit. 
 
-This is there part where I write about "props". Props are all over the internets, react has them, vue has them, heck even angular has them now. 
+This is the part where I write about "props". Props are all over the internets, react has them, vue has them, heck even angular has them now. 
 So, bits has them too, just to look cool, and because the concept works well. 
 
 When you say "props" you basically mean one-way attribute-data-binding but for components/bits instead of HTML nodes.
@@ -127,7 +127,7 @@ If this property is not present on the bit you try to bind to, an error will be 
 <Example href="/demo/examples/docs-model.html" :height="190"/>
 
 ### Programmatic updates
-If you don't want to just bind the value to a dom done in the child, you can also set the value property programmatically.
+If you don't want to just bind the value to a dom node in the child, you can also set the value property programmatically.
 This allows you to create custom form elements that automatically update the parent and propagate changes.
 
 Parent:
