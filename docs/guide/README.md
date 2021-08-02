@@ -131,7 +131,7 @@ instantiate a new bit class, every time a mount-point plops into existence, or d
 
 ::: tip
 
-Unlike the way aou normally work with custom elements, you won't define custom-tags for each of your bits. This has, two major reasons: 1. it is easer to
+Unlike the way you normally work with custom elements, you won't define custom-tags for each of your bits. This has, two major reasons: 1. it is easer to
 polyfill for older browsers like ie and 2. it allows some nifty features like lazy loading bits using webpacks dynamic import()
 
 :::
@@ -186,4 +186,4 @@ When you reload the page in your browser, you will now see "Hello world" two tim
 of the major frameworks a single bit instance is bound to a single mount. That way you don't have to think much about how components of the same type interact
 with each other.
 
-Which brings you to the next chapter, the lifecycle of a bit: [lifecycle hooks](./Lifecycle.md)
+Which brings you to the next chapter, the lifecycle of a bit: [lifecycle hooks](./essentials/Lifecycle.md)
