@@ -42,7 +42,32 @@
 		"skipLibCheck": true,
 		// Type declaration settings.
 		"declaration": true,
-		"declarationMap": false
+		"declarationMap": false,
+		"baseUrl": "./",
+		"paths": {
+			"@labor-digital/bits/dist/*": [
+				"./src/*"
+			],
+			"@labor-digital/bits/*": [
+				"./src/*"
+			],
+			"@labor-digital/bits-translator": [
+				"./node_modules/@labor-digital/bits-translator/src"
+			],
+			"@labor-digital/bits-translator/*": [
+				"./node_modules/@labor-digital/bits-translator/src/*"
+			],
+			"@labor-digital/bits-lit-html": [
+				"./node_modules/@labor-digital/bits-lit-html/src"
+			],
+			"@labor-digital/bits-lit-html/*": [
+				"./node_modules/@labor-digital/bits-lit-html/src/*"
+			],
+			// @todo this should be removed when the translator is it's own plugin
+			"@labor-digital/bits": [
+				"./src"
+			]
+		}
 	},
 	"include": [
 		"src/**/*"

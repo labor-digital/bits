@@ -17,12 +17,13 @@
  */
 
 
+import type {ILitHtmlTemplateProvider as IRootHtmlTemplateProvider} from '@labor-digital/bits-lit-html';
 import type {ComponentProxyEventTarget, EventEmitterEvent, PlainObject} from '@labor-digital/helferlein';
-import type {TemplateResult} from 'lit-html';
 import type {AbstractBit} from './AbstractBit';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {IDiContainerOptions} from './Di/types';
+import type {IBitPlugin, IBitPluginFactory} from './Plugin/types';
 import type {IBitAppTranslationOptions} from './Translator/types';
 
 export type TEventTarget =
@@ -69,9 +70,11 @@ export interface IBitConstructor
     __hmrId?: string
 }
 
-export interface IHtmlTemplateProvider
+/**
+ * @deprecated will be removed in the next major release
+ */
+export interface IHtmlTemplateProvider extends IRootHtmlTemplateProvider
 {
-    (this: AbstractBit): TemplateResult;
 }
 
 export interface IBitResolver
@@ -134,11 +137,6 @@ export interface IBitAppOptions
     bitResolver?: IBitResolver
     
     /**
-     * Options for the translator and localization
-     */
-    lang?: IBitAppTranslationOptions
-    
-    /**
      * The list of service definitions to register in the service container
      */
     services?: IDiContainerOptions;
@@ -167,11 +165,11 @@ export interface IBitAppOptions
      * A list of plugins that should be loaded in the application
      */
     plugins?: Array<IBitPlugin | IBitPluginFactory>
-    //
-    // /**
-    //  * Options for the translator and localization
-    //  * @deprecated will be removed in the next major release: use the translator plugin instead
-    //  */
-    // lang?: IBitAppTranslationOptions
-    //
+    
+    /**
+     * Options for the translator and localization
+     * @deprecated will be removed in the next major release: use the translator plugin instead
+     */
+    lang?: IBitAppTranslationOptions
+    
 }

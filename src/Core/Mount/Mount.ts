@@ -248,6 +248,8 @@ export class Mount
         
         this._i = new ctor(context);
         
+        di.pluginLoader.extendBit(this._i);
+        
         if (this._i!.created) {
             await this._i!.created();
         }

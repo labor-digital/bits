@@ -16,6 +16,7 @@
  * Last modified: 2021.03.09 at 13:39
  */
 
+import type {Translator} from '@labor-digital/bits-translator';
 import {ComponentProxy} from '@labor-digital/helferlein';
 import {runInAction} from 'mobx';
 import type {Binder} from '../Binding/Binder';
@@ -23,7 +24,6 @@ import type {Provider} from '../Reactivity/Provider';
 import type {BitApp} from './BitApp';
 import type {DiContainer} from './Di/DiContainer';
 import type {Mount} from './Mount/Mount';
-import type {Translator} from './Translator/Translator';
 
 export class BitContext
 {
@@ -32,7 +32,6 @@ export class BitContext
     protected _react: Provider;
     protected _binder: Binder;
     protected _proxy?: ComponentProxy;
-    protected _translator?: Translator;
     
     constructor(mount: Mount, di: DiContainer, react: Provider, binder: Binder)
     {
@@ -108,15 +107,11 @@ export class BitContext
     
     /**
      * Returns the translator instance for this bit
+     * @deprecated Removed in the next major release
      */
     public get translator(): Translator
     {
-        if (!this._translator) {
-            this._translator = this._di.translatorFactory.requireTranslator(
-                this._mount.el ?? document.documentElement as any);
-        }
-        
-        return this._translator;
+        return this._mount.bit!.$translator;
     }
     
     /**
@@ -132,7 +127,6 @@ export class BitContext
         this._binder.destroy();
         this._react.destroy();
         
-        delete this._translator;
         delete this._proxy;
         
         this._react = null as any;

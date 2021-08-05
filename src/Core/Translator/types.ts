@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.04.12 at 17:36
+ * Last modified: 2021.08.02 at 19:34
  */
 
 import type {PlainObject} from '@labor-digital/helferlein';
 
+/**
+ * @deprecated removed in the next major release
+ */
 export interface IBitAppPluralizationRule
 {
     (count: number): number
 }
 
+/**
+ * @deprecated removed in the next major release
+ */
 export interface IBitAppTranslationOptions
 {
     /**
@@ -54,6 +60,9 @@ export interface IBitAppTranslationOptions
     pluralRules?: PlainObject<IBitAppPluralizationRule>
 }
 
+/**
+ * @deprecated removed in the next major release
+ */
 export interface ITranslateOptions
 {
     /**
@@ -65,4 +74,12 @@ export interface ITranslateOptions
      * Used to determine which plural version to use
      */
     count?: number
+}
+
+/**
+ * @deprecated removed in the next major release
+ */
+export interface TranslatorFactory
+{
+
 }

@@ -43,5 +43,6 @@ export * from './Binding/util';
 export * from './Binding/propertyAccess';
 export * from './Binding/Binder';
 
-export {html, svg} from 'lit-html';
-export {dataModel} from './Binding/directives';
+// @todo remove this in the next major version
+export * from './Core/Translator/types';
+export {html, svg, dataModel} from '@labor-digital/bits-lit-html';

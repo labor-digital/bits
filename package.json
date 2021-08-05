@@ -29,8 +29,14 @@
 	"sideEffects": false,
 	"scripts": {
 		"clean": "rimraf ./dist",
-		"build": "npm run build:ts && npm run build:bundle",
+		"postinstall": "npm run install:translator && npm run install:litHtml",
+		"install:translator": "cd plugins/Translator && npm i",
+		"install:litHtml": "cd plugins/LitHtml && npm i",
+		"build": "npm run build:ts && npm run build:legacy:plugins && npm run build:bundle",
 		"build:ts": "npm run clean && tsc",
+		"build:legacy:plugins": "npm run build:legacy:plugin:translator && npm run build:legacy:plugin:litHtml",
+		"build:legacy:plugin:translator": "cd plugins/Translator && npm run build:ts",
+		"build:legacy:plugin:litHtml": "cd plugins/LitHtml && npm run build:ts",
 		"build:bundle": "rollup --config ./rollup.config.js",
 		"watch": "npm run clean && tsc --project ./tsconfig.watch.json --watch"
 	},
@@ -38,16 +44,20 @@
 		"@labor-digital/helferlein": "^4.2.0"
 	},
 	"dependencies": {
-		"lit-html": "^1.4.1",
+		"@labor-digital/bits-translator": "*",
+		"@labor-digital/bits-lit-html": "file:./plugins/LitHtml",
 		"mobx": "^6.3.2"
 	},
 	"devDependencies": {
+		"@labor-digital/bits-translator": "file:./plugins/Translator",
+		"@labor-digital/bits-lit-html": "file:./plugins/LitHtml",
 		"@labor-digital/helferlein": "^4.2.0",
-		"@types/webpack-env": "^1.16.0",
+		"@rollup/plugin-alias": "^3.1.5",
+		"@types/webpack-env": "^1.16.2",
 		"rimraf": "^3.0.2",
-		"rollup": "^2.52.4",
+		"rollup": "^2.55.1",
 		"rollup-plugin-terser": "^7.0.2",
 		"rollup-plugin-typescript2": "^0.30.0",
-		"typescript": "^4.3.4"
+		"typescript": "^4.3.5"
 	}
 }

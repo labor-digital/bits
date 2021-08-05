@@ -41,7 +41,6 @@ export function canUseEs6Features(): boolean
         eval('new class{}');
         return state = true;
     } catch (e) {
-        console.log('ERROR');
         return state = false;
     }
     

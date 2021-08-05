@@ -25,9 +25,6 @@ import {
     isUndefined,
     PlainObject
 } from '@labor-digital/helferlein';
-import {render} from 'lit-html';
-import {ClassInfo, classMap} from 'lit-html/directives/class-map';
-import {StyleInfo, styleMap} from 'lit-html/directives/style-map';
 import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {runInAction} from 'mobx';
 import type {TCssClass, TCssStyle} from '../Binding/types';
@@ -38,16 +35,7 @@ import type {BitContext} from './BitContext';
 import type {TBitAttrValue} from './Definition/types';
 import type {DiContainer} from './Di/DiContainer';
 import type {BitMountHTMLElement} from './Mount/types';
-import type {Translator} from './Translator/Translator';
-import type {ITranslateOptions} from './Translator/types';
-import type {
-    IEventListener,
-    IHtmlTemplateProvider,
-    IPropertyWatcher,
-    TElementOrList,
-    TEventList,
-    TEventTarget
-} from './types';
+import type {IEventListener, IPropertyWatcher, TElementOrList, TEventList, TEventTarget} from './types';
 import {bitEventActionWrap, findClosest, findElement, resolveEventTarget} from './util';
 
 export interface AbstractBit
@@ -393,90 +381,6 @@ export class AbstractBit
     }
     
     /**
-     * See the main implementation for additional features!
-     *
-     * Allows you to mount a reactively, rendered HTML template into the dom. The template is rendered using
-     * lit-html, so you can use all natively supported features.
-     *
-     * The template will be rendered at the root of the bit mount component
-     *
-     * @param template
-     * @protected
-     * @see https://lit-html.polymer-project.org/guide
-     */
-    protected $html(template: IHtmlTemplateProvider): void
-    
-    /**
-     * See the main implementation for additional features!
-     *
-     * Allows you to mount a reactively, rendered HTML template into the dom. The template is rendered using
-     * lit-html, so you can use all natively supported features.
-     *
-     * The template will be rendered as content of the provided target
-     *
-     * @param target
-     * @param template
-     * @protected
-     * @see https://lit-html.polymer-project.org/guide
-     */
-    protected $html(target: string | HTMLElement, template: IHtmlTemplateProvider): void
-    
-    /**
-     * Allows you to mount a reactively, rendered HTML template into the dom. The template is rendered using
-     * lit-html, so you can use all natively supported features.
-     *
-     * ATTENTION: While it is possible to use declarative data-binds using data-bind="..." in your template,
-     * I would strongly recommend using the lit-html binding technic instead. For two-way data binding you should
-     * take a look at the dataModel() that is provided by the package.
-     *
-     * WARNING: The mounted HTML is reactive! You don't have to re-render it every time a reactive property changed!
-     * Call this method in the mounted() hook, or use the returned disposer function, to unbind the html first!
-     *
-     * If no target is provided, the rendered html will be mounted directly into the mount point of this bit!
-     *
-     * The template must be provided using the "html"/"svg" processor of lit-html.
-     * You can import those directly from this package.
-     *
-     * @param a
-     * @param b
-     * @protected
-     * @see https://lit-html.polymer-project.org/guide
-     */
-    protected $html(
-        a: string | HTMLElement | IHtmlTemplateProvider,
-        b?: IHtmlTemplateProvider
-    ): IReactionDisposer
-    {
-        const template: IHtmlTemplateProvider = b ?? a as any;
-        let target: string | HTMLElement | null = template === a ? this.$el : a as any;
-        
-        if (isString(target)) {
-            target = this.$find(target);
-        }
-        
-        if (target !== null) {
-            return this.$context.reactivityProvider.addAutoRun(() => {
-                try {
-                    
-                    render(
-                        template.call(this),
-                        target as HTMLElement,
-                        {eventContext: this as any}
-                    );
-                } catch (e) {
-                    console.log('RENDERING ERROR', e);
-                }
-            });
-        } else {
-            console.error('HTML rendering failed! No target found!');
-        }
-        
-        const disposer: IReactionDisposer = function () {};
-        disposer.$mobx = {} as any;
-        return disposer;
-    }
-    
-    /**
      * Sets / removes a given attribute from the list of given elements
      * @param element the element / elements to set or remove the attribute for
      * @param attributes An object where key is the name of the attribute and value is the value to set
@@ -563,44 +467,6 @@ export class AbstractBit
     }
     
     /**
-     * Shortcut to the classMap directive of lit-html
-     *
-     * A directive that applies CSS classes. This must be used in the class attribute and must be the only part
-     * used in the attribute. It takes each property in the classInfo argument and adds the property name to the
-     * element's class if the property value is truthy; if the property value is falsey, the property name is removed
-     * from the element's class. For example {foo: bar} applies the class foo if the value of bar is truthy.
-     *
-     * @param classInfo
-     * @protected
-     * @see https://lit-html.polymer-project.org/guide/styling-templates#classmap
-     */
-    protected $classMap(classInfo: ClassInfo)
-    {
-        return classMap(classInfo);
-    }
-    
-    /**
-     * Shortcut to the styleMap directive of lit-html
-     *
-     * A directive that applies CSS properties to an element.
-     * styleMap can only be used in the style attribute and must be the only expression in the attribute. It takes the
-     * property names in the styleInfo object and adds the property values as CSS properties. Property names with
-     * dashes (-) are assumed to be valid CSS property names and set on the element's style object using setProperty().
-     * Names without dashes are assumed to be camelCased JavaScript property names and set on the element's style object
-     * using property assignment, allowing the style object to translate JavaScript-style names to CSS property names.
-     * For example styleMap({backgroundColor: 'red', 'border-top': '5px', '--size': <br />'0'}) sets the
-     * background-color, border-top and --size properties.
-     *
-     * @param styleInfo
-     * @protected
-     * @see https://lit-html.polymer-project.org/guide/styling-templates#stylemap
-     */
-    protected $styleMap(styleInfo: StyleInfo)
-    {
-        return styleMap(styleInfo);
-    }
-    
-    /**
      * Utility to load the content of a "template" tag into a new sub-node which will be returned.
      * To be selectable, your template should have a data-ref="$ref" attribute.
      *
@@ -641,33 +507,6 @@ export class AbstractBit
         }
         
         return node;
-    }
-    
-    /**
-     * Returns the translator instance for this bit
-     * @protected
-     */
-    protected get $translator(): Translator
-    {
-        return this._context.translator;
-    }
-    
-    /**
-     * Translates a single key using the loaded labels and returns the matched value.
-     *
-     * @param key The label key to use for translation
-     * @param args An array of arguments to replace using sprintf in your label.
-     * @param options Advanced translation options
-     *
-     * @see Translator::translate()
-     */
-    protected $t(
-        key: string,
-        args?: Array<string | number> | PlainObject<string | number>,
-        options?: ITranslateOptions
-    ): string
-    {
-        return this.$translator.translate(key, args, options);
     }
     
     /**
