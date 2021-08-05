@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.04.12 at 17:55
+ * Last modified: 2021.08.02 at 18:54
  */
 
+import type {BitMountHTMLElement} from '@labor-digital/bits';
 import {cloneList, forEach, isPlainObject, isUndefined, makeOptions, merge} from '@labor-digital/helferlein';
-import type {BitMountHTMLElement} from '../Mount/types';
 import {Translator} from './Translator';
 import {TranslatorContext} from './TranslatorContext';
-import type {IBitAppTranslationOptions} from './types';
+import type {ITranslatorOptions} from './types';
 
 export class TranslatorFactory
 {
@@ -28,7 +28,7 @@ export class TranslatorFactory
      * The options provided for to the app through
      * @protected
      */
-    protected _options?: IBitAppTranslationOptions;
+    protected _options?: ITranslatorOptions;
     
     /**
      * The context object that holds all relevant information
@@ -36,7 +36,7 @@ export class TranslatorFactory
      */
     protected _context?: TranslatorContext;
     
-    constructor(options?: IBitAppTranslationOptions)
+    constructor(options?: ITranslatorOptions)
     {
         this._options = options ?? {};
     }
@@ -82,7 +82,7 @@ export class TranslatorFactory
      */
     protected initializeContext(): TranslatorContext
     {
-        let options: IBitAppTranslationOptions = cloneList(this._options ?? {});
+        let options: ITranslatorOptions = cloneList(this._options ?? {});
         delete this._options;
         
         let lang: string = options.lang ?? document.documentElement.lang ?? 'en';
@@ -114,7 +114,7 @@ export class TranslatorFactory
      * @param lang
      * @protected
      */
-    protected validateOptions(options: IBitAppTranslationOptions, lang: string): IBitAppTranslationOptions
+    protected validateOptions(options: ITranslatorOptions, lang: string): ITranslatorOptions
     {
         return makeOptions(options, {
             lang: {
@@ -146,7 +146,7 @@ export class TranslatorFactory
      * @param options
      * @param lang
      */
-    protected findDomOptions(options: IBitAppTranslationOptions, lang: string): IBitAppTranslationOptions
+    protected findDomOptions(options: ITranslatorOptions, lang: string): ITranslatorOptions
     {
         let els: Array<HTMLElement> = [];
         forEach(document.querySelectorAll('script[data-bit-translation]') as any, (el: HTMLElement) => {
@@ -174,7 +174,7 @@ export class TranslatorFactory
     protected parseSingleNodeContent(
         content: string,
         lang: string
-    ): IBitAppTranslationOptions | undefined
+    ): ITranslatorOptions | undefined
     {
         let data: any;
         try {
@@ -201,7 +201,7 @@ export class TranslatorFactory
      * @param lang language hint provided by the "lang" attribute of dom options, or the default language code
      * @protected
      */
-    protected preparePhrases(data: IBitAppTranslationOptions, lang: string): IBitAppTranslationOptions
+    protected preparePhrases(data: ITranslatorOptions, lang: string): ITranslatorOptions
     {
         if (isPlainObject(data.phrases)) {
             let onlyTwoChars = true;

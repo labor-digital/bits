@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.04.12 at 17:50
+ * Last modified: 2021.08.02 at 18:54
  */
 
 import type {PlainObject} from '@labor-digital/helferlein';
 import {forEach, isPlainObject} from '@labor-digital/helferlein';
-import type {IBitAppPluralizationRule} from './types';
+import type {IPluralizationRule} from './types';
 
 /**
  * @hidden
@@ -28,7 +28,7 @@ export class TranslatorContext
     protected _lang: string;
     protected _fallbackLang: string;
     protected _phrases: PlainObject = {};
-    protected _pluralRules: PlainObject<IBitAppPluralizationRule> = {};
+    protected _pluralRules: PlainObject<IPluralizationRule> = {};
     protected _cache: PlainObject<PlainObject<string>> = {};
     
     constructor(lang: string, fallbackLang: string)
@@ -88,7 +88,7 @@ export class TranslatorContext
      * @param lang The language code to set the pluralization rule for
      * @param rule The rule to select the correct translation index with
      */
-    public addPluralRule(lang: string, rule: IBitAppPluralizationRule): void
+    public addPluralRule(lang: string, rule: IPluralizationRule): void
     {
         this._pluralRules[lang] = rule;
         this._cache = {};

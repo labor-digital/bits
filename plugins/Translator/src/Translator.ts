@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.04.12 at 17:55
+ * Last modified: 2021.08.02 at 18:54
  */
 
 import {isArray, isPlainObject, PlainObject} from '@labor-digital/helferlein';
 import type {TranslatorContext} from './TranslatorContext';
-import type {IBitAppPluralizationRule, ITranslateOptions} from './types';
+import type {IPluralizationRule, ITranslateOptions} from './types';
 
 export class Translator
 {
@@ -129,7 +129,7 @@ export class Translator
      * @param lang The language code to set the pluralization rule for
      * @param rule The rule to select the correct translation index with
      */
-    public addPluralRule(lang: string, rule: IBitAppPluralizationRule): this
+    public addPluralRule(lang: string, rule: IPluralizationRule): this
     {
         this._context.addPluralRule(lang, rule);
         
