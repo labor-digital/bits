@@ -62,4 +62,4 @@ The HTML will look exactly the same as it would with everything written in a sin
 </b-mount>
 ```
 
-<Example href="/demo/examples/mixins.html" :height="290"/>
+<Example href="/demo/examples/advanced-mixins.html" :height="290"/>

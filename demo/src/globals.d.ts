@@ -16,8 +16,8 @@
  * Last modified: 2021.06.30 at 15:05
  */
 
-import {ServiceA} from './Bits/Di/ServiceA';
-import {ServiceB} from './Bits/Di/ServiceB';
+import {ServiceA} from './Services/ServiceA';
+import {ServiceB} from './Services/ServiceB';
 
 // Extends the type of the di container to add autocompletion support for the services
 // added by the application. This step is completely optional

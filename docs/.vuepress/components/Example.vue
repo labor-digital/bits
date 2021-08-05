@@ -48,7 +48,10 @@ export default {
                            'width: 100%!important;}</style>';
 
       const heightSetter = () => {
-        // here you can make the height, I delete it first, then I make it again
+        if (!this.$refs.frame) {
+          return;
+        }
+
         this.$refs.frame.height = '';
         this.$refs.frame.height = this.$refs.frame.contentWindow.document.body.scrollHeight + 'px';
       };

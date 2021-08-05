@@ -6,7 +6,7 @@ define inline styles on specific node elements.
 To resolve this need, bits provides some black magic when you create an [attribute binding](./Reactivity.md#bind-data-to-dom-attributes)
 for either `style` or `class`. 
 
-<Example href="/demo/examples/style.html" :height="170"/>
+<Example href="/demo/examples/essentials-style-and-classes.html" :height="170"/>
 
 ## Binding HTML classes
 

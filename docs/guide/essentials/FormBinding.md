@@ -9,7 +9,7 @@ To create a two-way binding you use the `data-model` attribute that has the name
 
 This example shows all possible binding types in a single form:
 
-<Example href="/demo/examples/forms.html" :height="500"/>
+<Example href="/demo/examples/essentials-form-binding.html" :height="500"/>
 
 ## Basic usage
 
@@ -34,7 +34,7 @@ And a equally simple html template for it
 
 Which will result in a functionality like this:
 
-<Example href="/demo/examples/docs-form-basic.html" :height="170"/>
+<Example href="/demo/examples/essentials-form-binding-basic.html" :height="170"/>
 
 ## Initial data pulling
 
@@ -65,11 +65,17 @@ export class Example extends AbstractBit
 As you can see, we used NULL as an initial value and defined a `value` attribute on our input field.
 With those two changes in place, the value will be automatically "pulled" into the property:
 
-<Example href="/demo/examples/docs-form-pulling.html" :height="170"/>
+<Example href="/demo/examples/essentials-form-binding-basic-pulling.html" :height="170"/>
 
 ::: tip Extended example
 
 This works on all form input types, to see the complete form example above, with data pulling click <a href="/demo/examples/forms-pulling.html" target="_blank">here</a>.
+
+:::
+
+::: details ADVANCED EXAMPLE
+
+<Example href="/demo/examples/essentials-form-binding-pulling.html" :height="500"/>
 
 :::
 
@@ -94,7 +100,7 @@ export class Example extends AbstractBit
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-form-type-input-text.html" :height="170"/>
+<Example href="/demo/examples/essentials-form-binding-type-input-text.html" :height="170"/>
 
 ### Input (date)
 ```html
@@ -104,7 +110,7 @@ export class Example extends AbstractBit
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-form-type-input-date.html" :height="170"/>
+<Example href="/demo/examples/essentials-form-binding-type-input-date.html" :height="170"/>
 
 ### Input (radio)
 ```html
@@ -119,7 +125,7 @@ export class Example extends AbstractBit
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-form-type-input-radio.html" :height="170"/>
+<Example href="/demo/examples/essentials-form-binding-type-input-radio.html" :height="170"/>
 
 ### Input (checkbox)
 ```html
@@ -134,7 +140,7 @@ export class Example extends AbstractBit
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-form-type-input-check.html" :height="190"/>
+<Example href="/demo/examples/essentials-form-binding-type-input-check.html" :height="190"/>
 
 ### Textarea
 
@@ -145,7 +151,7 @@ export class Example extends AbstractBit
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-form-type-textarea.html" :height="190"/>
+<Example href="/demo/examples/essentials-form-binding-type-textarea.html" :height="190"/>
 
 ### Select
 
@@ -160,7 +166,7 @@ export class Example extends AbstractBit
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-form-type-select.html" :height="170"/>
+<Example href="/demo/examples/essentials-form-binding-type-select.html" :height="170"/>
 
 ### Select (multiple)
 
@@ -175,10 +181,10 @@ export class Example extends AbstractBit
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-form-type-select-multiple.html" :height="250"/>
+<Example href="/demo/examples/essentials-form-binding-type-select-multiple.html" :height="250"/>
 
 ## data-model on b-mount elements
 
 Sometimes you want to create your own input elements instead of using the HTML defaults.
 Therefore, bits gives you the option to use `data-model` on the `b-mount` element of child-bits. 
-To learn more about it, take a look at the [bit interaction section](/guide/BitInteraction.md).
+To learn more about it, take a look at the [bit interaction section](/guide/advanced/BitInteraction.md).

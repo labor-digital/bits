@@ -58,6 +58,10 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.jsx', '.js']
+        extensions: ['.tsx', '.ts', '.jsx', '.js'],
+        alias: {
+            // You don't need those in your config, this is here only because we have all sources in the same repository
+            '@labor-digital/bits': path.resolve(__dirname, 'node_modules/@labor-digital/bits/dist/')
+        }
     }
 };

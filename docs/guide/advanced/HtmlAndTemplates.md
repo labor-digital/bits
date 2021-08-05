@@ -5,6 +5,14 @@ While the main focus of this library sets on enhancing server side rendered HTML
 For those cases bits provides you with two major options of generating HTML/manipulating the dom.
 
 ## $html()
+
+::: danger LEGACY
+
+Until the next major release the $html, $styleMap and $classMap methods are provided as a core feature,
+after that you need to install it as a [separate plugin](../plugins/LitHtml.md)
+
+:::
+
 The `$html()` method is available in any bit and acts as a wrapper around [lit-html](https://lit-html.polymer-project.org/), which allows dynamic re-rendering when used, reactive data was modified.
 lit-html provides data- and listener binding, as well as conditional- and list rendering.
 
@@ -34,7 +42,7 @@ export class Html extends AbstractBit
 
 This will add the `<span>I'm a <strong>bold</strong> claim!</span>` as content of the `b-mount` tag, because no mount element was specified.
 
-<Example href="/demo/examples/docs-html.html" :height="90"/>
+<Example href="/demo/examples/plugin-lit-html.html" :height="90"/>
 
 Please note two things: Firstly, the HTML string is wrapped in es6 template literals, that gets preceded by `html`, which is a function provided by the [lit-element template syntax](https://lit-html.polymer-project.org/guide/template-reference). **This is important! It won't work without it!**
 Secondly, note how we don't provide our template as a string to `$html` but instead, wrapped in a fat arrow function. This is needed so that the template can get re-rendered automatically when your 
@@ -94,7 +102,7 @@ This is basic lit-html markup and nothing to be afraid about. The `@click` attri
 `this.count` is used to render a value in your template. Because `$html()` will automatically watch all properties used to generate the output,
 you can simply modify the count and expect your HTML to be updated for you:
 
-<Example href="/demo/examples/docs-html-binding.html" :height="100"/>
+<Example href="/demo/examples/plugin-lit-html-binding.html" :height="100"/>
 
 ### Two-way binding (data-model)
 Sadly, two-way data binding is not really intuitive in lit-html
@@ -124,14 +132,14 @@ export class HtmlModel extends AbstractBit
 }
 ```
 
-<Example href="/demo/examples/docs-html-model.html" :height="170"/>
+<Example href="/demo/examples/plugin-lit-html-model.html" :height="170"/>
 
 ### Extended example
 
 You can find an extended example using all the described functionality [in the gitHub repo](https://github.com/labor-digital/bits/blob/master/demo/src/Bits/HtmlBit.ts).
 Which will look somewhat like this:
 
-<Example href="/demo/examples/html.html" :height="500"/>
+<Example href="/demo/examples/plugin-lit-html-advanced.html" :height="500"/>
 
 ## $tpl()
 
@@ -215,7 +223,7 @@ export class Templates extends AbstractBit
 }
 ```
 
-<Example href="/demo/examples/templates.html" :height="250"/>
+<Example href="/demo/examples/advanced-templates.html" :height="250"/>
 
 ::: tip $domChanged()
 

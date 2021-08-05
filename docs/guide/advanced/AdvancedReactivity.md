@@ -32,7 +32,7 @@ export class ReactivityWatcher extends AbstractBit
 }
 ```
 
-<Example href="/demo/examples/docs-reactivity-watcher.html" :height="250"/>
+<Example href="/demo/examples/advanced-reactivity-watcher.html" :height="250"/>
 
 ::: tip
 
@@ -121,12 +121,12 @@ export class AutoRunBit extends AbstractBit
 }
 ```
 
-<Example href="/demo/examples/autorun.html" :height="380"/>
+<Example href="/demo/examples/advanced-reactivity-autorun.html" :height="380"/>
 
 ## @NonAction
 By default, every method in a bit, that is not a "computed" or decorated using "@Listener", "@AutoRun" or "@Watch" will be
 used as [action](https://doc.ebichu.cc/mobx/refguide/action.html) by the mobx reactivity handler.
-There some edge cases where you might not want that. In that case simply decorate the method in question using @NonAction,
+There are some edge cases where you might not want that. In that case simply decorate the method in question using @NonAction,
 and it will not be handled as action by mobx.
 
 ```typescript

@@ -38,7 +38,7 @@ that will show the content of our "counter" variable for us.
 With `data-bind` you can tell your bit, that it should bind the value of your "counter" property to the content
 of the node. 
 
-<Example href="/demo/examples/docs-reactivity.html" :height="100"/>
+<Example href="/demo/examples/essentials-reactivity.html" :height="100"/>
 
 Okay, as you see, the "0" we set as a default for our counter is now shown in your node, but what now?
 
@@ -73,7 +73,7 @@ With that in place you can set the initial value of "counter" through the "count
 
 Please note, that we set the attribute directly on the `b-mount` tag. If you run the script now, you see that the value starts with 10 instead of 0.
 
-<Example href="/demo/examples/docs-reactivity-property.html" :height="100"/>
+<Example href="/demo/examples/essentials-reactivity-property.html" :height="100"/>
 
 
 ## Bind event listeners
@@ -123,7 +123,7 @@ multiple nodes instead.
 Inside our event handler we simply increase the value by one every time it is executed.
 And with that, it just works ;)
 
-<Example href="/demo/examples/docs-reactivity-button.html" :height="150"/>
+<Example href="/demo/examples/essentials-reactivity-button.html" :height="150"/>
 
 ## Bind data to DOM attributes
 
@@ -142,7 +142,7 @@ it should bind to which attribute on your node.
 
 We create a binding between the "title" attribute and your "counter" property. Now, when you hover over your counter output, you will see the number in the tooltip as well.
 
-<Example href="/demo/examples/docs-reactivity-bind-attr.html" :height="150"/>
+<Example href="/demo/examples/essentials-reactivity-bind-attr.html" :height="150"/>
 
 ::: tip
 
@@ -200,13 +200,13 @@ you will see how it says: 'The counter value is currently: 10' instead.
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-reactivity-computed.html" :height="150"/>
+<Example href="/demo/examples/essentials-reactivity-computed.html" :height="150"/>
 
 ## Summary
 
 To sum this chapter up, here is a slightly different example, that shows how you can go further.
 
-<Example href="/demo/examples/docs-reactivity-alternative.html" :height="165"/>
+<Example href="/demo/examples/essentials-reactivity-alternative.html" :height="165"/>
 
 The example uses the following code:
 

@@ -1,0 +1,92 @@
+<!--
+  ~ Copyright 2021 LABOR.digital
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ Last modified: 2021.03.03 at 14:35
+  -->
+
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../dist/bundle.js"></script>
+    <title>Translator: Basic usage</title>
+</head>
+<body>
+
+<!-- Translation data can be applied either as object (like in the js api, including "locale", "defaultLocale", "phrases"...),
+as plain object, with a locale -> phrases mapping, or as plain object with only the phrases for the default locale -->
+<script type="application/json" data-bit-translation>
+    {
+        "phrases": {
+            "en": {
+                "globalString": "I am everywhere!",
+                "translated": {
+                    "label": "Hello World"
+                }
+            },
+            "de": {
+                "globalString": "Ich bin überall!",
+                "translated": {
+                    "label": [
+                        "Hallo Welt {{count}} %s Tag",
+                        "Hallo Welt {{count}} %s Tage"
+                    ]
+                }
+            }
+        }
+    }
+</script>
+
+<!-- You can also provide translation labels for a single language per script tag, and define the locale using the "lang" attribute -->
+<script type="application/json" data-bit-translation lang="es">
+    {
+        "globalString": "¡Estoy en todas partes!"
+    }
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <b-mount type="plugins/translator" class="card bg-light mt-3">
+                <div class="card-body">
+                    Language code: <strong data-ref="lang"></strong><br>
+                    Global label: <strong data-ref="globalLabel"></strong><br>
+                    Local label: <strong data-ref="localLabel"></strong>
+                </div>
+            </b-mount>
+            
+            <!-- You can use the "lang" attribute to set the locale for a single bit -->
+            <b-mount type="plugins/translator" class="card bg-light mt-3" lang="de">
+                <div class="card-body">
+                    Language code: <strong data-ref="lang"></strong><br>
+                    Global label: <strong data-ref="globalLabel"></strong><br>
+                    Local label: <strong data-ref="localLabel"></strong>
+                </div>
+            </b-mount>
+            
+            <b-mount type="plugins/translator" class="card bg-light mt-3" lang="es">
+                <div class="card-body">
+                    Language code: <strong data-ref="lang"></strong><br>
+                    Global label: <strong data-ref="globalLabel"></strong><br>
+                    Fallback label: <strong data-ref="localLabel"></strong>
+                </div>
+            </b-mount>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

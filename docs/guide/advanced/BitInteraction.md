@@ -43,12 +43,12 @@ and then the property name you want to bind.
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-context.html" :height="90"/>
+<Example href="/demo/examples/advanced-interaction-context.html" :height="90"/>
 
 This will also work for `data-bind-attr`, as well as `data-model`. Take a look at this
 advance example ([Parent code](https://github.com/labor-digital/bits/blob/master/demo/src/Bits/Context/Parent.ts), [Child code](https://github.com/labor-digital/bits/blob/master/demo/src/Bits/Context/Child.ts), [HTML](https://github.com/labor-digital/bits/blob/master/demo/examples/context.html)), to see those options in action:
 
-<Example href="/demo/examples/context.html" :height="500"/>
+<Example href="/demo/examples/advanced-interaction-context-advanced.html" :height="500"/>
 
 ## Props on Bits
 
@@ -100,7 +100,7 @@ HTML:
 </b-mount>
 ```
 
-<Example href="/demo/examples/docs-props.html" :height="90"/>
+<Example href="/demo/examples/advanced-interaction-props.html" :height="90"/>
 
 
 ## Model on Bits
@@ -124,7 +124,15 @@ If this property is not present on the bit you try to bind to, an error will be 
 
 :::
 
-<Example href="/demo/examples/docs-model.html" :height="190"/>
+<Example href="/demo/examples/advanced-interaction-model.html" :height="190"/>
+
+::: details ASYNC RESOLVED BITS
+
+This works too, if your bit has been resolved through the [async bit resolver function](./AsyncBits.md).
+
+<Example href="/demo/examples/advanced-async-model.html" :height="300"/>
+
+:::
 
 ### Programmatic updates
 If you don't want to just bind the value to a dom node in the child, you can also set the value property programmatically.
@@ -181,10 +189,11 @@ HTML:
 </b-mount>
 ```
 
-<Example href="/demo/examples/props-programmatic.html" :height="300"/>
+<Example href="/demo/examples/advanced-interaction-props-programmatic.html" :height="300"/>
+
 
 ## Props & Model extended example:
 
 This is an extended example, that puts both props and models in a comparable example.
 
-<Example href="/demo/examples/props.html" :height="600"/>
+<Example href="/demo/examples/advanced-interaction-props-advanced.html" :height="600"/>

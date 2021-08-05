@@ -80,7 +80,8 @@ module.exports = {
                         'essentials/DomAccess',
                         'essentials/ClassAndStyle',
                         'essentials/FormBinding',
-                        'essentials/EventsAndProxy'
+                        'essentials/EventsAndProxy',
+                        'essentials/DependencyInjection'
                     ]
                 },
                 {
@@ -91,17 +92,22 @@ module.exports = {
                         'advanced/AdvancedReactivity',
                         'advanced/BitInteraction',
                         'advanced/HtmlAndTemplates',
+                        'advanced/AsyncBits',
                         'advanced/Mixins',
                         'advanced/HotReload',
-                        'advanced/CodeTemplate'
+                        'advanced/CodeTemplate',
+                        'advanced/Translations'
                     ]
-                }, {
-                    title: 'Tools',
+                },
+                {
+                    title: 'Plugins',
                     sidebarDepth: 3,
                     collapsable: false,
                     children: [
-                        'tools/Translations',
-                        'tools/DependencyInjection'
+                        'plugins/WritePlugins',
+                        'plugins/Translator',
+                        'plugins/LitHtml',
+                        'plugins/Store'
                     ]
                 }
             ]

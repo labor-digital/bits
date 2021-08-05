@@ -17,95 +17,144 @@
  */
 
 import {BitApp} from '@labor-digital/bits';
+import {LitHtmlPlugin} from '@labor-digital/bits-lit-html';
+import TranslatorPlugin from '@labor-digital/bits-translator';
 import {ucFirst} from '@labor-digital/helferlein';
 import 'bootstrap/dist/css/bootstrap-reboot.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import {AutoRunBit} from './Bits/AutoRun';
-import {Child} from './Bits/Context/Child';
-import {Parent} from './Bits/Context/Parent';
-import {DependencyInjection} from './Bits/Di/DependencyInjection';
-import {ServiceA} from './Bits/Di/ServiceA';
-import {ServiceB} from './Bits/Di/ServiceB';
-import {FormBasic} from './Bits/Docs/Form/FormBasic';
-import {Html} from './Bits/Docs/Html/Html';
-import {HtmlBinding} from './Bits/Docs/Html/HtmlBinding';
-import {HtmlModel} from './Bits/Docs/Html/HtmlModel';
-import {Reactivity} from './Bits/Docs/Reactivity/Reactivity';
-import {ReactivityAlternative} from './Bits/Docs/Reactivity/ReactivityAlternative';
-import {ReactivityButton} from './Bits/Docs/Reactivity/ReactivityButton';
-import {ReactivityComputed} from './Bits/Docs/Reactivity/ReactivityComputed';
-import {ReactivityWatcher} from './Bits/Docs/Reactivity/ReactivityWatcher';
-import {Escape} from './Bits/Escape';
-import {Forms} from './Bits/Forms';
-import {Hmr} from './Bits/Hmr';
-import {HtmlBit} from './Bits/HtmlBit';
-import {Child as ChildCycle} from './Bits/Lifecycle/Child';
-import {Parent as ParentCycle} from './Bits/Lifecycle/Parent';
-import {ExtendedBit} from './Bits/Mixins/ExtendedBit';
-import {Child as ChildProp} from './Bits/Props/Child';
-import {Parent as ParentProp} from './Bits/Props/Parent';
-import {ProgChild} from './Bits/Props/Programmatic/ProgChild';
-import {ProgParent} from './Bits/Props/Programmatic/ProgParent';
-import {Style} from './Bits/Style';
-import {Templates} from './Bits/Templates';
-import {Translation} from './Bits/Translation';
+import {InteractionContextChild} from './Bits/Advanced/InteractionContextChild';
+import {InteractionContextParent} from './Bits/Advanced/InteractionContextParent';
+import {InteractionPropsChild} from './Bits/Advanced/InteractionPropsChild';
+import {InteractionPropsParent} from './Bits/Advanced/InteractionPropsParent';
+import {InteractionPropsProgChild} from './Bits/Advanced/InteractionPropsProgChild';
+import {InteractionPropsProgParent} from './Bits/Advanced/InteractionPropsProgParent';
+import {Mixins} from './Bits/Advanced/Mixins';
+import {ReactivityAutoRun} from './Bits/Advanced/ReactivityAutoRun';
+import {ReactivityWatcher} from './Bits/Advanced/ReactivityWatcher';
+import {Templates} from './Bits/Advanced/Templates';
+import {FormBinding} from './Bits/Essentials/FormBinding';
+import {FormBindingBasic} from './Bits/Essentials/FormBindingBasic';
+import {LifecycleChild} from './Bits/Essentials/LifecycleChild';
+import {LifecycleParent} from './Bits/Essentials/LifecycleParent';
+import {Reactivity} from './Bits/Essentials/Reactivity';
+import {ReactivityAlternative} from './Bits/Essentials/ReactivityAlternative';
+import {ReactivityButton} from './Bits/Essentials/ReactivityButton';
+import {ReactivityComputed} from './Bits/Essentials/ReactivityComputed';
+import {StyleAndClasses} from './Bits/Essentials/StyleAndClasses';
+import {DependencyInjection} from './Bits/Misc/DependencyInjection';
+import {Hmr} from './Bits/Misc/Hmr';
+import {NoopBit} from './Bits/Misc/NoopBit';
+import {LitHtml} from './Bits/Plugins/LitHtml/LitHtml';
+import {LitHtmlAdvanced} from './Bits/Plugins/LitHtml/LitHtmlAdvanced';
+import {LitHtmlBinding} from './Bits/Plugins/LitHtml/LitHtmlBinding';
+import {LitHtmlModel} from './Bits/Plugins/LitHtml/LitHtmlModel';
+import {Translator} from './Bits/Plugins/Translator/Translator';
 import {Display} from './Bits/Util/Display';
+import {DemoPlugin} from './Plugin/DemoPlugin';
+import {ServiceA} from './Services/ServiceA';
+import {ServiceB} from './Services/ServiceB';
 
 new BitApp({
     bits: {
-        style: Style,
+        // Using a key, your bit is defined globally so type="example" will resolve the example bit
+        example: NoopBit,
         
         // You can either define namespaces for props as a string...
-        'context/parent': Parent,
-        'context/child': Child,
+        'namespace/bitA': NoopBit,
+        
         // ...or as nested list of definitions
-        props: {
-            prog: {
-                parent: ProgParent,
-                child: ProgChild
+        namespace: {
+            bitB: NoopBit
+        },
+        
+        advanced: {
+            
+            interaction: {
+                context: {
+                    child: InteractionContextChild,
+                    parent: InteractionContextParent
+                },
+                
+                props: {
+                    child: InteractionPropsChild,
+                    parent: InteractionPropsParent,
+                    
+                    prog: {
+                        child: InteractionPropsProgChild,
+                        parent: InteractionPropsProgParent
+                    }
+                }
             },
-            parent: ParentProp,
-            child: ChildProp
+            
+            mixins: Mixins,
+            
+            reactivity: {
+                autoRun: ReactivityAutoRun,
+                watcher: ReactivityWatcher
+            },
+            
+            templates: Templates
         },
-        lifecycle: {
-            parent: ParentCycle,
-            child: ChildCycle
+        
+        essentials: {
+            formBinding: {
+                // An empty string defines the bit as "essentials/formBinding"
+                '': FormBinding,
+                basic: FormBindingBasic
+            },
+            
+            lifecycle: {
+                child: LifecycleChild,
+                parent: LifecycleParent
+            },
+            
+            reactivity: {
+                '': Reactivity,
+                alternative: ReactivityAlternative,
+                button: ReactivityButton,
+                computed: ReactivityComputed
+            },
+            
+            styleAndClasses: StyleAndClasses
         },
-        extended: ExtendedBit,
-        autorun: AutoRunBit,
-        templates: Templates,
-        forms: Forms,
-        escape: Escape,
-        html: HtmlBit,
-        hmr: Hmr,
-        translation: Translation,
-        dependencyInjection: DependencyInjection,
+        
+        plugins: {
+            litHtml: {
+                '': LitHtml,
+                binding: LitHtmlBinding,
+                model: LitHtmlModel,
+                advanced: LitHtmlAdvanced
+            },
+            
+            translator: {
+                '': Translator
+            }
+        },
+        
+        misc: {
+            di: DependencyInjection,
+            hmr: Hmr
+        },
         
         util: {
             display: Display
-        },
-        
-        docs: {
-            reactivity: {
-                '': Reactivity,
-                withButton: ReactivityButton,
-                computed: ReactivityComputed,
-                alternative: ReactivityAlternative,
-                watcher: ReactivityWatcher
-            },
-            form: {
-                basic: FormBasic
-            },
-            html: {
-                '': Html,
-                binding: HtmlBinding,
-                model: HtmlModel
-            }
         }
     },
     
+    plugins: [
+        new DemoPlugin(),
+        
+        // Until the next major version, the translator is included in the base distribution
+        // After that, you have to install and register the plugin through the @labor-digital/bits-translator package
+        new TranslatorPlugin(),
+        new LitHtmlPlugin()
+    ],
+    
     bitResolver: type => {
-        return import('./Bits/Async/' + ucFirst(type) + 'Bit');
+        if (type === 'async') {
+            type = '';
+        }
+        return import('./Bits/Advanced/Async' + ucFirst(type));
     },
     
     // You can listen on a per-app state on events triggered on the global event bus

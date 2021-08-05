@@ -1,0 +1,211 @@
+<!--
+  ~ Copyright 2021 LABOR.digital
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ Last modified: 2021.03.03 at 14:35
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="../dist/bundle.js"></script>
+    <title>Forms and data binding (Data Pulling)</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <b-mount type="essentials/formBinding" class="card bg-light mt-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7 mb-3">
+                            <label for="gender">Gender</label>
+                            <div class="input-group">
+                                <select class="form-select" data-model="data.gender" id="gender">
+                                    <option></option>
+                                    <option value="male">Male</option>
+                                    <option value="female" selected>Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                
+                                <button class="btn btn-secondary" data-ref="set" data-field="gender">
+                                    Set from JS
+                                </button>
+                                <button class="btn btn-secondary" data-ref="clear" data-field="gender">
+                                    Clear
+                                </button>
+                            </div>
+                            
+                            <label for="firstName">First name</label>
+                            <div class="input-group">
+                                <input id="firstName" class="form-control" type="text" data-model="data.firstName"
+                                       value="First name"/>
+                                
+                                <button class="btn btn-secondary" data-ref="set" data-field="firstName">
+                                    Set from JS
+                                </button>
+                                <button class="btn btn-secondary" data-ref="clear" data-field="firstName">
+                                    Clear
+                                </button>
+                            </div>
+                            
+                            <label for="lastName">Last name</label>
+                            <div class="input-group">
+                                <input id="lastName" class="form-control" type="text" data-model="data.lastName"
+                                       value="Last name"/>
+                                
+                                <button class="btn btn-secondary" data-ref="set" data-field="lastName">
+                                    Set from JS
+                                </button>
+                                <button class="btn btn-secondary" data-ref="clear" data-field="lastName">
+                                    Clear
+                                </button>
+                            </div>
+                            
+                            <label for="birthday">Birthday</label>
+                            <div class="input-group">
+                                <input id="birthday" class="form-control" type="date" data-model="data.birthday"
+                                       value="1999-05-24"/>
+                                
+                                <button class="btn btn-secondary" data-ref="set" data-field="birthday">
+                                    Set from JS
+                                </button>
+                                <button class="btn btn-secondary" data-ref="clear" data-field="birthday">
+                                    Clear
+                                </button>
+                            </div>
+                            
+                            <div class="mt-2 mb-2">
+                                <label>Favourite color</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="color" value="blue"
+                                           data-model="data.color" id="color.blue">
+                                    <label for="color.blue" class="form-check-label">Blue</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="color" value="green"
+                                           data-model="data.color" id="color.green">
+                                    <label for="color.green" class="form-check-label">Green</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="color" value="red"
+                                           data-model="data.color" id="color.red">
+                                    <label for="color.red" class="form-check-label">Red</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="color" value="yellow"
+                                           data-model="data.color" id="color.yellow" checked>
+                                    <label for="color.yellow" class="form-check-label">Yellow</label>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-secondary btn-sm" data-ref="set" data-field="color">
+                                        Set from JS
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm" data-ref="clear" data-field="color">
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <label for="bio">Bio</label>
+                            <div class="input-group">
+                                <textarea id="bio" class="form-control" data-model="data.bio">Having the time of my life ⏰🎉</textarea>
+                                
+                                <button class="btn btn-secondary" data-ref="set" data-field="bio">
+                                    Set from JS
+                                </button>
+                                <button class="btn btn-secondary" data-ref="clear" data-field="bio">
+                                    Clear
+                                </button>
+                            </div>
+                            
+                            <div class="mt-2 mb-2">
+                                <label>Programming/scripting languages you know</label><br>
+                                
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" value="php"
+                                           data-model="data.languages" id="lang.php">
+                                    <label for="lang.php" class="form-check-label">PHP</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" value="js"
+                                           data-model="data.languages" id="lang.js" checked>
+                                    <label for="lang.js" class="form-check-label">Javascript</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" value="py"
+                                           data-model="data.languages" id="lang.py">
+                                    <label for="lang.py" class="form-check-label">Python</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" value="java"
+                                           data-model="data.languages" id="lang.java" checked>
+                                    <label for="lang.java" class="form-check-label">Java</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" value="c++"
+                                           data-model="data.languages" id="lang.c++">
+                                    <label for="lang.c++" class="form-check-label">C++</label>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-secondary btn-sm" data-ref="set" data-field="languages">
+                                        Set from JS
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm" data-ref="clear" data-field="languages">
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <label for="workDays">Work days (select multiple)</label>
+                            <div class="input-group">
+                                <select class="form-select" data-model="data.workDays" id="workDays" multiple>
+                                    <option value="0">Monday</option>
+                                    <option value="1" selected>Tuesday</option>
+                                    <option value="2">Wednesday</option>
+                                    <option value="3">Thursday</option>
+                                    <option value="4">Friday</option>
+                                    <option value="5" selected>Saturday</option>
+                                    <option value="6">Sunday</option>
+                                </select>
+                                
+                                <button class="btn btn-secondary" data-ref="set" data-field="workDays">
+                                    Set from JS
+                                </button>
+                                <button class="btn btn-secondary" data-ref="clear" data-field="workDays">
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-5 order-first order-md-0">
+                            <div class="card bg-white">
+                                <div class="card-body">
+                                    <pre data-bind="data"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </b-mount>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

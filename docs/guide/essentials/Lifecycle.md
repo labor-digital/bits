@@ -5,7 +5,7 @@ That makes it easy to bind your event listeners, modify the dom or clean up when
 
 In this example you can see how and when lifecycle hooks are emitted. 
 
-<Example href="/demo/examples/lifecycle.html" :height="450"/>
+<Example href="/demo/examples/essentials-lifecycle.html" :height="450"/>
 
 ## Bit boot-up
 The bit classes you write are no real web components, but instead only classes that are glued to a DOM node
@@ -110,3 +110,21 @@ This is more or less a "pseudo" lifecycle hook, as it is not really part of the 
 wildcard event handler. It is executed if either the current, or a child bit executed the `$domChanged()` method.
 That will emit an event which bubbles up the DOM tree and tells all bits on the way that they should refresh
 their DOM bindings. This is used if you modify the dom manually/from an external source, and now want the bits to bind themselfs again.
+
+## App Lifecycle
+
+Similar to a single bit, the bit app itself has some lifecycle hooks
+which you can use either directly (through the app config), or when
+writing [plugins](../plugins/WritePlugins.md).
+
+### created
+
+Executed when the app gets created, right after the options have been
+validated, and the dependency injection container was created.
+Configured through ```new BitApp({hooks: {created: () => {}}});```
+
+### mounted
+
+Executed after the app was mounted on the DOM and the bit instances
+have been created.
+Configured through ```new BitApp({hooks: {mounted: () => {}}});```
