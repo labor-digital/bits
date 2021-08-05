@@ -3,8 +3,13 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/demo/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/demo/node_modules/@labor-digital/bits-translator/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/@labor-digital/bits-lit-html/node_modules" />
     </content>
     <content url="file://$MODULE_DIR$/demo/dist" />
+    <content url="file://$MODULE_DIR$/demo/node_modules/@labor-digital/bits" />
+    <content url="file://$MODULE_DIR$/demo/node_modules/@labor-digital/bits-translator" />
+    <content url="file://$MODULE_DIR$/node_modules/@labor-digital/bits-lit-html" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
