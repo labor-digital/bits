@@ -106,6 +106,7 @@ export class AbstractBit
     constructor(context: BitContext)
     {
         this._context = context;
+        context.di.pluginLoader.extendBit(this);
     }
     
     /**
@@ -679,7 +680,11 @@ export class AbstractBit
             this.beforeDestroy();
         }
         
+        const pluginLoader = this._context.di.pluginLoader;
+        
         this._context.destroy();
         this._context = null as any;
+        
+        pluginLoader.destroyBit(this);
     }
 }

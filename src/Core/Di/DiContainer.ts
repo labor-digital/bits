@@ -19,8 +19,7 @@
 import {EventEmitter, forEach, isFunction, PlainObject} from '@labor-digital/helferlein';
 import type {BitApp} from '../BitApp';
 import type {BitRegistry} from '../BitRegistry';
-import type {Translator} from '../Translator/Translator';
-import type {TranslatorFactory} from '../Translator/TranslatorFactory';
+import type {PluginLoader} from '../Plugin/PluginLoader';
 import type {IGetterProvider} from '../types';
 import {makeGetterProvider} from '../util';
 import type {IDiContainerOptions, IDiContainerServiceFactory} from './types';
@@ -44,22 +43,17 @@ export interface DiContainer
      */
     readonly bitRegistry: BitRegistry
     
+    /**
+     * The instance of the plugin loader to load extensions for the bits framework
+     */
+    readonly pluginLoader: PluginLoader
+    
     // /**
     //  * This store is a super-lightweight alternative to the full-blown vuex.
     //  * It allows you to store some reactive values and share them between your application.
     //  * You can configure the initial state in the appConfig object
     //  */
     // readonly state: AppState
-    
-    /**
-     * The translator factory to generate the actual translator instances for the bit mounts
-     */
-    readonly translatorFactory: TranslatorFactory;
-    
-    /**
-     * The link to the global translator
-     */
-    readonly translator: Translator
     
     // /**
     //  * The configuration repository to fetch the registered app config from

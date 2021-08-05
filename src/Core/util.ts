@@ -262,3 +262,18 @@ export function makeGetterProvider(
     
     return h;
 }
+
+/**
+ * Small for-each helper that waits on promises returned by its callback
+ * @param list
+ * @param callback
+ */
+export async function awaitingForEach<T = any>(
+    list: Array<T>,
+    callback: (el: T, k: number) => void | Promise<void>
+): Promise<void>
+{
+    for (let i = 0; i < list.length; i++) {
+        await callback(list[i], i);
+    }
+}

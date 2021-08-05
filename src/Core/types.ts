@@ -98,6 +98,13 @@ export interface IGetterProvider
     add: (key: string) => void
 }
 
+export type TAppLifecycleHooks = 'created' | 'mounted';
+
+export interface IAppLifecycleHook
+{
+    (app: BitApp): void | Promise<void>
+}
+
 export interface IAppEventListener
 {
     (evt: EventEmitterEvent, app: BitApp): void;
@@ -142,4 +149,29 @@ export interface IBitAppOptions
      */
     events?: PlainObject<IAppEventListener | IAppEventListenerWithPriority>
     
+    /**
+     * A list of lifecycle hooks of the app itself
+     */
+    hooks?: {
+        /**
+         * Executed when the app was successfully created but is NOT yet mounted to the DOM
+         */
+        created?: IAppLifecycleHook
+        /**
+         * Executed when the app was successfully bound to the DOM
+         */
+        mounted?: IAppLifecycleHook
+    }
+    
+    /**
+     * A list of plugins that should be loaded in the application
+     */
+    plugins?: Array<IBitPlugin | IBitPluginFactory>
+    //
+    // /**
+    //  * Options for the translator and localization
+    //  * @deprecated will be removed in the next major release: use the translator plugin instead
+    //  */
+    // lang?: IBitAppTranslationOptions
+    //
 }

@@ -16,16 +16,16 @@
  * Last modified: 2021.03.09 at 13:37
  */
 
-import {EventEmitter, isPlainObject, makeOptions} from '@labor-digital/helferlein';
+import type {EventEmitter} from '@labor-digital/helferlein';
 import {configure} from 'mobx';
 import type {BitRegistry} from './BitRegistry';
+import {Bootstrap} from './Bootstrap';
 import type {DiContainer} from './Di/DiContainer';
-import {DiFactory} from './Di/DiFactory';
 import {HmrRegistry} from './HmrRegistry';
 import {Es5Adapter} from './Mount/Es5Adapter';
 import {Es6Adapter} from './Mount/Es6Adapter';
 import {canUseEs6Features} from './Mount/util';
-import type {TranslatorFactory} from './Translator/TranslatorFactory';
+import type {TranslatorFactory} from './Translator/types';
 import type {IBitAppOptions} from './types';
 
 export class BitApp
@@ -41,13 +41,46 @@ export class BitApp
      */
     protected _mountTag: string;
     
-    constructor(options?: IBitAppOptions)
+    /**
+     * The options provided to the application
+     * @protected
+     */
+    protected _options: IBitAppOptions;
+    
+    constructor(options?: IBitAppOptions, autoRun?: boolean)
     {
-        options = this.prepareOptions(options);
-        this._mountTag = options.mountTag!;
-        this._di = DiFactory.make(options, this);
-        this.mount(options);
-        HmrRegistry.registerApp(this);
+        this._options = Bootstrap.prepareOptions(options);
+        this._di = Bootstrap.makeContainer(this);
+        this._mountTag = this._options.mountTag!;
+        
+        if (autoRun !== false) {
+            this.run();
+        }
+    }
+    
+    /**
+     * Runs the application and returns a promise when it has been mounted to the DOM.
+     * NOTE: Until the next version the app runs automatically once the class is created
+     * @todo remove the autoRun option in the next release and make this a default
+     */
+    public run(): Promise<BitApp>
+    {
+        return Bootstrap
+            .runHook('created', this)
+            .then(() => {
+                this.mount();
+                HmrRegistry.registerApp(this);
+            })
+            .then(() => Bootstrap.runHook('mounted', this))
+            .then(() => this);
+    }
+    
+    /**
+     * Returns the options provided to the application
+     */
+    public get options(): IBitAppOptions
+    {
+        return this._options;
     }
     
     /**
@@ -94,52 +127,16 @@ export class BitApp
     }
     
     /**
-     * Internal helper to validate given options against the interface schema
-     * @param options
-     * @protected
-     */
-    protected prepareOptions(options?: IBitAppOptions): IBitAppOptions
-    {
-        return makeOptions(!isPlainObject(options) ? {} : options, {
-            mountTag: {
-                type: 'string',
-                default: 'b-mount'
-            },
-            bits: {
-                type: 'plainObject',
-                default: () => {}
-            },
-            bitResolver: {
-                type: 'callable',
-                default: () => () => null
-            },
-            // These options are validated by the TranslatorFactory
-            lang: {
-                type: 'plainObject',
-                default: () => ({})
-            },
-            services: {
-                type: 'plainObject',
-                default: () => ({})
-            },
-            events: {
-                type: 'plainObject',
-                default: () => ({})
-            }
-        });
-    }
-    
-    /**
      * Internal helper to register the mount bit as a custom element
-     * @param options
      * @protected
      */
-    protected mount(options: IBitAppOptions): this
+    protected mount(): void
     {
         const app = this;
         
         if (canUseEs6Features()) {
-            window.customElements.define(options.mountTag!, // @ts-ignore
+            window.customElements.define(this.mountTag,
+                // @ts-ignore
                 class extends Es6Adapter
                 {
                     constructor() {super(app);}
@@ -149,7 +146,5 @@ export class BitApp
             configure({useProxies: 'never'});
             Es5Adapter.registerApp(this);
         }
-        
-        return this;
     }
 }

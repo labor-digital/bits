@@ -23,6 +23,8 @@ declare global
 
 export * from './Core/Di/DiContainer';
 export * from './Core/Di/types';
+export * from './Core/Plugin/PluginLoader';
+export * from './Core/Plugin/types';
 export * from './Core/BitRegistry';
 export * from './Core/AbstractBit';
 export * from './Core/BitApp';
@@ -36,6 +38,10 @@ export * from './Decorators/Watch';
 export * from './Decorators/Hot';
 export * from './Decorators/AutoRun';
 export * from './Decorators/NonAction';
+export * from './Binding/types';
+export * from './Binding/util';
+export * from './Binding/propertyAccess';
+export * from './Binding/Binder';
 
 export {html, svg} from 'lit-html';
 export {dataModel} from './Binding/directives';
