@@ -494,7 +494,7 @@ export class Binder
     public destroy(): void
     {
         this.unbindWatchers();
-        this._proxy!.destroy();
+        this._proxy?.destroy();
         
         forEach(this._promises, disposer => disposer());
         
