@@ -5,9 +5,9 @@ on:
     branches:
       - master
     paths:
-      - 'plugins/translator/**'
-      - '!plugins/translator/package.json'
-      - '!plugins/translator/CHANGELOG.md'
+      - 'plugins/Translator/**'
+      - '!plugins/Translator/package.json'
+      - '!plugins/Translator/CHANGELOG.md'
 jobs:
   release:
     runs-on: ubuntu-latest
