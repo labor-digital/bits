@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths-ignore:
+      - 'plugins/**'
       - 'composer.json'
       - 'package.json'
       - 'CHANGELOG.md'
