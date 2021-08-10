@@ -17,7 +17,7 @@
  */
 
 import type {AbstractBit, BitApp, DiContainer, IBitPlugin, IBitPluginExtensionInjector} from '@labor-digital/bits';
-import {merge, PlainObject} from '@labor-digital/helferlein';
+import type {PlainObject} from '@labor-digital/helferlein';
 import {TranslatorFactory} from './TranslatorFactory';
 import type {ITranslateOptions, ITranslatorOptions} from './types';
 
@@ -26,11 +26,6 @@ import type {ITranslateOptions, ITranslatorOptions} from './types';
  */
 export class TranslatorPlugin implements IBitPlugin
 {
-    /**
-     * @deprecated temporary marker until the next major version of the bits library
-     */
-    public _bitsLegacyIdentifier = 'translator';
-    
     protected _options: ITranslatorOptions;
     
     constructor(options?: ITranslatorOptions)
@@ -40,8 +35,6 @@ export class TranslatorPlugin implements IBitPlugin
     
     public initialized(app: BitApp): void
     {
-        this._options = this.mergeLegacyOptions(app);
-        
         app.di.setFactory('translatorFactory', () => new TranslatorFactory(this._options))
            .setFactory('translator', (di: DiContainer) => di.translatorFactory.requireGlobalTranslator());
     }
@@ -70,16 +63,5 @@ export class TranslatorPlugin implements IBitPlugin
             },
             getter: true
         });
-    }
-    
-    /**
-     * Merges the legacy app options into the given options
-     * @param app
-     * @protected
-     * @deprecated
-     */
-    protected mergeLegacyOptions(app: BitApp): ITranslatorOptions
-    {
-        return merge(this._options, app.options.lang) as any;
     }
 }
