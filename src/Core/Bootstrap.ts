@@ -85,11 +85,6 @@ export class Bootstrap
             plugins: {
                 type: 'array',
                 default: []
-            },
-            // @todo remove this in the next major release
-            lang: {
-                type: 'plainObject',
-                default: () => ({})
             }
         });
     }

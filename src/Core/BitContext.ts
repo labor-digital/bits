@@ -16,7 +16,6 @@
  * Last modified: 2021.03.09 at 13:39
  */
 
-import type {Translator} from '@labor-digital/bits-translator';
 import {ComponentProxy} from '@labor-digital/helferlein';
 import {runInAction} from 'mobx';
 import type {Binder} from '../Binding/Binder';
@@ -103,15 +102,6 @@ export class BitContext
             });
         }
         return this._proxy;
-    }
-    
-    /**
-     * Returns the translator instance for this bit
-     * @deprecated Removed in the next major release
-     */
-    public get translator(): Translator
-    {
-        return this._mount.bit!.$translator;
     }
     
     /**

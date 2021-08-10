@@ -16,7 +16,6 @@
  * Last modified: 2021.03.09 at 13:49
  */
 
-import alias from '@rollup/plugin-alias';
 import {terser} from 'rollup-plugin-terser';
 import pkg from './package.json';
 
@@ -68,29 +67,6 @@ const options = {
             file: './dist/index.umd.min.js',
             format: 'umd',
             plugins: [terser()]
-        })
-    ],
-    plugins: [
-        // @todo remove this after we can remove the translator plugin
-        alias({
-            entries: [
-                {
-                    find: '@labor-digital/bits-translator',
-                    replacement: './plugins/Translator/dist/index.js'
-                },
-                {
-                    find: /^@labor-digital\/bits-translator(.*)/,
-                    replacement: './plugins/Translator/dist/$1'
-                },
-                {
-                    find: '@labor-digital/bits-lit-html',
-                    replacement: './plugins/LitHtml/dist/index.js'
-                },
-                {
-                    find: /^@labor-digital\/bits-lit-html(.*)/,
-                    replacement: './plugins/LitHtml/dist/$1'
-                }
-            ]
         })
     ]
 };

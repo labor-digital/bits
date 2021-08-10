@@ -147,9 +147,6 @@ export class PluginLoader
             return;
         }
         
-        // @todo remove this in the next major version
-        this.autoloadLegacyPlugins();
-        
         const injector = this.makeInjector();
         const filtered: TBitPluginList = [];
         const app = this._container.app;
@@ -170,34 +167,6 @@ export class PluginLoader
         });
         
         this._plugins = filtered;
-    }
-    
-    /**
-     * @deprecated Temporary solution to automatically add the plugins that were previously part of the core distribution.
-     * @protected
-     */
-    protected autoloadLegacyPlugins(): void
-    {
-        // let translatorLoaded = false;
-        // let litHtmlLoaded = false;
-        // forEach(this._plugins, plugin => {
-        //     switch ((plugin as any)._bitsLegacyIdentifier) {
-        //         case 'translator':
-        //             translatorLoaded = true;
-        //             break;
-        //         case 'litHtml':
-        //             litHtmlLoaded = true;
-        //             break;
-        //     }
-        // });
-        //
-        // if (!translatorLoaded) {
-        //     this._plugins.push(new TranslatorPlugin());
-        // }
-        //
-        // if (!litHtmlLoaded) {
-        //     this._plugins.push(new LitHtmlPlugin());
-        // }
     }
     
     /**

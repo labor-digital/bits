@@ -26,7 +26,7 @@ function updatePackageVersion(filename, version)
 {
     let content = fs.readFileSync(filename).toString('utf-8');
     const patternName = pJson.name.replace(/\//g, '\\\/').replace(/\./g, '\\\.');
-    const pattern = new RegExp('("' + patternName + '"\\s?:\\s+)(".*?")');
+    const pattern = new RegExp('("' + patternName + '"\\s?:\\s+)("[0-9\.^~]*?")');
     content = content.replace(pattern, '$1"' + version + '"');
     fs.writeFileSync(filename, content);
 }
