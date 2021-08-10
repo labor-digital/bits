@@ -36,7 +36,7 @@
 		"watch": "npm run clean && tsc --project ./tsconfig.watch.json --watch"
 	},
 	"peerDependencies": {
-		"@labor-digital/bits": "^1.9.1",
+		"@labor-digital/bits": "2.0.0",
 		"@labor-digital/helferlein": "^4.2.0"
 	},
 	"dependencies": {},
