@@ -12,5 +12,7 @@
     <content url="file://$MODULE_DIR$/node_modules/@labor-digital/bits-lit-html" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="LABOR - JS - Bits - Translator" />
+    <orderEntry type="module" module-name="LABOR - JS - Bits - Lit Html" />
   </component>
 </module>

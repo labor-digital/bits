@@ -16,10 +16,10 @@
  * Last modified: 2021.08.02 at 11:26
  */
 
-import type {IBitNs} from '@labor-digital/bits/Core/types';
 import type {AbstractBit} from '../AbstractBit';
 import type {BitApp} from '../BitApp';
 import type {DiContainer} from '../Di/DiContainer';
+import type {IBitNs} from '../types';
 
 /**
  * Defines the main plugin class
