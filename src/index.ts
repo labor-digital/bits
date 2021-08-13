@@ -16,11 +16,6 @@
  * Last modified: 2021.03.01 at 18:07
  */
 
-declare global
-{
-    const __DEV__: any;
-}
-
 export * from './Core/Di/DiContainer';
 export * from './Core/Di/types';
 export * from './Core/Plugin/PluginLoader';

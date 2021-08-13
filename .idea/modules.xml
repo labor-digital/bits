@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/LABOR - JS - Bits.iml" filepath="$PROJECT_DIR$/.idea/LABOR - JS - Bits.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../bits-docs/.idea/LABOR - JS - Bits - Docs.iml" filepath="$PROJECT_DIR$/../bits-docs/.idea/LABOR - JS - Bits - Docs.iml" />
       <module fileurl="file://$PROJECT_DIR$/../bits-lit-html/.idea/LABOR - JS - Bits - Lit Html.iml" filepath="$PROJECT_DIR$/../bits-lit-html/.idea/LABOR - JS - Bits - Lit Html.iml" />
       <module fileurl="file://$PROJECT_DIR$/../bits-translator/.idea/LABOR - JS - Bits - Translator.iml" filepath="$PROJECT_DIR$/../bits-translator/.idea/LABOR - JS - Bits - Translator.iml" />
     </modules>

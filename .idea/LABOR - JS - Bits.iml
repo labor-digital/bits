@@ -14,5 +14,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="LABOR - JS - Bits - Translator" />
     <orderEntry type="module" module-name="LABOR - JS - Bits - Lit Html" />
+    <orderEntry type="module" module-name="LABOR - JS - Bits - Docs" />
   </component>
 </module>
