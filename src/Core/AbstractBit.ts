@@ -507,8 +507,8 @@ export class AbstractBit
      * By default, it loads the content of a "template" tag, replaces some markers:
      * If the data would look like {key: 'my-value'}, you can use
      *
-     * {{key}} (with html escaping) or
-     * {{{key}}} (without html escaping).
+     * {{key}} (with html escaping) or three {{{ (without html escaping).
+     * (I can't write the triple brace syntax here because it kills the vuepress documentation /o\)
      *
      * NOTE: If your template contains binding attributes like data-bind or data-model, you have to execute
      * the $domChanged() method once, after the node was attached to the dom tree
@@ -534,15 +534,17 @@ export class AbstractBit
      * By default, it loads the content of a "template" tag, replaces some markers:
      * If the data would look like {key: 'my-value'}, you can use
      *
-     * {{key}} (with html escaping) or
-     * {{{key}}} (without html escaping).
+     * {{key}} (with html escaping) or three {{{ (without html escaping).
+     * (I can't write the triple brace syntax here because it kills the vuepress documentation /o\)
      *
      * NOTE: data-binding will be done automatically so you don't need to call this.$domChanged() manually!
      *
-     * @param ref
-     * @param target
-     * @param data
-     * @param adapter
+     * @param ref The key to find the template with. Set data-ref="$ref" on your template tag
+     * @param target The target selector where the rendered template should be mounted to.
+     * @param data A function that returns the data for the view. A function is needed in order to transfer
+     *              the watchable properties to the template handler
+     * @param adapter An optional, alternative rendering adapter to render this template with.
+     *                If omitted the default renderer will be used
      * @protected
      */
     protected $tpl(
@@ -567,7 +569,7 @@ export class AbstractBit
      * ADVICE: For advanced templating tasks I would strongly advise you, to use $html() instead, as it is reactive
      * to any data changes and allows special features like event-listeners.
      *
-     * @param ref The key to find the template with. Set data-ref="$ref" on your template tag
+     * @param ref
      * @param targetOrData
      * @param dataOrAdapter
      * @param adapter
