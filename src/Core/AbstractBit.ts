@@ -395,6 +395,16 @@ export class AbstractBit
     }
     
     /**
+     * Reads the value of a property from an element
+     * @param element the element / elements to set or remove the attribute for
+     * @param attributeName The name of the property to retrieve
+     */
+    protected $attr(
+        element: TElementOrList,
+        attributeName: string
+    ): Array<TBitAttrValue | undefined>
+    
+    /**
      * Sets / removes a given attribute from the list of given elements
      * @param element the element / elements to set or remove the attribute for
      * @param attributes An object where key is the name of the attribute and value is the value to set
@@ -426,7 +436,7 @@ export class AbstractBit
         element: TElementOrList,
         a: string | PlainObject<TBitAttrValue>,
         b?: TBitAttrValue
-    ): this
+    ): this | Array<TBitAttrValue | undefined>
     {
         if (!element) {
             return this;
@@ -434,6 +444,13 @@ export class AbstractBit
         
         if (isString(element)) {
             element = this.$findAll(element);
+        }
+        
+        if (!b && isString(a)) {
+            if (isArray(element)) {
+                return map(element, el => getAttr(el, a));
+            }
+            return [getAttr(element as HTMLElement, a)];
         }
         
         const setter = (element: HTMLElement) => {
