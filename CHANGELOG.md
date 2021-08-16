@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/labor-digital/bits/compare/v1.9.1...v2.0.0) (2021-08-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Translator and LitHtml are now separate plugins that
+have to be installed independently
+
+### Features
+
+* **Translator:** implement translator as standalone plugin ([c1af53b](https://github.com/labor-digital/bits/commit/c1af53bba171615034a198a2bef1a8b49ade7128))
+* **Translator:** implement translator as standalone plugin ([a1d50bb](https://github.com/labor-digital/bits/commit/a1d50bb675c8830b59f1974e58fb6e1cc9056cb2))
+* extract plugin features ([47eb5a2](https://github.com/labor-digital/bits/commit/47eb5a2e5c8154a3066f7da516d09e1aa1536e8d))
+* implement plugin loader ([4bc1b24](https://github.com/labor-digital/bits/commit/4bc1b246f365f1db0499bef01afe90f2cc37b301))
+* remove legacy integration with translator and litHtml ([0ca97a9](https://github.com/labor-digital/bits/commit/0ca97a9d2d5343c252bfa2c26ffe1ab499fbaa1f))
+* **LitHtml:** implement lit html plugin plugin ([816cda9](https://github.com/labor-digital/bits/commit/816cda9b08952a1ac35b4a614f2cec509b0417e2))
+* **Translator:** implement translator plugin ([8c46590](https://github.com/labor-digital/bits/commit/8c465902937c11ae5d1959a53a6f8d378fde843f))
+
+
+### Bug Fixes
+
+* **Binder:** check if this._proxy actually exists before destroying it ([17cd916](https://github.com/labor-digital/bits/commit/17cd91690aa62acbaed16522b30e260966829186))
+
 ## [2.0.0](https://github.com/labor-digital/bits/compare/v1.9.1...v2.0.0) (2021-08-10)
 
 
