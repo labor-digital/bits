@@ -155,7 +155,7 @@ export function resolveEventTarget(
     }
     
     if (target === true) {
-        return [this.$app.eventBus];
+        return [this.$app.di.eventBus];
     } else if (isString(target)) {
         return this.$findAll(target, deep);
     } else if (isNumber((target as any).length) && !(target as any).addEventListener) {
