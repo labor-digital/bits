@@ -37,3 +37,7 @@ export * from './Binding/types';
 export * from './Binding/util';
 export * from './Binding/propertyAccess';
 export * from './Binding/Binder';
+export * from './Core/Template/TemplateRenderer';
+export * from './Core/Template/types';
+export * from './Core/Template/tplAdapterHandlebars';
+export * from './Core/Template/tplAdapterStandalone';

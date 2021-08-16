@@ -1,4 +1,4 @@
-
+// @ts-ignore
 import {BitApp} from './Core/BitApp';
 
 declare global

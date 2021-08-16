@@ -34,6 +34,7 @@ import {BitRegistry} from './BitRegistry';
 import {DiContainer} from './Di/DiContainer';
 import {PluginLoader} from './Plugin/PluginLoader';
 import type {TBitPluginList} from './Plugin/types';
+import {TemplateRenderer} from './Template/TemplateRenderer';
 import type {IAppLifecycleHook, IBitAppOptions, IBitNs, TAppLifecycleHooks} from './types';
 import {awaitingForEach} from './util';
 
@@ -82,6 +83,16 @@ export class Bootstrap
                     mounted: hookDef
                 }
             },
+            tpl: {
+                type: 'plainObject',
+                default: () => ({}),
+                children: {
+                    adapter: {
+                        type: ['callable', 'undefined'],
+                        default: undefined
+                    }
+                }
+            },
             plugins: {
                 type: 'array',
                 default: []
@@ -99,7 +110,8 @@ export class Bootstrap
             app: () => app,
             bitRegistry: (di: DiContainer) => Bootstrap.makeBitRegistry(app, di.pluginLoader),
             eventBus: () => Bootstrap.makeEventBus(app),
-            pluginLoader: (di: DiContainer) => Bootstrap.makePluginLoader(di, app)
+            pluginLoader: (di: DiContainer) => Bootstrap.makePluginLoader(di, app),
+            templateRenderer: () => new TemplateRenderer(app.options.tpl?.adapter)
         }, app.options.services) as any);
     }
     

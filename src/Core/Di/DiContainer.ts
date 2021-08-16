@@ -20,6 +20,7 @@ import {EventEmitter, forEach, isFunction, PlainObject} from '@labor-digital/hel
 import type {BitApp} from '../BitApp';
 import type {BitRegistry} from '../BitRegistry';
 import type {PluginLoader} from '../Plugin/PluginLoader';
+import type {TemplateRenderer} from '../Template/TemplateRenderer';
 import type {IGetterProvider} from '../types';
 import {makeGetterProvider} from '../util';
 import type {IDiContainerOptions, IDiContainerServiceFactory} from './types';
@@ -47,6 +48,11 @@ export interface DiContainer
      * The instance of the plugin loader to load extensions for the bits framework
      */
     readonly pluginLoader: PluginLoader
+    
+    /**
+     * The template renderer to use in the $tpl method
+     */
+    readonly templateRenderer: TemplateRenderer
     
     // /**
     //  * This store is a super-lightweight alternative to the full-blown vuex.

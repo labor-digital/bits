@@ -20,23 +20,37 @@ import {
     ComponentProxy,
     EventEmitter,
     forEach,
+    getAttr,
+    getGuid,
+    isArray,
+    isFunction,
     isPlainObject,
     isString,
-    isUndefined,
+    map,
     PlainObject
 } from '@labor-digital/helferlein';
 import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {runInAction} from 'mobx';
 import type {TCssClass, TCssStyle} from '../Binding/types';
-import {setElementAttribute, setElementContent} from '../Binding/util';
+import {setElementAttribute} from '../Binding/util';
 import type {TWatchTarget} from '../Reactivity/types';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {TBitAttrValue} from './Definition/types';
 import type {DiContainer} from './Di/DiContainer';
 import type {BitMountHTMLElement} from './Mount/types';
+import type {ITemplateDataProvider, ITemplateRendererAdapter} from './Template/types';
 import type {IEventListener, IPropertyWatcher, TElementOrList, TEventList, TEventTarget} from './types';
 import {bitEventActionWrap, findClosest, findElement, resolveEventTarget} from './util';
+
+
+declare global
+{
+    interface HTMLElement
+    {
+        _bitTplHash: string
+    }
+}
 
 export interface AbstractBit
 {
@@ -468,7 +482,62 @@ export class AbstractBit
     
     /**
      * Utility to load the content of a "template" tag into a new sub-node which will be returned.
-     * To be selectable, your template should have a data-ref="$ref" attribute.
+     * To be selectable, your template MUST have a data-ref="$ref" attribute.
+     *
+     * The method allows you to provide a list of values that should be injected
+     * while the template is loaded. NOTE: This is not reactive, but merely an initial state.
+     *
+     * By default, it loads the content of a "template" tag, replaces some markers:
+     * If the data would look like {key: 'my-value'}, you can use
+     *
+     * {{key}} (with html escaping) or
+     * {{{key}}} (without html escaping).
+     *
+     * NOTE: If your template contains binding attributes like data-bind or data-model, you have to execute
+     * the $domChanged() method once, after the node was attached to the dom tree
+     *
+     * @param ref The key to find the template with. Set data-ref="$ref" on your template tag
+     * @param data The data to render the template with
+     * @param adapter An optional, alternative rendering adapter to render this template with.
+     *                If omitted the default renderer will be used
+     * @protected
+     */
+    protected $tpl(ref: string, data?: PlainObject, adapter?: ITemplateRendererAdapter): DocumentFragment
+    
+    /**
+     * Utility to load the content of a "template" tag into a new sub-node which will be returned.
+     * To be selectable, your template MUST have a data-ref="$ref" attribute.
+     *
+     * Providing a "target" your the method will automatically inject the rendered HTML into the DOM
+     * at the selected position.
+     *
+     * The data MUST be a function that returns the data in order to keep reactivity.
+     * The template will be automatically re-rendered once the data changes.
+     *
+     * By default, it loads the content of a "template" tag, replaces some markers:
+     * If the data would look like {key: 'my-value'}, you can use
+     *
+     * {{key}} (with html escaping) or
+     * {{{key}}} (without html escaping).
+     *
+     * NOTE: data-binding will be done automatically so you don't need to call this.$domChanged() manually!
+     *
+     * @param ref
+     * @param target
+     * @param data
+     * @param adapter
+     * @protected
+     */
+    protected $tpl(
+        ref: string,
+        target: string | HTMLElement,
+        data?: ITemplateDataProvider,
+        adapter?: ITemplateRendererAdapter
+    ): IReactionDisposer
+    
+    /**
+     * Utility to load the content of a "template" tag into a new sub-node which will be returned.
+     * To be selectable, your template MUST have a data-ref="$ref" attribute.
      *
      * The method allows you to provide a one-dimensional list of values that should be injected
      * while the template is loaded. NOTE: This is not reactive, but merely an initial state.
@@ -482,31 +551,67 @@ export class AbstractBit
      * to any data changes and allows special features like event-listeners.
      *
      * @param ref The key to find the template with. Set data-ref="$ref" on your template tag
-     * @param data Optional data to be injected, when the template is loaded.
+     * @param targetOrData
+     * @param dataOrAdapter
+     * @param adapter
      * @protected
      */
-    protected $tpl(ref: string, data?: PlainObject): DocumentFragment
+    protected $tpl(
+        ref: string,
+        targetOrData?: string | HTMLElement | PlainObject,
+        dataOrAdapter?: ITemplateDataProvider | ITemplateRendererAdapter,
+        adapter?: ITemplateRendererAdapter
+    ): DocumentFragment | IReactionDisposer
     {
-        const tpl = this.$find('template[data-ref="' + ref + '"]');
+        const _tpl: HTMLTemplateElement | null = this.$find('template[data-ref="' + ref + '"]') as any;
         
-        if (!tpl) {
+        if (!_tpl) {
             throw new Error('Could not find a template with the data-ref="' + ref + '" attribute on it!');
         }
         
-        const node = (tpl as HTMLTemplateElement).content.cloneNode(true) as DocumentFragment;
-        if (isPlainObject(data)) {
-            forEach(node.querySelectorAll('[data-value]') as any, (v: HTMLElement) => {
-                const val = v.dataset.value!;
-                
-                if (isUndefined(data[val])) {
-                    return;
-                }
-                
-                setElementContent(v, data[val], true);
-            });
+        const hash = _tpl._bitTplHash = _tpl._bitTplHash ?? getGuid();
+        const tpl = _tpl.innerHTML + '';
+        let target: HTMLElement | undefined;
+        
+        if (targetOrData) {
+            if (isString(targetOrData)) {
+                target = this.$find(targetOrData) ?? undefined;
+            } else if (!isPlainObject(targetOrData)) {
+                target = targetOrData as HTMLElement;
+            }
         }
         
-        return node;
+        const renderer = this.$di.templateRenderer;
+        
+        if (target) {
+            if (!isFunction(dataOrAdapter)) {
+                if (isPlainObject(dataOrAdapter)) {
+                    console.error(
+                        'Your data has to be wrapped into a function when you want to use dynamic re-rendering!');
+                }
+                dataOrAdapter = () => ({});
+            }
+            
+            return this.$context.reactivityProvider.addAutoRun(() => {
+                target!.innerHTML = renderer.render(
+                    tpl,
+                    (dataOrAdapter as ITemplateDataProvider)!(),
+                    hash,
+                    adapter
+                );
+                setTimeout(() => {this.$domChanged();}, 1);
+            });
+            
+        } else {
+            const _tmp = document.createElement('template');
+            _tmp.innerHTML = renderer.render(
+                tpl,
+                isPlainObject(targetOrData) ? targetOrData : {},
+                hash,
+                dataOrAdapter as ITemplateRendererAdapter
+            );
+            return _tmp.content;
+        }
     }
     
     /**

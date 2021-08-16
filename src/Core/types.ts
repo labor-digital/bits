@@ -23,6 +23,7 @@ import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {IDiContainerOptions} from './Di/types';
 import type {IBitPlugin, IBitPluginFactory} from './Plugin/types';
+import type {ITemplateRendererAdapter} from './Template/types';
 
 export type TEventTarget =
     ComponentProxyEventTarget
@@ -156,4 +157,16 @@ export interface IBitAppOptions
      * A list of plugins that should be loaded in the application
      */
     plugins?: Array<IBitPlugin | IBitPluginFactory>
+    
+    /**
+     * Template rendering options using the $tpl() method
+     */
+    tpl?: {
+        /**
+         * A template renderer adapter for a template engine integration.
+         * By default a simple {{marker}} replacer is included, you can use tplAdapterHandlebars()
+         * to use handlebars
+         */
+        adapter: ITemplateRendererAdapter
+    }
 }
