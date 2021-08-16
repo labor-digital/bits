@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/labor-digital/bits/compare/v2.0.0...v2.1.0) (2021-08-16)
+
+
+### Features
+
+* remove docs and demo from main repository ([3f79042](https://github.com/labor-digital/bits/commit/3f7904284886e5e6a0c3a7facb261eb85d25756e))
+
+
+### Bug Fixes
+
+* remove .idea and .github directories from npm bundle ([67e47a8](https://github.com/labor-digital/bits/commit/67e47a827ba27509246c35f13c663dd75ae7d1bd))
+
 ## [2.0.0](https://github.com/labor-digital/bits/compare/v1.9.1...v2.0.0) (2021-08-12)
 
 
