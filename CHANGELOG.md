@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/labor-digital/bits/compare/v2.1.0...v2.2.0) (2021-08-16)
+
+
+### Features
+
+* **AbstractBit:** add read support for the $attr() method ([9b99e0b](https://github.com/labor-digital/bits/commit/9b99e0b3602f7f7e59501ca12d23a240b7db6aca))
+* improve template rendering integration ([791608a](https://github.com/labor-digital/bits/commit/791608aac087312385e34f3067cbe39c28f1bcc7))
+
+
+### Bug Fixes
+
+* **utils:** use di container to resolve event bus in resolveEventTarget ([1f11295](https://github.com/labor-digital/bits/commit/1f1129517b77500a32ec4becc8ea4a5156d9059c))
+
 ## [2.1.0](https://github.com/labor-digital/bits/compare/v2.0.0...v2.1.0) (2021-08-16)
 
 
