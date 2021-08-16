@@ -20,7 +20,6 @@ import {ComponentProxy} from '@labor-digital/helferlein';
 import {runInAction} from 'mobx';
 import type {Binder} from '../Binding/Binder';
 import type {Provider} from '../Reactivity/Provider';
-import type {BitApp} from './BitApp';
 import type {DiContainer} from './Di/DiContainer';
 import type {Mount} from './Mount/Mount';
 
@@ -49,29 +48,11 @@ export class BitContext
     }
     
     /**
-     * Returns the tag of the bit mount component
-     * @deprecated will be removed without replacement in the next major release
-     */
-    public get tag(): string
-    {
-        return this.app.mountTag;
-    }
-    
-    /**
      * Returns the di container instance of the application
      */
     public get di(): DiContainer
     {
         return this._di;
-    }
-    
-    /**
-     * Returns the instance of the bit app this context is linked to
-     * @deprecated removed in the next major release - use di.app instead
-     */
-    public get app(): BitApp
-    {
-        return this._di.app;
     }
     
     /**

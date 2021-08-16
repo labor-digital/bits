@@ -16,16 +16,13 @@
  * Last modified: 2021.03.09 at 13:37
  */
 
-import type {EventEmitter} from '@labor-digital/helferlein';
 import {configure} from 'mobx';
-import type {BitRegistry} from './BitRegistry';
 import {Bootstrap} from './Bootstrap';
 import type {DiContainer} from './Di/DiContainer';
 import {HmrRegistry} from './HmrRegistry';
 import {Es5Adapter} from './Mount/Es5Adapter';
 import {Es6Adapter} from './Mount/Es6Adapter';
 import {canUseEs6Features} from './Mount/util';
-import type {TranslatorFactory} from './Translator/types';
 import type {IBitAppOptions} from './types';
 
 export class BitApp
@@ -84,15 +81,6 @@ export class BitApp
     }
     
     /**
-     * Returns the instance of the bit registry for this app
-     * @deprecated removed in the next major release - use di.bitRegistry instead
-     */
-    public get registry(): BitRegistry
-    {
-        return this._di.bitRegistry;
-    }
-    
-    /**
      * Returns the configured bit mount tag for this app
      */
     public get mountTag(): string
@@ -106,24 +94,6 @@ export class BitApp
     public get di(): DiContainer
     {
         return this._di;
-    }
-    
-    /**
-     * Returns the global event bus for this app
-     * @deprecated removed in the next major release - use di.eventBus instead
-     */
-    public get eventBus(): EventEmitter
-    {
-        return this._di.eventBus;
-    }
-    
-    /**
-     * Internal access to the translator factory
-     * @deprecated removed in the next major release - use di.translatorFactory instead
-     */
-    public get translatorFactory(): TranslatorFactory
-    {
-        return this._di.translatorFactory;
     }
     
     /**
