@@ -50,16 +50,23 @@ interface IHandlebarsCompileOptions
 
 /**
  * Adapter to use handlebars in the $tpl method
- * @param options
+ * @param handlebars either the result require('handlebars/dist/handlebars.js');
+ *                  or "Handlebars" if you use: import * as Handlebars from 'handlebars/dist/handlebars'
+ *                  depending on your build setup
+ * @param options additional handlebars compiler options
  */
-export function tplAdapterHandlebars(options?: IHandlebarsCompileOptions): ITemplateRendererAdapter
+export function tplAdapterHandlebars(
+    handlebars: PlainObject,
+    options?: IHandlebarsCompileOptions
+): ITemplateRendererAdapter
 {
-    const Handlebars = require('handlebars/dist/handlebars.js');
     const compiled: Map<string, Function> = new Map();
+    
+    if (!handlebars || !handlebars.compile) throw new Error('Invalid handlebars implementation given!');
     
     return function (template: string, data: PlainObject, hash: string): string {
         if (!compiled.has(hash)) {
-            compiled.set(hash, Handlebars.compile(template, options ?? {}));
+            compiled.set(hash, handlebars.compile(template, options ?? {}));
         }
         
         return compiled.get(hash)!(data);
