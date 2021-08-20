@@ -16,8 +16,6 @@
  * Last modified: 2021.08.16 at 10:04
  */
 import type {PlainObject} from '@labor-digital/helferlein';
-// @ts-ignore
-import Handlebars from 'handlebars/dist/handlebars.js';
 import type {ITemplateRendererAdapter} from './types';
 
 type KnownHelpers = {
@@ -56,6 +54,7 @@ interface IHandlebarsCompileOptions
  */
 export function tplAdapterHandlebars(options?: IHandlebarsCompileOptions): ITemplateRendererAdapter
 {
+    const Handlebars = require('handlebars/dist/handlebars.js');
     const compiled: Map<string, Function> = new Map();
     
     return function (template: string, data: PlainObject, hash: string): string {
