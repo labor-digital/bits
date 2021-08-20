@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.3](https://github.com/labor-digital/bits/compare/v2.2.2...v2.2.3) (2021-08-20)
+
+
+### Bug Fixes
+
+* **tplAdapterHandlebars:** require handlebars implementation to avoid build issues without it ([0c19338](https://github.com/labor-digital/bits/commit/0c19338ffb103479c8ef2866867a4135aad5a2d4))
+
 ### [2.2.2](https://github.com/labor-digital/bits/compare/v2.2.1...v2.2.2) (2021-08-20)
 
 
