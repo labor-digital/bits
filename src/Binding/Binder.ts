@@ -141,46 +141,6 @@ export class Binder
     }
     
     /**
-     * Internal helper to find all data bindings and create the glue for the given specification
-     * @protected
-     */
-    protected bindData(): Promise<void>
-    {
-        const selector = // OneWay: Escaped data binding
-            '*[data-bind],'
-            // OneWay: Unescaped data binding
-            + '*[data-bind-html],'
-            // OneWay: Attribute binding
-            + '*[data-bind-attr],'
-            // TwoWay: Model binding on elements
-            + '*[data-model]';
-        
-        return this.makeDestroyablePromise(resolve => {
-            const children: Array<Promise<any>> = [];
-            runInAction(() => {
-                this._pullableProperties = [];
-                forEach(findElement(this._mount!.el!, selector, true), target => {
-                    children.push((async () => {
-                        // OneWay: Escaped data binding
-                        await this.bindOneWayContent(target, false);
-                        // OneWay: Unescaped data binding
-                        await this.bindOneWayContent(target, true);
-                        // OneWay: Attribute binding
-                        await this.bindOneWayAttributes(target);
-                        // TwoWay: Model binding on elements
-                        await this.bindTwoWayValue(target);
-                    })());
-                });
-            });
-            
-            Promise.all(children).then(() => {
-                delete this._pullableProperties;
-                resolve();
-            });
-        }).then();
-    }
-    
-    /**
      * Internal API that allows the parent bit to read a public property from the local bit.
      * If the local bit is not yet mounted, a promise will be returned which resolves when the binding is ready.
      *
@@ -311,6 +271,71 @@ export class Binder
         }
         
         prop.set(n);
+    }
+    
+    /**
+     * Destroys this data-binder by removing all references
+     */
+    public destroy(): void
+    {
+        this.unbindWatchers();
+        this._proxy?.destroy();
+        
+        forEach(this._promises, disposer => disposer());
+        
+        delete this._mount;
+        delete this._proxy;
+        delete this._bit;
+        delete this._definition;
+        delete this._delayedActions;
+        this._disposers = null as any;
+        this._accessors = null as any;
+        this._foreignModelBinders = null as any;
+        this._foreignModelBound = null as any;
+        this._promises = null as any;
+        this._promiseIdCount = null as any;
+    }
+    
+    /**
+     * Internal helper to find all data bindings and create the glue for the given specification
+     * @protected
+     */
+    protected bindData(): Promise<void>
+    {
+        // Helper to iterate all elements with the provided css selector
+        const forEachEl = (
+            list: Array<any>,
+            selector: string,
+            callback: (target: HTMLElement) => Promise<any>
+        ): void => {
+            forEach(findElement(this._mount!.el!, selector, true),
+                function (target) {list.push(callback(target));}
+            );
+        };
+        
+        return this.makeDestroyablePromise(resolve => {
+            const children: Array<Promise<any>> = [];
+            runInAction(() => {
+                this._pullableProperties = [];
+                
+                // OneWay: Escaped data binding
+                forEachEl(children, '*[data-bind]', target => this.bindOneWayContent(target, false));
+                
+                // OneWay: Unescaped data binding
+                forEachEl(children, '*[data-bind-html]', target => this.bindOneWayContent(target, true));
+                
+                // OneWay: Attribute binding
+                forEachEl(children, '*[data-bind-attr]', target => this.bindOneWayAttributes(target));
+                
+                // TwoWay: Model binding on elements
+                forEachEl(children, '*[data-model]', target => this.bindTwoWayValue(target));
+            });
+            
+            Promise.all(children).then(() => {
+                delete this._pullableProperties;
+                resolve();
+            });
+        }).then();
     }
     
     /**
@@ -486,29 +511,6 @@ export class Binder
                 resolve(v);
             }, reject);
         });
-    }
-    
-    /**
-     * Destroys this data-binder by removing all references
-     */
-    public destroy(): void
-    {
-        this.unbindWatchers();
-        this._proxy?.destroy();
-        
-        forEach(this._promises, disposer => disposer());
-        
-        delete this._mount;
-        delete this._proxy;
-        delete this._bit;
-        delete this._definition;
-        delete this._delayedActions;
-        this._disposers = null as any;
-        this._accessors = null as any;
-        this._foreignModelBinders = null as any;
-        this._foreignModelBound = null as any;
-        this._promises = null as any;
-        this._promiseIdCount = null as any;
     }
     
     /**
