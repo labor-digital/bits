@@ -18,8 +18,8 @@
 
 import {ComponentProxy} from '@labor-digital/helferlein';
 import {runInAction} from 'mobx';
-import type {Binder} from '../Binding/Binder';
 import type {Provider} from '../Reactivity/Provider';
+import type {Binder} from './Binding/Binder';
 import type {DiContainer} from './Di/DiContainer';
 import type {Mount} from './Mount/Mount';
 

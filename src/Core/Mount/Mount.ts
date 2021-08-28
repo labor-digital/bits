@@ -16,9 +16,9 @@
  * Last modified: 2021.03.10 at 22:20
  */
 
-import {Binder} from '../../Binding/Binder';
 import {Provider} from '../../Reactivity/Provider';
 import type {AbstractBit} from '../AbstractBit';
+import {Binder} from '../Binding/Binder';
 import type {BitApp} from '../BitApp';
 import {BitContext} from '../BitContext';
 import {HmrRegistry} from '../HmrRegistry';
@@ -130,7 +130,8 @@ export class Mount
                 
                 // Bind the internal helpers
                 const react = ctx.reactivityProvider;
-                const binder = ctx.binder;
+                // const binder = ctx.binder;
+                const binder = new Binder();
                 react.bind(this, this._i);
                 this._onElGet = () => {
                     react.domChangeDependency();

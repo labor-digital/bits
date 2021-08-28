@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.03.05 at 17:34
+ * Last modified: 2021.08.27 at 23:01
  */
 
 import {
@@ -27,14 +27,14 @@ import {
     PlainObject,
     reduce
 } from '@labor-digital/helferlein';
-import type {BitMountHTMLElement} from '../Core/Mount/types';
+import type {BitMountHTMLElement} from '../Mount/types';
 import type {IPropertyAccessor, TCssClass, TCssStyle} from './types';
 
 declare global
 {
     interface HTMLElement
     {
-        _bitOldClasses: Array<string>
+        _bitOldClasses: Array<string>;
     }
 }
 
@@ -180,8 +180,9 @@ interface ISplitMapPair
  * [{target: 'target', source: 'source'}, {target: 'attribute', source: 'property'}]
  *
  * @param map
+ * @param allowEmptySource If set to true there needs to be no ":" to create a pair.
  */
-export function splitMapString(map: string): Array<ISplitMapPair>
+export function splitMapString(map: string, allowEmptySource?: boolean): Array<ISplitMapPair>
 {
     const result: Array<ISplitMapPair> = [];
     
@@ -189,10 +190,15 @@ export function splitMapString(map: string): Array<ISplitMapPair>
         
         const p = pair.split(':');
         if (p.length !== 2) {
-            console.error(
-                'Invalid map pair: "' + pair + '", at position: ' + k + ' in given map: "' + map + '"! '
-                + 'A pair must look like: "target:source" / "attribute:property", with multiple pairs separated by ",".');
+            if (allowEmptySource && p.length === 1) {
+                p.push('');
+            } else {
+                console.error(
+                    'Invalid map pair: "' + pair + '", at position: ' + k + ' in given map: "' + map + '"! '
+                    + 'A pair must look like: "target:source" / "attribute:property", with multiple pairs separated by ",".');
+            }
         }
+        
         result.push({target: p[0].trim(), source: p[1].trim()});
     });
     

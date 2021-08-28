@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.03.05 at 23:41
+ * Last modified: 2021.06.30 at 13:05
  */
 import {closest, getPath, isObject, setPath} from '@labor-digital/helferlein';
 import {runInAction} from 'mobx';
-import type {AbstractBit} from '../Core/AbstractBit';
+import type {AbstractBit} from '../AbstractBit';
 import type {IPropertyAccessor} from './types';
 
 /**
