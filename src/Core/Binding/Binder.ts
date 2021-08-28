@@ -42,7 +42,7 @@ export class Binder
     protected _disposers: Array<Function> = [];
     protected _promiseDisposers: Map<number, Function> = new Map();
     protected _promiseIdCount: number = 0;
-    protected _accessors: Map<string, IPropertyAccessor> = new Map();
+    protected _accessors: Map<string, Promise<IPropertyAccessor | null>> = new Map();
     protected _foreignModelBinders: Map<string, Function> = new Map();
     protected _foreignModelBound: boolean = false;
     protected _delayedActions?: Set<Function> = new Set();
@@ -135,26 +135,33 @@ export class Binder
      */
     public getAccessor(property: string): Promise<IPropertyAccessor | null>
     {
-        return this.makePromise<IPropertyAccessor | null>(resolve => {
+        if (this._accessors.has(property)) {
+            return this._accessors.get(property)!;
+        }
+        
+        const promise = this.makePromise(resolve => {
+            
             this.callOrDelay(async () => {
-                if (!this._accessors.has(property)) {
-                    
-                    const accessor = await getPropertyAccessor(
-                        this._bit!,
-                        property,
-                        this._definition!.getPropertyNames()
-                    );
-                    
-                    if (accessor === null) {
-                        return resolve(null);
-                    }
-                    
-                    this._accessors.set(property, accessor);
+                
+                const accessor = await getPropertyAccessor(
+                    this._bit!,
+                    property,
+                    this._definition!.getPropertyNames()
+                );
+                
+                if (accessor === null) {
+                    this._accessors.delete(property);
+                    return resolve(null);
                 }
                 
-                resolve(this._accessors.get(property) ?? null);
+                return resolve(accessor);
             });
+            
         });
+        
+        this._accessors.set(property, promise);
+        
+        return promise;
     }
     
     /**
