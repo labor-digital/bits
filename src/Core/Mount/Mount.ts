@@ -138,15 +138,14 @@ export class Mount
                 await binder.bind(this, this._i);
                 
                 // Bind listener to refresh the bindings when the domChange event was executed
-                this._changeListener = async () => {
+                this.el!.addEventListener('domChange', this._changeListener = async () => {
                     await binder.refresh();
                     react.reactToDomChanged();
                     
                     if (this._i?.domChanged) {
                         this._i.domChanged();
                     }
-                };
-                this.el!.addEventListener('domChange', this._changeListener);
+                });
                 
                 // Because this library is a hybrid that works with the actual dom
                 // we must store the initial HTML content, so we can restore it when the component gets rebound.
