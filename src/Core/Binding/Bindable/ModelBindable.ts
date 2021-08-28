@@ -35,18 +35,7 @@ export class ModelBindable extends AbstractBindable
         }
         
         const bind = (event: string) =>
-            this.context.proxy.bind(this.el, event, async e => {
-                if (e.target !== this.el) {
-                    return;
-                }
-                
-                const n = await getElementValue(this.el, prop);
-                if (n === prop.get()) {
-                    return;
-                }
-                
-                prop.set(n);
-            });
+            this.context.proxy!.bind(this.el, event, e => binder.reactToChangeEvent(e, this.el, prop));
         
         bind('change');
         bind('keyup');

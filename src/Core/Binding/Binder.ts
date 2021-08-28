@@ -32,7 +32,7 @@ import {BinderContext} from './BinderContext';
 import {IfDirective} from './Directive/IfDirective';
 import {getPropertyAccessor} from './propertyAccess';
 import type {IPropertyAccessor} from './types';
-import {setElementAttribute} from './util';
+import {getElementValue, setElementAttribute} from './util';
 
 export class Binder
 {
@@ -262,6 +262,32 @@ export class Binder
     public isPublicProperty(property: string): boolean
     {
         return this._definition?.hasAttribute(property) ?? false;
+    }
+    
+    /**
+     * External api to trigger a property update when a bound html element emitted an update event.
+     * This is only needed for two-way data binding.
+     *
+     * @param e The event that was triggered
+     * @param target The target element the property is bound to
+     * @param prop
+     */
+    public async reactToChangeEvent(
+        e: UIEvent | KeyboardEvent,
+        target: HTMLElement,
+        prop: IPropertyAccessor
+    ): Promise<void>
+    {
+        if (e.target !== target) {
+            return;
+        }
+        
+        const n = await getElementValue(target, prop);
+        if (n === prop.get()) {
+            return;
+        }
+        
+        prop.set(n);
     }
     
     /**
