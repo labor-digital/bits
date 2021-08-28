@@ -403,7 +403,7 @@ export class Binder
                             }
                             
                             children.push(i.bind(value));
-                            disposers.push(i.destroy);
+                            disposers.push(() => i.destroy());
                         }
                     );
                 });
