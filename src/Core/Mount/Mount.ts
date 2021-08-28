@@ -130,13 +130,12 @@ export class Mount
                 
                 // Bind the internal helpers
                 const react = ctx.reactivityProvider;
-                // const binder = ctx.binder;
-                const binder = new Binder();
+                const binder = ctx.binder;
                 react.bind(this, this._i);
                 this._onElGet = () => {
                     react.domChangeDependency();
                 };
-                await binder.bind(this, this._i);
+                await binder.bind(this._i);
                 
                 // Bind listener to refresh the bindings when the domChange event was executed
                 this.el!.addEventListener('domChange', this._changeListener = async () => {

@@ -21,7 +21,6 @@ import {autorun, runInAction} from 'mobx';
 import type {AbstractBit} from '../AbstractBit';
 import type {BitDefinition} from '../Definition/BitDefinition';
 import {DefinitionRegistry} from '../Definition/DefinitionRegistry';
-import type {Mount} from '../Mount/Mount';
 import type {BitMountHTMLElement} from '../Mount/types';
 import {findElement, runOnEventProxy} from '../util';
 import {ModelBindable} from './Bindable/ModelBindable';
@@ -69,19 +68,18 @@ export class Binder
      * This is a internal process that MUST be executed ONLY ONCE! Multiple binds on the same
      * bit will cause the universe to grind to a halt; and we don't want that to happen, right?
      *
-     * @param _ The dom node of the bit mount
      * @param bit The instance of the bit class
      */
-    public async bind(_: Mount, bit: AbstractBit): Promise<void>
+    public async bind(bit: AbstractBit): Promise<void>
     {
         if (this._bit) {
             throw new Error('The binding provider was already bound, and can not be rebound!');
         }
         
         this._el = bit.$el;
-        this._bit = bit;
         this._definition = DefinitionRegistry.getDefinitionFor(Object.getPrototypeOf(bit));
         this._context = new BinderContext(bit, this, new ComponentProxy(bit));
+        this._bit = bit;
         
         // Bind foreign models to our children
         forEach(this._delayedActions!, a => a());
@@ -265,7 +263,6 @@ export class Binder
     {
         return this._definition?.hasAttribute(property) ?? false;
     }
-    
     
     /**
      * Destroys this data-binder by removing all references
