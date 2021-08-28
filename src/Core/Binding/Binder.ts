@@ -99,10 +99,13 @@ export class Binder
         
         // Reset all our current bindings
         this.dispatchDisposers();
-        this._context!.proxy!.unbindAll();
+        this._context.proxy!.unbindAll();
         this._accessors = new Map();
         
+        // Reapply all possible bindings
         this.applyEventListeners();
+        this._foreignModelBound = true;
+        forEach(this._foreignModelBinders, binder => binder());
         await this.applyBindables();
     }
     
@@ -303,6 +306,7 @@ export class Binder
      */
     public destroy(): void
     {
+        forEach(this._promiseDisposers, disposer => disposer());
         this.dispatchDisposers();
         this._context!.destroy();
         
@@ -326,7 +330,6 @@ export class Binder
      */
     protected dispatchDisposers(): void
     {
-        forEach(this._promiseDisposers, disposer => disposer());
         forEach(this._disposers, disposer => disposer());
         this._disposers = [];
     }
