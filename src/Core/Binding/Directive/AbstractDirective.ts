@@ -16,6 +16,7 @@
  * Last modified: 2021.08.27 at 22:31
  */
 
+import {isString} from '@labor-digital/helferlein';
 import {autorun} from 'mobx';
 import {AbstractBindable} from '../Bindable/AbstractBindable';
 
@@ -44,6 +45,65 @@ export interface AbstractDirective
 
 export abstract class AbstractDirective extends AbstractBindable
 {
+    /**
+     * Helper to create a reactive getter for the value of a "data" attribute.
+     * It can resolve either a static value, or a reference on a data property in the local bit.
+     *
+     * Should be used in the "bind()" hook, to avoid overhead while resolving the accessors later.
+     *
+     * Example: <div data-my-dir="foo" data-my-attribute="baz" data-my-prop="@property"></div>
+     *
+     * public async bind(value: any): Promise<void>
+     * {
+     *    await this.registerDataGetter('myAttribute');
+     *    await this.registerDataGetter('myProp');
+     *
+     *    await super.bind(value);
+     * }
+     *
+     * After the registration you can use the getter anywhere in your directive
+     *
+     * protected myMethod(){
+     *      console.log(this.myAttribute); // => "baz"
+     *      console.log(this.myProp); // => Returns the value of the "property" property in the bit
+     * }
+     *
+     * If a data attribute is not defined undefined is returned
+     *
+     * @param attr the camel-backed name of the data property to read.
+     * @protected
+     */
+    protected async registerDataGetter(attr: string): Promise<void>
+    {
+        let v = this.el.dataset[attr];
+        let getter: () => string | undefined = () => undefined;
+        if (isString(v)) {
+            v = v.trim();
+            
+            if (v[0] === '@') {
+                const prop = await this.context.binder.getAccessor(v.substr(1));
+                if (prop) {
+                    getter = () => prop.get();
+                }
+                
+            } else {
+                getter = () => v!;
+            }
+        }
+        
+        Object.defineProperty(this, attr, {
+            get: function () {
+                return getter();
+            }
+        });
+    }
+    
+    /**
+     * Inherited from the "AbstractBindable" super class,
+     * but also registers the call of the "update" method for when the value changes
+     *
+     * @param value
+     */
     public async bind(value: any): Promise<void>
     {
         let bound = false;

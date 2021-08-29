@@ -45,7 +45,6 @@ export abstract class AbstractBindable
      */
     protected context: BinderContext;
     
-    
     /**
      * List of reaction disposers to be executed when the bindable is destroyed
      * @protected
