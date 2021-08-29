@@ -31,9 +31,9 @@ import {
 } from '@labor-digital/helferlein';
 import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {runInAction} from 'mobx';
-import type {TCssClass, TCssStyle} from '../Binding/types';
-import {setElementAttribute} from '../Binding/util';
 import type {TWatchTarget} from '../Reactivity/types';
+import type {TCssClass, TCssStyle} from './Binding/types';
+import {setElementAttribute} from './Binding/util';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {TBitAttrValue} from './Definition/types';
@@ -43,12 +43,11 @@ import type {ITemplateDataProvider, ITemplateRendererAdapter} from './Template/t
 import type {IEventListener, IPropertyWatcher, TElementOrList, TEventList, TEventTarget} from './types';
 import {bitEventActionWrap, findClosest, findElement, resolveEventTarget} from './util';
 
-
 declare global
 {
     interface HTMLElement
     {
-        _bitTplHash: string
+        _bitTplHash: string;
     }
 }
 
@@ -88,7 +87,7 @@ export interface AbstractBit
      * Lifecycle hook, that gets executed after the bit instance was destroyed.
      * A bit gets destroyed every time you detach/move it in a DOM, except the b-mount has the "keep-alive" attribute set
      */
-    destroyed?(): void
+    destroyed?(): void;
     
     /**
      * Lifecycle hook, that gets executed every time this bit receives or triggers the "domChange" event using the

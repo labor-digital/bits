@@ -18,7 +18,7 @@
 
 import type {PlainObject} from '@labor-digital/helferlein';
 import {forEach, getPath, htmlEncode, isEmpty, isUndefined} from '@labor-digital/helferlein';
-import {setElementContent} from '../../Binding/util';
+import {setElementContent} from '../Binding/util';
 
 export function tplAdapterStandalone(template: string, data: PlainObject): string
 {

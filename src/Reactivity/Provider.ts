@@ -29,8 +29,8 @@ import {
     reaction,
     runInAction
 } from 'mobx';
-import {setElementAttribute} from '../Binding/util';
 import type {AbstractBit} from '../Core/AbstractBit';
+import {setElementAttribute} from '../Core/Binding/util';
 import type {BitDefinition} from '../Core/Definition/BitDefinition';
 import {DefinitionRegistry} from '../Core/Definition/DefinitionRegistry';
 import type {Mount} from '../Core/Mount/Mount';

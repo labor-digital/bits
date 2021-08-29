@@ -16,9 +16,9 @@
  * Last modified: 2021.03.10 at 22:20
  */
 
-import {Binder} from '../../Binding/Binder';
 import {Provider} from '../../Reactivity/Provider';
 import type {AbstractBit} from '../AbstractBit';
+import {Binder} from '../Binding/Binder';
 import type {BitApp} from '../BitApp';
 import {BitContext} from '../BitContext';
 import {HmrRegistry} from '../HmrRegistry';
@@ -135,18 +135,17 @@ export class Mount
                 this._onElGet = () => {
                     react.domChangeDependency();
                 };
-                await binder.bind(this, this._i);
+                await binder.bind(this._i);
                 
                 // Bind listener to refresh the bindings when the domChange event was executed
-                this._changeListener = async () => {
+                this.el!.addEventListener('domChange', this._changeListener = async () => {
                     await binder.refresh();
                     react.reactToDomChanged();
                     
                     if (this._i?.domChanged) {
                         this._i.domChanged();
                     }
-                };
-                this.el!.addEventListener('domChange', this._changeListener);
+                });
                 
                 // Because this library is a hybrid that works with the actual dom
                 // we must store the initial HTML content, so we can restore it when the component gets rebound.

@@ -22,6 +22,7 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"strict": true,
+		"useUnknownInCatchVariables": false,
 		"suppressImplicitAnyIndexErrors": true,
 		// Type-checking settings.
 		"lib": [

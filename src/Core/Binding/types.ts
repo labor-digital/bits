@@ -13,10 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Last modified: 2021.03.09 at 14:38
+ * Last modified: 2021.08.28 at 15:16
  */
 
-import type {PlainObject} from '@labor-digital/helferlein';
+
+import type {ComponentProxy, PlainObject} from '@labor-digital/helferlein';
+import type {AbstractBit} from '../AbstractBit';
+import type {AbstractBindable} from './Bindable/AbstractBindable';
+import type {Binder} from './Binder';
+import type {BinderContext} from './BinderContext';
+import type {AbstractDirective} from './Directive/AbstractDirective';
+
+export interface IBindableCtor
+{
+    new(el: HTMLElement, context: BinderContext): AbstractBindable;
+}
+
+export interface IBindableConfig
+{
+    key: string;
+    ctor: IBindableCtor;
+    selector: string;
+    dataKey: string;
+}
+
+export interface IDirectiveCtor
+{
+    new(el: HTMLElement, bit: AbstractBit, proxy: ComponentProxy, binder: Binder): AbstractDirective;
+}
+
 
 export interface IPropertyAccessor<T = any>
 {
@@ -29,7 +54,7 @@ export interface IPropertyAccessor<T = any>
      * The path in form of an array, to traverse the data of the bit.
      * The path always starts with the property
      */
-    readonly path: Array<string>
+    readonly path: Array<string>;
     
     /**
      * Sets the value of the property to the given value
