@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/labor-digital/bits/compare/v2.3.0...v2.4.0) (2021-08-30)
+
+
+### Features
+
+* make directives configurable ([b338021](https://github.com/labor-digital/bits/commit/b3380217e0131a039ffd32f3231cc58d52815400))
+
 ## [2.3.0](https://github.com/labor-digital/bits/compare/v2.2.3...v2.3.0) (2021-08-29)
 
 
