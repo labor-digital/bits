@@ -17,10 +17,8 @@
  */
 
 
-import type {ComponentProxy, PlainObject} from '@labor-digital/helferlein';
-import type {AbstractBit} from '../AbstractBit';
+import type {PlainObject} from '@labor-digital/helferlein';
 import type {AbstractBindable} from './Bindable/AbstractBindable';
-import type {Binder} from './Binder';
 import type {BinderContext} from './BinderContext';
 import type {AbstractDirective} from './Directive/AbstractDirective';
 
@@ -39,9 +37,8 @@ export interface IBindableConfig
 
 export interface IDirectiveCtor
 {
-    new(el: HTMLElement, bit: AbstractBit, proxy: ComponentProxy, binder: Binder): AbstractDirective;
+    new(el: HTMLElement, context: BinderContext): AbstractDirective | AbstractBindable;
 }
-
 
 export interface IPropertyAccessor<T = any>
 {
