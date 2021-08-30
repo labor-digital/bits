@@ -17,6 +17,7 @@
  */
 
 import {EventEmitter, forEach, isFunction, PlainObject} from '@labor-digital/helferlein';
+import type {BindableList} from '../Binding/BindableList';
 import type {BitApp} from '../BitApp';
 import type {BitRegistry} from '../BitRegistry';
 import type {PluginLoader} from '../Plugin/PluginLoader';
@@ -32,27 +33,33 @@ export interface DiContainer
     /**
      * Returns the running app object
      */
-    readonly app: BitApp
+    readonly app: BitApp;
     
     /**
      * Returns the global event bus/event emitter instance
      */
-    readonly eventBus: EventEmitter
+    readonly eventBus: EventEmitter;
     
     /**
      * The instance of the bit registry for this app
      */
-    readonly bitRegistry: BitRegistry
+    readonly bitRegistry: BitRegistry;
     
     /**
      * The instance of the plugin loader to load extensions for the bits framework
      */
-    readonly pluginLoader: PluginLoader
+    readonly pluginLoader: PluginLoader;
     
     /**
      * The template renderer to use in the $tpl method
      */
-    readonly templateRenderer: TemplateRenderer
+    readonly templateRenderer: TemplateRenderer;
+    
+    /**
+     * The list of bindable constructors.
+     * @internal this is mostly an implementation detail and should not be considered part of the API
+     */
+    readonly bindableList: BindableList;
     
     // /**
     //  * This store is a super-lightweight alternative to the full-blown vuex.

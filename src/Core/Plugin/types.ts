@@ -16,7 +16,9 @@
  * Last modified: 2021.08.02 at 11:26
  */
 
+import type {PlainObject} from '@labor-digital/helferlein';
 import type {AbstractBit} from '../AbstractBit';
+import type {IDirectiveCtor} from '../Binding/types';
 import type {BitApp} from '../BitApp';
 import type {DiContainer} from '../Di/DiContainer';
 import type {IBitNs} from '../types';
@@ -30,19 +32,19 @@ export interface IBitPlugin
      * Executed right after the plugin instance was initialized
      * @param app
      */
-    initialized?(app: BitApp): void
+    initialized?(app: BitApp): void;
     
     /**
      * Executed when the bits app reaches the "created" lifecycle hook, before the DOM gets mounted
      * @param app
      */
-    created?(app: BitApp): void | Promise<void>
+    created?(app: BitApp): void | Promise<void>;
     
     /**
      * Executed when the bits app reaches the "mounted" lifecycle hook, after the bits have been mounted to the DOM
      * @param app
      */
-    mounted?(app: BitApp): void | Promise<void>
+    mounted?(app: BitApp): void | Promise<void>;
     
     /**
      * Allows the plugin to provide a list of bits to be registered in the application.
@@ -50,7 +52,14 @@ export interface IBitPlugin
      *
      * @param app
      */
-    provideBits?(app: BitApp): IBitNs
+    provideBits?(app: BitApp): IBitNs;
+    
+    /**
+     * Allows the plugin to provide a list of directives that should be registered in the application.
+     * Note: It is possible to overrule built-in directives!
+     * @param app
+     */
+    provideDirectives?(app: BitApp): PlainObject<IDirectiveCtor>;
     
     /**
      * Executed once when the plugin was instantiated, allows you to register extension
@@ -70,17 +79,17 @@ export type TBitPluginList = Array<IBitPlugin>
  */
 export interface IBitPluginFactory
 {
-    (container: DiContainer, app: BitApp): IBitPlugin
+    (container: DiContainer, app: BitApp): IBitPlugin;
 }
 
 export interface IBitPluginExtensionCallback
 {
-    (this: AbstractBit, ...args: any): any
+    (this: AbstractBit, ...args: any): any;
 }
 
 export interface IBitPluginExtensionDestructor
 {
-    (this: AbstractBit, ...args: any): any
+    (this: AbstractBit, ...args: any): any;
 }
 
 export interface IBitPluginExtensionOptions
@@ -89,17 +98,17 @@ export interface IBitPluginExtensionOptions
      * Callback to execute when the extension method is executed,
      * or a factory to retrieve a value to return when "getter" was set to true
      */
-    callback: IBitPluginExtensionCallback
+    callback: IBitPluginExtensionCallback;
     
     /**
      * Callback to be executed when a bit gets destroyed
      */
-    destructor?: IBitPluginExtensionDestructor
+    destructor?: IBitPluginExtensionDestructor;
     
     /**
      * True if the extension
      */
-    getter?: boolean
+    getter?: boolean;
 }
 
 export type TBitPluginExtensionValue = IBitPluginExtensionOptions | IBitPluginExtensionCallback
@@ -109,10 +118,10 @@ export interface IBitPluginExtensionInjector
     (
         key: string,
         callbackOrOptions: TBitPluginExtensionValue
-    ): void
+    ): void;
 }
 
 export interface IBitPluginHandler
 {
-    (bit: AbstractBit): void
+    (bit: AbstractBit): void;
 }

@@ -29,6 +29,12 @@ import {
     merge,
     PlainObject
 } from '@labor-digital/helferlein';
+import {ModelBindable} from './Binding/Bindable/ModelBindable';
+import {OneWayAttrBindable} from './Binding/Bindable/OneWayAttrBindable';
+import {OneWayBindable} from './Binding/Bindable/OneWayBindable';
+import {OneWayHtmlBindable} from './Binding/Bindable/OneWayHtmlBindable';
+import {BindableList} from './Binding/BindableList';
+import {IfDirective} from './Binding/Directive/IfDirective';
 import type {BitApp} from './BitApp';
 import {BitRegistry} from './BitRegistry';
 import {DiContainer} from './Di/DiContainer';
@@ -96,6 +102,10 @@ export class Bootstrap
             plugins: {
                 type: 'array',
                 default: []
+            },
+            directives: {
+                type: 'plainObject',
+                default: () => ({})
             }
         });
     }
@@ -106,13 +116,17 @@ export class Bootstrap
      */
     public static makeContainer(app: BitApp): DiContainer
     {
-        return new DiContainer(merge({
-            app: () => app,
-            bitRegistry: (di: DiContainer) => Bootstrap.makeBitRegistry(app, di.pluginLoader),
-            eventBus: () => Bootstrap.makeEventBus(app),
-            pluginLoader: (di: DiContainer) => Bootstrap.makePluginLoader(di, app),
-            templateRenderer: () => new TemplateRenderer(app.options.tpl?.adapter)
-        }, app.options.services) as any);
+        return new DiContainer(
+            merge(
+                {
+                    app: () => app,
+                    bitRegistry: (di: DiContainer) => Bootstrap.makeBitRegistry(app, di.pluginLoader),
+                    eventBus: () => Bootstrap.makeEventBus(app),
+                    pluginLoader: (di: DiContainer) => Bootstrap.makePluginLoader(di, app),
+                    templateRenderer: () => new TemplateRenderer(app.options.tpl?.adapter),
+                    bindableList: (di: DiContainer) => Bootstrap.makeBindableList(app, di.pluginLoader)
+                }, app.options.services
+            ) as any);
     }
     
     /**
@@ -152,10 +166,7 @@ export class Bootstrap
                 }
                 
                 // If the "type" is empty, remove the trailing slash
-                registry.add(type === ''
-                    ? ns.substr(0, ns.length - 1)
-                    : ns + type,
-                    ctor);
+                registry.add(type === '' ? ns.substr(0, ns.length - 1) : ns + type, ctor);
             });
         };
         
@@ -166,6 +177,27 @@ export class Bootstrap
         }
         
         return registry;
+    }
+    
+    /**
+     * Creates the list of bindable classes that should be available in the application.
+     * The list is composed of built-in directives, plugin directives and configured directives
+     *
+     * @param app
+     * @param pluginLoader
+     * @protected
+     */
+    protected static makeBindableList(app: BitApp, pluginLoader: PluginLoader): BindableList
+    {
+        return new BindableList({
+            bind: OneWayBindable,
+            bindHtml: OneWayHtmlBindable,
+            bindAttr: OneWayAttrBindable,
+            model: ModelBindable,
+            if: IfDirective,
+            ...pluginLoader.getDirectives(),
+            ...app.options.directives
+        });
     }
     
     /**

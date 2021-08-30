@@ -19,6 +19,7 @@
 
 import type {ComponentProxyEventTarget, EventEmitterEvent, PlainObject} from '@labor-digital/helferlein';
 import type {AbstractBit} from './AbstractBit';
+import type {IDirectiveCtor} from './Binding/types';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {IDiContainerOptions} from './Di/types';
@@ -37,7 +38,7 @@ export type TElementOrList = HTMLElement | Element | NodeListOf<Element> | Array
 
 export interface IEventTargetProvider
 {
-    (this: AbstractBit): TEventTarget
+    (this: AbstractBit): TEventTarget;
 }
 
 export type TCustomEvent = Event | EventEmitterEvent | any;
@@ -51,22 +52,22 @@ export type TEventList = string | Array<string>;
 
 export interface IPropertyWatcher
 {
-    (n: any, o: any): void
+    (n: any, o: any): void;
 }
 
 export interface IBitConstructor
 {
-    new(context: BitContext): AbstractBit
+    new(context: BitContext): AbstractBit;
     
     /**
      * @hidden
      */
-    __bit: true
+    __bit: true;
     
     /**
      * @hidden
      */
-    __hmrId?: string
+    __hmrId?: string;
 }
 
 export interface IBitResolver
@@ -76,7 +77,7 @@ export interface IBitResolver
 
 export interface IBitNs
 {
-    [key: string]: IBitConstructor | IBitNs
+    [key: string]: IBitConstructor | IBitNs;
 }
 
 export interface IBitRegistryResolver
@@ -90,14 +91,14 @@ export interface IGetterProvider
      * Adds a new getter to the target on the fly
      * @param key The property to be registered as getter
      */
-    add: (key: string) => void
+    add: (key: string) => void;
 }
 
 export type TAppLifecycleHooks = 'created' | 'mounted';
 
 export interface IAppLifecycleHook
 {
-    (app: BitApp): void | Promise<void>
+    (app: BitApp): void | Promise<void>;
 }
 
 export interface IAppEventListener
@@ -157,6 +158,12 @@ export interface IBitAppOptions
      * A list of plugins that should be loaded in the application
      */
     plugins?: Array<IBitPlugin | IBitPluginFactory>
+    
+    /**
+     * A list of directives that should be registered in the application.
+     * NOTE: It is possible to overrule built-in, or plugin directives!
+     */
+    directives?: PlainObject<IDirectiveCtor>
     
     /**
      * Template rendering options using the $tpl() method

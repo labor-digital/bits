@@ -18,8 +18,9 @@
 
 // import {LitHtmlPlugin} from '@labor-digital/bits-lit-html';
 // import {TranslatorPlugin} from '@labor-digital/bits-translator';
-import {forEach, isFunction, isPlainObject, merge} from '@labor-digital/helferlein';
+import {forEach, isFunction, isPlainObject, merge, PlainObject} from '@labor-digital/helferlein';
 import type {AbstractBit} from '../AbstractBit';
+import type {IDirectiveCtor} from '../Binding/types';
 import type {DiContainer} from '../Di/DiContainer';
 import type {IBitNs, TAppLifecycleHooks} from '../types';
 import type {IBitPlugin, IBitPluginExtensionInjector, IBitPluginHandler, TBitPluginList} from './types';
@@ -101,16 +102,15 @@ export class PluginLoader
      */
     public getBits(): IBitNs
     {
-        let bits: IBitNs = {};
-        
-        const app = this._container.app;
-        forEach(this.plugins, plugin => {
-            if (isFunction(plugin.provideBits)) {
-                bits = merge(bits, plugin.provideBits(app)) as IBitNs;
-            }
-        });
-        
-        return bits;
+        return this.runProviderMethod('provideBits');
+    }
+    
+    /**
+     * Returns the list of all directives that have been provided by the registered plugins
+     */
+    public getDirectives(): PlainObject<IDirectiveCtor>
+    {
+        return this.runProviderMethod('provideDirectives');
     }
     
     /**
@@ -219,5 +219,24 @@ export class PluginLoader
             callback(bit);
             parent(bit);
         };
+    }
+    
+    /**
+     * Internal helper to run a provider method on all registered plugin instances
+     * @param methodName
+     * @protected
+     */
+    protected runProviderMethod(methodName: string): PlainObject
+    {
+        let list: PlainObject = {};
+        
+        const app = this._container.app;
+        forEach(this.plugins, plugin => {
+            if (isFunction(plugin[methodName])) {
+                list = merge(list, plugin[methodName](app)) as PlainObject;
+            }
+        });
+        
+        return list;
     }
 }

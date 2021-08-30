@@ -236,7 +236,7 @@ export class Mount
         HmrRegistry.registerMount(this._el, ctor);
         
         const react = new Provider();
-        const binder = new Binder();
+        const binder = new Binder(di.bindableList);
         
         const context = new BitContext(
             this,

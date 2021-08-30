@@ -23,13 +23,8 @@ import type {BitDefinition} from '../Definition/BitDefinition';
 import {DefinitionRegistry} from '../Definition/DefinitionRegistry';
 import type {BitMountHTMLElement} from '../Mount/types';
 import {findElement, runOnEventProxy} from '../util';
-import {ModelBindable} from './Bindable/ModelBindable';
-import {OneWayAttrBindable} from './Bindable/OneWayAttrBindable';
-import {OneWayBindable} from './Bindable/OneWayBindable';
-import {OneWayHtmlBindable} from './Bindable/OneWayHtmlBindable';
-import {BindableList} from './BindableList';
+import type {BindableList} from './BindableList';
 import {BinderContext} from './BinderContext';
-import {IfDirective} from './Directive/IfDirective';
 import {getPropertyAccessor} from './propertyAccess';
 import type {IPropertyAccessor} from './types';
 import {getElementValue, setElementAttribute} from './util';
@@ -49,15 +44,9 @@ export class Binder
     protected _bindables: BindableList;
     protected _context?: BinderContext;
     
-    constructor()
+    constructor(bindables: BindableList)
     {
-        this._bindables = new BindableList({
-            bind: OneWayBindable,
-            bindHtml: OneWayHtmlBindable,
-            bindAttr: OneWayAttrBindable,
-            model: ModelBindable,
-            if: IfDirective
-        });
+        this._bindables = bindables;
     }
     
     /**
