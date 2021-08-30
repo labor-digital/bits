@@ -32,7 +32,7 @@ export class OneWayBindable extends AbstractBindable
     
     public async bind(value: any): Promise<void>
     {
-        const prop = await this.binder.getAccessor(value);
+        const prop = await this.$binder.getAccessor(value);
         
         if (!prop) {
             return;
@@ -40,7 +40,7 @@ export class OneWayBindable extends AbstractBindable
         
         let initial = true;
         
-        this.disposers.push(
+        this.$disposers.push(
             autorun(() => {
                 const val = prop.get();
                 
@@ -51,7 +51,7 @@ export class OneWayBindable extends AbstractBindable
                     }
                 }
                 
-                setElementContent(this.el, val, this.escapeContent);
+                setElementContent(this.$el, val, this.escapeContent);
             })
         );
     }

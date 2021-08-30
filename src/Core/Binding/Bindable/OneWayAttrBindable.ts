@@ -28,7 +28,7 @@ export class OneWayAttrBindable extends AbstractBindable
     public bind(value: any): Promise<void>
     {
         const children: Array<Promise<any>> = [];
-        const binder = this.binder;
+        const binder = this.$binder;
         
         forEach(splitMapString(value), pair => {
             children.push(
@@ -39,9 +39,9 @@ export class OneWayAttrBindable extends AbstractBindable
                         return resolve();
                     }
                     
-                    this.disposers.push(
+                    this.$disposers.push(
                         autorun(() => {
-                            setElementAttribute(this.el, pair.target, prop.get());
+                            setElementAttribute(this.$el, pair.target, prop.get());
                         })
                     );
                     

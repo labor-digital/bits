@@ -35,19 +35,19 @@ export class IfDirective extends AbstractDirective
     
     public async bind(value: any): Promise<void>
     {
-        const next = this.el.nextElementSibling as HTMLElement | undefined;
+        const next = this.$el.nextElementSibling as HTMLElement | undefined;
         this.elseEl = next && next.dataset && next.dataset.else !== undefined ? next : undefined;
         
-        await this.registerDataGetter('transition');
-        await this.registerDataGetter('transitionDuration');
-        await this.registerDataGetter('ifDisplay');
+        await this.$registerDataGetter('transition');
+        await this.$registerDataGetter('transitionDuration');
+        await this.$registerDataGetter('ifDisplay');
         
         await super.bind(value);
     }
     
     public mounted(value: any)
     {
-        this.initial = this.el.style.display ?? '';
+        this.initial = this.$el.style.display ?? '';
         this.calculate(value, true);
     }
     
@@ -59,7 +59,7 @@ export class IfDirective extends AbstractDirective
     public unmount()
     {
         this.transitionDisposer && this.transitionDisposer();
-        this.el.style.display = this.initial;
+        this.$el.style.display = this.initial;
     }
     
     protected calculate(value: any, initial: boolean): void
@@ -68,9 +68,9 @@ export class IfDirective extends AbstractDirective
         
         const trueDisplayType = this.ifDisplay || 'block';
         
-        if (!initial && this.el.dataset.transition !== undefined) {
+        if (!initial && this.$el.dataset.transition !== undefined) {
             this.transitionDisposer = handleTransition(
-                this.el,
+                this.$el,
                 !!value,
                 this.transition,
                 isNumeric(this.transitionDuration) ? parseInt(this.transitionDuration) : undefined,
@@ -79,7 +79,7 @@ export class IfDirective extends AbstractDirective
             );
         } else {
             this.elseEl && (this.elseEl.style.display = !value ? trueDisplayType : 'none');
-            this.el.style.display = !!value ? trueDisplayType : 'none';
+            this.$el.style.display = !!value ? trueDisplayType : 'none';
         }
     }
 }

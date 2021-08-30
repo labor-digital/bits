@@ -37,33 +37,37 @@ export interface AbstractBindable
 
 export abstract class AbstractBindable
 {
-    protected el: HTMLElement;
+    /**
+     * The reference to the html element this class was bound to
+     * @protected
+     */
+    protected $el: HTMLElement;
     
     /**
      * The binder context
      * @protected
      */
-    protected context: BinderContext;
+    protected $context: BinderContext;
     
     /**
      * List of reaction disposers to be executed when the bindable is destroyed
      * @protected
      */
-    protected disposers: Array<IReactionDisposer | Function> = [];
+    protected $disposers: Array<IReactionDisposer | Function> = [];
     
     constructor(el: HTMLElement, context: BinderContext)
     {
-        this.el = el;
-        this.context = context;
+        this.$el = el;
+        this.$context = context;
     }
     
     /**
      * The binder instance for extended API methods
      * @protected
      */
-    protected get binder(): Binder
+    protected get $binder(): Binder
     {
-        return this.context.binder;
+        return this.$context.binder;
     }
     
     /**
@@ -73,18 +77,17 @@ export abstract class AbstractBindable
     abstract bind(value: any): Promise<void>;
     
     /**
-     * Destroys this bindable
+     * This is the the DANGER ZONE! Calling this method will destroy the bindable instance completely
+     * @protected
      */
-    public destroy(): void
+    public $destroy(): void
     {
-        if (this.unbind) {
-            this.unbind();
-        }
+        this.unbind && this.unbind();
         
-        forEach(this.disposers, disposer => disposer());
+        forEach(this.$disposers, disposer => disposer());
         
-        this.el = null as any;
-        this.context = null as any;
-        this.disposers = null as any;
+        this.$el = null as any;
+        this.$context = null as any;
+        this.$disposers = null as any;
     }
 }

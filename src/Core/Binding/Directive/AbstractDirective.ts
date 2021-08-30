@@ -60,8 +60,8 @@ export abstract class AbstractDirective extends AbstractBindable
      * ```typescript
      * public async bind(value: any): Promise<void>
      * {
-     *    await this.registerDataGetter('myAttribute');
-     *    await this.registerDataGetter('myProp');
+     *    await this.$registerDataGetter('myAttribute');
+     *    await this.$registerDataGetter('myProp');
      *
      *    await super.bind(value);
      * }
@@ -80,15 +80,15 @@ export abstract class AbstractDirective extends AbstractBindable
      * @param attr the camel-backed name of the data property to read.
      * @protected
      */
-    protected async registerDataGetter(attr: string): Promise<void>
+    protected async $registerDataGetter(attr: string): Promise<void>
     {
-        let v = this.el.dataset[attr];
+        let v = this.$el.dataset[attr];
         let getter: () => string | undefined = () => undefined;
         if (isString(v)) {
             v = v.trim();
             
             if (v[0] === '@') {
-                const prop = await this.context.binder.getAccessor(v.substr(1));
+                const prop = await this.$binder.getAccessor(v.substr(1));
                 if (prop) {
                     getter = () => prop.get();
                 }
@@ -115,16 +115,14 @@ export abstract class AbstractDirective extends AbstractBindable
     {
         let bound = false;
         
-        const prop = value ? await this.binder.getAccessor(value) : null;
+        const prop = value ? await this.$binder.getAccessor(value) : null;
         
-        this.disposers.push(
+        this.$disposers.push(
             autorun(() => {
                 const val = prop ? prop.get() : prop;
                 if (!bound) {
                     bound = true;
-                    if (this.mounted) {
-                        this.mounted(val);
-                    }
+                    this.mounted && this.mounted(val);
                 } else if (this.update) {
                     this.update(val);
                 }
@@ -132,12 +130,13 @@ export abstract class AbstractDirective extends AbstractBindable
         );
     }
     
-    public destroy(): void
+    /**
+     * This is the the DANGER ZONE! Calling this method will destroy the directive instance completely
+     * @protected
+     */
+    public $destroy(): void
     {
-        if (this.unmount) {
-            this.unmount();
-        }
-        
-        super.destroy();
+        this.unmount && this.unmount();
+        super.$destroy();
     }
 }

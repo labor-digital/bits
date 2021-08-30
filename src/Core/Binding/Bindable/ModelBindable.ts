@@ -26,8 +26,8 @@ export class ModelBindable extends AbstractBindable
     
     public async bind(value: any): Promise<void>
     {
-        const binder = this.binder;
-        const pullable = this.context.pullableProperties ?? [];
+        const binder = this.$binder;
+        const pullable = this.$context.pullableProperties ?? [];
         const prop = await binder.getAccessor(value);
         
         if (!prop) {
@@ -35,7 +35,7 @@ export class ModelBindable extends AbstractBindable
         }
         
         const bind = (event: string) =>
-            this.context.proxy!.bind(this.el, event, e => binder.reactToChangeEvent(e, this.el, prop));
+            this.$context.proxy!.bind(this.$el, event, e => binder.reactToChangeEvent(e, this.$el, prop));
         
         bind('change');
         bind('keyup');
@@ -50,11 +50,11 @@ export class ModelBindable extends AbstractBindable
         
         // Either pull the value into the property (property is NULL), or set the value of the input field (not NULL)
         if (pullable.indexOf(prop.path) !== -1) {
-            prop.set(await getElementValue(this.el, prop));
+            prop.set(await getElementValue(this.$el, prop));
         } else {
-            setElementValue(this.el, propertyValue);
+            setElementValue(this.$el, propertyValue);
         }
         
-        this.disposers.push(autorun(() => setElementValue(this.el, prop.get())));
+        this.$disposers.push(autorun(() => setElementValue(this.$el, prop.get())));
     }
 }
