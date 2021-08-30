@@ -1,6 +1,6 @@
 {
 	"name": "@labor-digital/bits",
-	"version": "2.3.0",
+	"version": "2.4.0",
 	"description": "Code encapsulation, data-binding and reactive HTML in the light-dom; without a framework - with web-components",
 	"homepage": "https://bits.labor.tools/",
 	"license": "Apache-2.0",
