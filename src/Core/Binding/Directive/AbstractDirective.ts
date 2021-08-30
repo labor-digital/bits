@@ -51,8 +51,10 @@ export abstract class AbstractDirective extends AbstractBindable
      *
      * Should be used in the "bind()" hook, to avoid overhead while resolving the accessors later.
      *
-     * Example: <div data-my-dir="foo" data-my-attribute="baz" data-my-prop="@property"></div>
+     * @example
+     * <div data-my-dir="foo" data-my-attribute="baz" data-my-prop="@property"></div>
      *
+     * @example
      * public async bind(value: any): Promise<void>
      * {
      *    await this.registerDataGetter('myAttribute');
@@ -61,14 +63,13 @@ export abstract class AbstractDirective extends AbstractBindable
      *    await super.bind(value);
      * }
      *
-     * After the registration you can use the getter anywhere in your directive
-     *
+     * @example
+     * // After the registration you can use the getter anywhere in your directive
+     * // If a data attribute is not defined undefined is returned
      * protected myMethod(){
      *      console.log(this.myAttribute); // => "baz"
      *      console.log(this.myProp); // => Returns the value of the "property" property in the bit
      * }
-     *
-     * If a data attribute is not defined undefined is returned
      *
      * @param attr the camel-backed name of the data property to read.
      * @protected
