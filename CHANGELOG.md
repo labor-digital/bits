@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/labor-digital/bits/compare/v2.2.3...v2.3.0) (2021-08-29)
+
+
+### Features
+
+* **AbstractDirective:** introduce registerDataGetter() helper ([949f0a5](https://github.com/labor-digital/bits/commit/949f0a5b124b2eb43620392be84dd5b6545d353b))
+* **Binder:** add reactToChangeEvent() back to binder class to fix lit-html integration ([7df2777](https://github.com/labor-digital/bits/commit/7df2777d189b789d393a9ee1c344563fc894ceb7))
+* **Binder:** ensure correct invocation of bind() ([9520414](https://github.com/labor-digital/bits/commit/95204145f1906d341e30e7b7e762c22a23d99cc5))
+* **Binding:** refactor bindData() to loop elements separately ([39126ae](https://github.com/labor-digital/bits/commit/39126ae967c466bfe016103b62ed6ea595a73083))
+* **IfDirective:** implement transitions and "data-else" ([54e59c0](https://github.com/labor-digital/bits/commit/54e59c0edb6cd8561fa07d286b7af6655adbb5a8))
+* update dependencies ([409646e](https://github.com/labor-digital/bits/commit/409646ea9fae6aa72d4cf3bfb9a8e9c7ad89695a))
+* **Binder:** refactor binder to be more modular ([cf29feb](https://github.com/labor-digital/bits/commit/cf29feb19a2e226fffa5106dff13625b8bc671e8))
+
+
+### Bug Fixes
+
+* **Binder:** fix issue (no this) when destroying bindables ([f237e0a](https://github.com/labor-digital/bits/commit/f237e0a9f816c498ebf49e32f2308538f3d5637e))
+* **Binder:** fix multiple binding issues after refactoring ([a1503b8](https://github.com/labor-digital/bits/commit/a1503b8b9fe2429289fa12cf68d757d1d2eb195c))
+* **Binder:** streamline getAccessor() handling to avoid multiple lookups ([8e344dc](https://github.com/labor-digital/bits/commit/8e344dcfd5fdba4865ed2576d43247cc7b88879f))
+
 ### [2.2.3](https://github.com/labor-digital/bits/compare/v2.2.2...v2.2.3) (2021-08-20)
 
 
