@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/labor-digital/bits/compare/v2.4.3...v2.5.0) (2021-08-30)
+
+
+### Features
+
+* **Binding:** change directive/bindable api to match bit instance ([e4396eb](https://github.com/labor-digital/bits/commit/e4396eb34be4f7010888875b83acddb81e4b2712))
+
 ### [2.4.3](https://github.com/labor-digital/bits/compare/v2.4.2...v2.4.3) (2021-08-30)
 
 
