@@ -16,9 +16,7 @@
  * Last modified: 2021.08.28 at 22:53
  */
 
-import {map} from '@labor-digital/helferlein';
-import {addClass} from '@labor-digital/helferlein/src/Dom/addClass';
-import {removeClass} from '@labor-digital/helferlein/src/Dom/removeClass';
+import {addClass, map, removeClass} from '@labor-digital/helferlein';
 
 const userAgent = window.navigator.userAgent.toLowerCase();
 const isIe9 = userAgent.indexOf('msie 9.0') > 0;
@@ -52,11 +50,6 @@ if (hasTransition) {
 export interface ITransitionDisposer
 {
     (): void;
-}
-
-export interface ITransitionCallback
-{
-    (state: boolean): void;
 }
 
 type TTransitionOptList = Array<string>;
