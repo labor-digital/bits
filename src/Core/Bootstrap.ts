@@ -56,7 +56,7 @@ export class Bootstrap
     {
         options = !isPlainObject(options) ? {} : options;
         const hookDef: PlainObject = {
-            type: ['function', 'undefined'],
+            type: ['callable', 'undefined'],
             default: undefined
         };
         
