@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.5.2](https://github.com/labor-digital/bits/compare/v2.5.1...v2.5.2) (2021-09-11)
+
+
+### Bug Fixes
+
+* **Bootstrap:** use "callable" type instead of invalid "function" in hook definition ([513032e](https://github.com/labor-digital/bits/commit/513032e20a036e533e05c7ae030a57dc05f9bfe2))
+
 ### [2.5.1](https://github.com/labor-digital/bits/compare/v2.5.0...v2.5.1) (2021-08-31)
 
 
