@@ -35,19 +35,19 @@
 		"watch": "npm run clean && tsc --project ./tsconfig.watch.json --watch"
 	},
 	"peerDependencies": {
-		"@labor-digital/helferlein": "^4.4.0"
+		"@labor-digital/helferlein": "^4.4.1"
 	},
 	"dependencies": {
-		"mobx": "^6.3.2"
+		"mobx": "^6.3.9"
 	},
 	"devDependencies": {
-		"@labor-digital/helferlein": "^4.4.0",
-		"@types/webpack-env": "^1.16.2",
+		"@labor-digital/helferlein": "^4.4.1",
+		"@types/webpack-env": "^1.16.3",
 		"handlebars": "^4.7.7",
 		"rimraf": "^3.0.2",
-		"rollup": "^2.56.3",
+		"rollup": "^2.61.1",
 		"rollup-plugin-terser": "^7.0.2",
-		"rollup-plugin-typescript2": "^0.30.0",
-		"typescript": "^4.4.2"
+		"rollup-plugin-typescript2": "^0.31.1",
+		"typescript": "^4.5.4"
 	}
 }
