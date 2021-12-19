@@ -42,7 +42,7 @@ export function getPropertyAccessor<T = any>(
     if (properties.indexOf(propertyName) === -1) {
         // Handling of context data bindings
         if (isPath && propertyName.indexOf('@') === 0) {
-            const context = propertyName.substr(1);
+            const context = propertyName.substring(1);
             const contextMount: any = closest(bit.$context.di.app.mountTag + '[context=' + context + ']', bit.$el);
             
             if (contextMount === null) {
