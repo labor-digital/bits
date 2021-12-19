@@ -83,7 +83,7 @@ export const defaultChangeDetector: IChangeDetector = (value: unknown, old: unkn
 
 export interface IMountAttrWatcher
 {
-    (attribute: string, mutation: MutationRecord): void
+    (attribute: string, mutation: MutationRecord): void;
 }
 
 /**

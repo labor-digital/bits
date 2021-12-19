@@ -209,7 +209,7 @@ export class Provider
         
         options = options ?? {};
         
-        const reactionOptions: IReactionOptions = {
+        const reactionOptions: IReactionOptions<any, boolean> = {
             fireImmediately: options.immediately,
             equals: (options.equals ?? valueComparer).bind(bit)
         };
