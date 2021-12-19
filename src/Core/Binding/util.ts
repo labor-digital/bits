@@ -272,8 +272,7 @@ export async function getElementValue(target: HTMLElement, prop: IPropertyAccess
             }
             
             if (el.checked && val.indexOf(el.value) === -1) {
-                val.push(el.value);
-                return val;
+                return [...val, el.value];
             }
             
             if (!el.checked && val.indexOf(el.value) !== -1) {
