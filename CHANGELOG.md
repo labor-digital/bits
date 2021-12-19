@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.5.3](https://github.com/labor-digital/bits/compare/v2.5.2...v2.5.3) (2021-12-19)
+
+
+### Bug Fixes
+
+* **Core\Binding:** ensure watchers are triggered when array values update ([8583980](https://github.com/labor-digital/bits/commit/8583980e1a7642664a200c56cfc9742e27160fbf))
+* **Core\propertyAccess:** use substring instead of substr ([f590b56](https://github.com/labor-digital/bits/commit/f590b568b8e211c381f890db7a62ccd214735198))
+* **Reactivity:** adjust types for new mobx version ([d1db4a7](https://github.com/labor-digital/bits/commit/d1db4a7f9f950fa2f97fe9f40b6fe472b768048f))
+
 ### [2.5.2](https://github.com/labor-digital/bits/compare/v2.5.1...v2.5.2) (2021-09-11)
 
 
