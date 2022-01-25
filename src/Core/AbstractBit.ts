@@ -26,6 +26,7 @@ import {
     isFunction,
     isPlainObject,
     isString,
+    isUndefined,
     map,
     PlainObject
 } from '@labor-digital/helferlein';
@@ -445,7 +446,7 @@ export class AbstractBit
             element = this.$findAll(element);
         }
         
-        if (!b && isString(a)) {
+        if (isUndefined(b) && isString(a)) {
             if (isArray(element)) {
                 return map(element, el => getAttr(el, a));
             }
