@@ -450,6 +450,7 @@ export class AbstractBit
             if (isArray(element)) {
                 return map(element, el => getAttr(el, a));
             }
+            // @todo in the next major version, this should not return an array
             return [getAttr(element as HTMLElement, a)];
         }
         
