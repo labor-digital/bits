@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/labor-digital/bits/compare/v2.5.3...v2.6.0) (2022-01-25)
+
+
+### Features
+
+* allow [@reference](https://github.com/reference) selectors in complex css queries ([fa7c37b](https://github.com/labor-digital/bits/commit/fa7c37b04d198f86a8379d8d5fc27397fc5e92fe))
+* install jest as testing framework ([d73a7b9](https://github.com/labor-digital/bits/commit/d73a7b9b5c8e788238aed9bf093aac6c42354569))
+
+
+### Bug Fixes
+
+* **AbstractBit:** ensure that $attr() allows null as third parameter ([ca07f3d](https://github.com/labor-digital/bits/commit/ca07f3d68e6c3ff8ad9f83f2ef088ae1b4233f5e))
+
 ### [2.5.3](https://github.com/labor-digital/bits/compare/v2.5.2...v2.5.3) (2021-12-19)
 
 
