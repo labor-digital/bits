@@ -41,11 +41,17 @@ import type {IEventListener, IGetterProvider, TEventList, TEventTarget} from './
  */
 export function prepareCssSelector(selector: string): string
 {
-    if (selector.substr(0, 1) === '@') {
-        selector = '*[data-ref="' + selector.substr(1) + '"]';
-    }
-    
-    return selector;
+    return (selector + '')
+        // Replace selector modifiers like: ".class:@selector"
+        .replace(
+            /(^|\w):@([^\s]*?)(:|\s|$)/g,
+            '$1[data-ref="$2"]$3'
+        )
+        // Replace stand-alone selectors like ".class @selector"
+        .replace(
+            /(^|\s|\()@([^\s]*?)(\)|:|\s|$)/g,
+            '$1*[data-ref="$2"]$3'
+        );
 }
 
 /**
