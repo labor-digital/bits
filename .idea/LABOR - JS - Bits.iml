@@ -2,9 +2,11 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/demo/dist" />
       <excludeFolder url="file://$MODULE_DIR$/demo/node_modules/@labor-digital/bits-translator/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/node_modules/@labor-digital/bits-lit-html/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/dist" />
     </content>
     <content url="file://$MODULE_DIR$/demo/dist" />
     <content url="file://$MODULE_DIR$/demo/node_modules/@labor-digital/bits" />
