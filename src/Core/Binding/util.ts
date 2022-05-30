@@ -279,7 +279,7 @@ export function setElementAttribute(target: HTMLElement, attribute: string, valu
  * @param target
  * @param prop
  */
-export async function getElementValue(target: HTMLElement, prop: IPropertyAccessor): Promise<any>
+export async function getElementValue(target: HTMLElement, prop?: IPropertyAccessor): Promise<any>
 {
     if (isBitMount(target)) {
         return runOnBitOrWaitForLoad(target, bit => bit.$context.binder.getForeignProperty('value'));
@@ -292,7 +292,7 @@ export async function getElementValue(target: HTMLElement, prop: IPropertyAccess
         }
         
         if (el.type === 'checkbox') {
-            const val = prop.get();
+            const val = prop ? prop.get() : [];
             
             if (!isArrayOrLOArray(val)) {
                 return el.checked ? [el.value] : [];

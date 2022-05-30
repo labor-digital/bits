@@ -34,14 +34,14 @@ import type {IAutorunOptions, IReactionDisposer, IReactionPublic} from 'mobx';
 import {runInAction} from 'mobx';
 import type {TWatchTarget} from '../Reactivity/types';
 import type {TCssClass, TCssStyle} from './Binding/types';
-import {setElementAttribute} from './Binding/util';
+import {getElementValue, setElementAttribute, setElementValue} from './Binding/util';
 import type {BitApp} from './BitApp';
 import type {BitContext} from './BitContext';
 import type {TBitAttrValue} from './Definition/types';
 import type {DiContainer} from './Di/DiContainer';
 import type {BitMountHTMLElement} from './Mount/types';
 import type {ITemplateDataProvider, ITemplateRendererAdapter} from './Template/types';
-import type {IEventListener, IPropertyWatcher, TElementOrList, TEventList, TEventTarget} from './types';
+import type {IEventListener, IPropertyWatcher, TElement, TElementOrList, TEventList, TEventTarget} from './types';
 import {bitEventActionWrap, findClosest, findElement, resolveEventTarget} from './util';
 
 declare global
@@ -635,7 +635,38 @@ export class AbstractBit
     }
     
     /**
-     * This is the the DANGER ZONE! Calling this method will destroy the bit instance completely
+     * Returns the value of an HTML form element.
+     *
+     * @param element The element to read the value from
+     * @protected
+     */
+    protected async $val(element: TElement): Promise<any>
+    
+    /**
+     * Sets the value of an HTML form element.
+     * @param element The element to set the value on
+     * @param value The value to set on the element
+     * @protected
+     */
+    protected async $val(element: TElement, value?: any): Promise<any | void>
+    {
+        if (isString(element)) {
+            element = this.$find(element);
+        }
+        
+        if (!element) {
+            return;
+        }
+        
+        if (isUndefined(value)) {
+            return getElementValue(element as HTMLElement);
+        } else {
+            setElementValue(element as HTMLElement, value);
+        }
+    }
+    
+    /**
+     * This is the DANGER ZONE! Calling this method will destroy the bit instance completely
      * @protected
      */
     public $destroy(): void

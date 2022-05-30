@@ -34,7 +34,8 @@ export type TEventTarget =
     | true
     | string;
 
-export type TElementOrList = HTMLElement | Element | NodeListOf<Element> | Array<Element> | null | string | undefined;
+export type TElement = HTMLElement | Element | null | string | undefined;
+export type TElementOrList = TElement | NodeListOf<Element> | Array<Element>;
 
 export interface IEventTargetProvider
 {
