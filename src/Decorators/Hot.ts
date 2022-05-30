@@ -39,11 +39,16 @@ export function Hot(module: Module): any
             
             module.hot.dispose((data) => {
                 data.reload = true;
-                data.id = element.__hmrId;
+                
+                if (!data.ids) {
+                    data.ids = [];
+                }
+                
+                data.ids.push(element.__hmrId);
             });
             
             if (module.hot.data && module.hot.data.reload) {
-                HmrRegistry.replaceCtor(module.hot.data.id, element);
+                HmrRegistry.replaceCtor(module.hot.data.ids.shift(), element);
             } else {
                 HmrRegistry.registerCtor(element);
             }
