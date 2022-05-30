@@ -23,7 +23,7 @@ declare global
 {
     interface HTMLElement
     {
-        bit?: AbstractBit | any
+        bit?: AbstractBit | any;
     }
 }
 
@@ -32,5 +32,6 @@ declare global
  */
 export interface BitMountHTMLElement extends HTMLElement
 {
-    _bitMount: Mount
+    _bitMount: Mount;
+    _bitOnLoadQueue?: Array<(bit: AbstractBit | any) => void>;
 }

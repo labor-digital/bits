@@ -27,6 +27,7 @@ import {
     PlainObject,
     reduce
 } from '@labor-digital/helferlein';
+import type {AbstractBit} from '../AbstractBit';
 import type {BitMountHTMLElement} from '../Mount/types';
 import type {IPropertyAccessor, TCssClass, TCssStyle} from './types';
 
@@ -215,6 +216,32 @@ export function isBitMount(target: HTMLElement): target is BitMountHTMLElement
 }
 
 /**
+ * Runs the provided callback either directly (if the bit already exists)
+ * or as soon as it is created as a mount
+ * @param target
+ * @param callback
+ */
+export async function runOnBitOrWaitForLoad(
+    target: BitMountHTMLElement,
+    callback: (bit: AbstractBit | any) => void
+): Promise<any>
+{
+    if (!isBitMount(target)) {
+        throw new Error('Provided target is not a valid bit mount!');
+    }
+    
+    if (target.bit) {
+        return callback(target.bit);
+    } else {
+        if (!isArray(target._bitOnLoadQueue)) {
+            target._bitOnLoadQueue = [];
+        }
+        
+        target._bitOnLoadQueue.push(callback);
+    }
+}
+
+/**
  * Helper to set a given value to a specific attribute to a dom node
  *
  * @param target The dom node to set the attribute for
@@ -231,8 +258,8 @@ export function setElementAttribute(target: HTMLElement, attribute: string, valu
             return setNodeStyle(target, value);
     }
     
-    if (!ignoreBitMounts && isBitMount(target) && target.bit) {
-        target.bit.$context.binder.setForeignProperty(attribute, value, false);
+    if (!ignoreBitMounts && isBitMount(target)) {
+        runOnBitOrWaitForLoad(target, bit => bit.$context.binder.setForeignProperty(attribute, value, false));
         return;
     }
     
@@ -254,8 +281,8 @@ export function setElementAttribute(target: HTMLElement, attribute: string, valu
  */
 export async function getElementValue(target: HTMLElement, prop: IPropertyAccessor): Promise<any>
 {
-    if (isBitMount(target) && target.bit) {
-        return await target.bit.$context.binder.getForeignProperty('value');
+    if (isBitMount(target)) {
+        return runOnBitOrWaitForLoad(target, bit => bit.$context.binder.getForeignProperty('value'));
     }
     
     if (target.tagName === 'INPUT') {
@@ -311,8 +338,8 @@ export async function getElementValue(target: HTMLElement, prop: IPropertyAccess
  */
 export function setElementValue(target: HTMLElement, value: any): void
 {
-    if (isBitMount(target) && target.bit) {
-        target.bit.$context.binder.setForeignProperty('value', value, true);
+    if (isBitMount(target)) {
+        runOnBitOrWaitForLoad(target, bit => bit.$context.binder.setForeignProperty('value', value, true));
         return;
     }
     

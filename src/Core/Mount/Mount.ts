@@ -16,6 +16,7 @@
  * Last modified: 2021.03.10 at 22:20
  */
 
+import {forEach} from '@labor-digital/helferlein';
 import {Provider} from '../../Reactivity/Provider';
 import type {AbstractBit} from '../AbstractBit';
 import {Binder} from '../Binding/Binder';
@@ -136,6 +137,11 @@ export class Mount
                     react.domChangeDependency();
                 };
                 await binder.bind(this._i);
+                
+                if (this._el._bitOnLoadQueue) {
+                    forEach(this._el._bitOnLoadQueue, c => c(this._i));
+                    delete this._el._bitOnLoadQueue;
+                }
                 
                 // Bind listener to refresh the bindings when the domChange event was executed
                 this.el!.addEventListener('domChange', this._changeListener = async () => {
