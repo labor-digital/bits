@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/labor-digital/bits/compare/v2.6.0...v2.7.0) (2022-05-30)
+
+
+### Features
+
+* introduce $val utility method ([466c031](https://github.com/labor-digital/bits/commit/466c031b5810f5cb20f52d00f63ca3e4bf728985))
+
+
+### Bug Fixes
+
+* ensure that multiple bit classes in the same file work correctly ([e45b4bf](https://github.com/labor-digital/bits/commit/e45b4bf6ba6c86eb3aa4adb15c8c74b4ed07e4fa))
+* **Binding:** ensure async bits handle their interop correctly ([6845654](https://github.com/labor-digital/bits/commit/68456543171a8162518ad9c1678424cd48a54b2f))
+* **util:** ensure correct parsing of @ css selectors with "[" chars ([86b1a44](https://github.com/labor-digital/bits/commit/86b1a4494d2779cfb6e09981f615571c48029307))
+
 ## [2.6.0](https://github.com/labor-digital/bits/compare/v2.5.3...v2.6.0) (2022-01-25)
 
 
