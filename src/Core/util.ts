@@ -44,12 +44,12 @@ export function prepareCssSelector(selector: string): string
     return (selector + '')
         // Replace selector modifiers like: ".class:@selector"
         .replace(
-            /(^|\w):@([^\s]*?)(:|\s|$)/g,
+            /(^|\w):@([^\s]*?)(\[|:|\s|$)/g,
             '$1[data-ref="$2"]$3'
         )
         // Replace stand-alone selectors like ".class @selector"
         .replace(
-            /(^|\s|\()@([^\s]*?)(\)|:|\s|$)/g,
+            /(^|\s|\()@([^\s]*?)(\[|\)|:|\s|$)/g,
             '$1*[data-ref="$2"]$3'
         );
 }

@@ -30,7 +30,8 @@ const data = [
         '.class:@selector:not(.foo):not(@otherSelector)',
         '.class[data-ref="selector"]:not(.foo):not(*[data-ref="otherSelector"])'
     ],
-    ['.class:@selector .anotherClass', '.class[data-ref="selector"] .anotherClass']
+    ['.class:@selector .anotherClass', '.class[data-ref="selector"] .anotherClass'],
+    ['@filterKey[data-filter-key="someKey"]', '*[data-ref="filterKey"][data-filter-key="someKey"]']
 ];
 
 describe.each(data)('A processed selector', (i, o) => {
