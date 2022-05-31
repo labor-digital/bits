@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.2](https://github.com/labor-digital/bits/compare/v2.7.1...v2.7.2) (2022-05-31)
+
+
+### Bug Fixes
+
+* **Binding:** fix issue when bindable is removed ([89dc098](https://github.com/labor-digital/bits/commit/89dc098abb9812566d082b83c94241f4562be340))
+
 ### [2.7.1](https://github.com/labor-digital/bits/compare/v2.7.0...v2.7.1) (2022-05-31)
 
 
