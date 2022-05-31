@@ -16,13 +16,14 @@
  * Last modified: 2021.03.04 at 00:13
  */
 
-import {forEach, isFunction, isString, isUndefined, PlainObject} from '@labor-digital/helferlein';
+import {forEach, isArray, isFunction, isString, isUndefined, PlainObject} from '@labor-digital/helferlein';
 import {
     autorun,
     IAutorunOptions,
     IReactionDisposer,
     IReactionOptions,
     IReactionPublic,
+    isObservableArray,
     makeObservable,
     observable,
     observe,
@@ -203,7 +204,8 @@ export class Provider
         if (isString(target)) {
             const targetString = target;
             target = function watchTargetResolver() {
-                return bit[targetString];
+                const v = bit[targetString] ?? null;
+                return isArray(v) || isObservableArray(v) ? v.slice() : v;
             };
         }
         
