@@ -30,7 +30,7 @@ export class ModelBindable extends AbstractBindable
         const pullable = this.$context.pullableProperties ?? [];
         const prop = await binder.getAccessor(value);
         
-        if (!prop) {
+        if (!prop || !this.$context) {
             return;
         }
         

@@ -212,7 +212,7 @@ export function splitMapString(map: string, allowEmptySource?: boolean): Array<I
  */
 export function isBitMount(target: HTMLElement): target is BitMountHTMLElement
 {
-    return !isUndefined((target as any)._bitMount);
+    return target && !isUndefined((target as any)._bitMount);
 }
 
 /**
