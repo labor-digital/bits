@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.1](https://github.com/labor-digital/bits/compare/v2.7.0...v2.7.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **Reactivity:** ensure correct update detection for array values ([29b2025](https://github.com/labor-digital/bits/commit/29b202548e07cb83c5bb9c0fb1479e5439d6b8b8))
+
 ## [2.7.0](https://github.com/labor-digital/bits/compare/v2.6.0...v2.7.0) (2022-05-30)
 
 
