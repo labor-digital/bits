@@ -648,6 +648,8 @@ export class AbstractBit
      * @param value The value to set on the element
      * @protected
      */
+    protected async $val(element: TElement, value: any): Promise<void>
+    
     protected async $val(element: TElement, value?: any): Promise<any | void>
     {
         if (isString(element)) {
