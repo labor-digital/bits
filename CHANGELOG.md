@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.3](https://github.com/labor-digital/bits/compare/v2.7.2...v2.7.3) (2022-06-02)
+
+
+### Bug Fixes
+
+* **AbstractBit:** add documentation for setting $val values ([6ffe71b](https://github.com/labor-digital/bits/commit/6ffe71bb16b1cc8e84f63537f43307a631654ec6))
+
 ### [2.7.2](https://github.com/labor-digital/bits/compare/v2.7.1...v2.7.2) (2022-05-31)
 
 
