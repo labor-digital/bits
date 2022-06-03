@@ -31,7 +31,7 @@
  * http://polymer.github.io/PATENTS.txt
  */
 
-import {isArray, isFunction, isObject, isString} from '@labor-digital/helferlein';
+import {isArray, isEmpty, isFunction, isObject, isString} from '@labor-digital/helferlein';
 import {comparer} from 'mobx';
 import type {
     IAttrToPropertyConverter,
@@ -48,6 +48,11 @@ export const defaultConverter: IPropertyConverter = {
         switch (type) {
             case Boolean:
                 return value ? '' : null;
+            case Date:
+                if (value instanceof Date) {
+                    return value.toString();
+                }
+                return value;
             case Object:
             case Array:
                 // if the value is `null` or `undefined` pass this through
@@ -65,6 +70,11 @@ export const defaultConverter: IPropertyConverter = {
                     return ['false', '0', 'off'].indexOf(value.toLowerCase().trim()) === -1;
                 }
                 return value !== null;
+            case Date:
+                if (isString(value) && !isEmpty(value)) {
+                    return new Date(value);
+                }
+                return null;
             case Number:
                 return value === null ? null : Number(value);
             case Object:
