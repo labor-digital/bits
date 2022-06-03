@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/labor-digital/bits/compare/v2.7.3...v2.8.0) (2022-06-03)
+
+
+### Features
+
+* **Binding:** allow Date TypeHint for @Data models ([979477c](https://github.com/labor-digital/bits/commit/979477c5a421ca16774fb16a90ae6bb8ab740af8))
+* **Reactivity:** support "Date" type in @Property ([c6cb8a5](https://github.com/labor-digital/bits/commit/c6cb8a55286a76f828235ebf472d658eb699e580))
+
+
+### Bug Fixes
+
+* **Binding:** fix exception in firefox ([a64518a](https://github.com/labor-digital/bits/commit/a64518a8857d24d2ef1ab72701adb5ba5d789483))
+
 ### [2.7.3](https://github.com/labor-digital/bits/compare/v2.7.2...v2.7.3) (2022-06-02)
 
 
