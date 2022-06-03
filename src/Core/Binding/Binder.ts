@@ -298,7 +298,9 @@ export class Binder
     {
         forEach(this._promiseDisposers, disposer => disposer());
         this.dispatchDisposers();
-        this._context!.destroy();
+        if (this._context) {
+            this._context!.destroy();
+        }
         
         this._el = null as any;
         this._context = null as any;
