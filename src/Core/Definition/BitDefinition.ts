@@ -27,6 +27,7 @@ import {
 } from '@labor-digital/helferlein';
 import type {IAutorunOptions} from 'mobx';
 import type {IPropertyOptions, IWatchOptions, TWatchTarget} from '../../Reactivity/types';
+import {defaultChangeDetector} from '../../Reactivity/util';
 import type {TEventList, TEventTarget} from '../types';
 import type {
     TBitAnnotations,
@@ -72,9 +73,15 @@ export class BitDefinition
     {
         // Generate the attribute and extend the options if required
         options = options ?? {};
+        
         const attr = options.attribute === true || isUndefined(options.attribute)
             ? inflectToDashed(property) : options.attribute;
-        options = {...options, attribute: attr};
+        
+        options = {
+            ...options,
+            changeDetector: options.changeDetector ?? defaultChangeDetector,
+            attribute: attr
+        };
         
         // Inject the attribute into the map for the prototype
         if (isString(attr)) {

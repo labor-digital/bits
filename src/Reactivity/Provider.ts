@@ -43,13 +43,7 @@ import type {
     TPropertyToAttrConverter,
     TWatchTarget
 } from './types';
-import {
-    defaultChangeDetector,
-    defaultConverter,
-    makeMountMutationObserver,
-    readAttributeValue,
-    valueComparer
-} from './util';
+import {defaultConverter, makeMountMutationObserver, readAttributeValue, valueComparer} from './util';
 
 export class Provider
 {
@@ -115,13 +109,11 @@ export class Provider
                 return;
             }
             
-            const options = def.getProperty(property)!;
-            const changeDetector = options!.changeDetector ?? defaultChangeDetector;
             const o = (change as any).oldValue;
             const n = (change as any).newValue;
             
-            if (changeDetector(n, o)) {
-                this.onPropertyUpdate(change.name as string, (change as any).newValue);
+            if (def.getProperty(property)!.changeDetector!(n, o)) {
+                this.onPropertyUpdate(change.name as string, n);
             }
         });
         this._disposers.push(disposer as any);
