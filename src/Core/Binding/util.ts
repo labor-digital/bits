@@ -309,6 +309,13 @@ export async function getElementValue(target: HTMLElement, prop?: IPropertyAcces
             return val;
         }
         
+        if (el.type === 'date' && prop?.typeHint === Date) {
+            if (el.value === '') {
+                return null;
+            }
+            
+            return new Date(el.value);
+        }
     }
     
     if (target.tagName === 'SELECT') {
@@ -357,6 +364,17 @@ export function setElementValue(target: HTMLElement, value: any): void
             }
             
             el.checked = value.indexOf(el.value) !== -1;
+            return;
+        }
+        
+        if (el.type === 'date' && value instanceof Date) {
+            if (!isUndefined(el.valueAsDate)) {
+                el.valueAsDate = value;
+            } else {
+                el.value = value.getFullYear() + '-' +
+                           ('0' + (value.getMonth() + 1)).slice(-2) + '-' +
+                           ('0' + value.getDate()).slice(-2);
+            }
             return;
         }
     }

@@ -138,7 +138,8 @@ export class Binder
                 const accessor = await getPropertyAccessor(
                     this._bit!,
                     property,
-                    this._definition!.getPropertyNames()
+                    this._definition!.getPropertyNames(),
+                    this._definition?.getProperty(property)?.type
                 );
                 
                 if (accessor === null) {

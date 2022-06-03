@@ -28,11 +28,13 @@ import type {IPropertyAccessor} from './types';
  * @param bit The bit to access the data for
  * @param property The name of the property/path of data inside a property to work with
  * @param properties A list of valid property names that can be accessed on the bit
+ * @param typeHint type hint that was provided for the property
  */
 export function getPropertyAccessor<T = any>(
     bit: AbstractBit,
     property: string,
-    properties: Array<string>
+    properties: Array<string>,
+    typeHint?: unknown
 ): Promise<IPropertyAccessor<T> | null>
 {
     const path = property.split('.');
@@ -58,8 +60,7 @@ export function getPropertyAccessor<T = any>(
                 return Promise.resolve(null);
             }
             
-            const contextBit: AbstractBit = contextMount.bit;
-            return contextBit.$context.binder.getAccessor(path.slice(1).join('.'));
+            return contextMount.bit.$context.binder.getAccessor(path.slice(1).join('.'));
         }
         
         console.error('Can\'t bind data on unknown property: "' + propertyName + '" of element:', bit.$el,
@@ -72,6 +73,7 @@ export function getPropertyAccessor<T = any>(
         {
             property: propertyName,
             path,
+            typeHint,
             get(): T
             {
                 return isPath ? getPath(bit as any, path, null) : bit[property] ?? null;

@@ -54,6 +54,11 @@ export interface IPropertyAccessor<T = any>
     readonly path: Array<string>;
     
     /**
+     * Contains the type hint provided for the property in Data or Property
+     */
+    readonly typeHint: unknown;
+    
+    /**
      * Sets the value of the property to the given value
      * @param value
      */

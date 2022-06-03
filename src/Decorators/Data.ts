@@ -33,7 +33,8 @@ export function Data(options?: IDataPropertyOptions): any
         DefinitionRegistry.getDefinitionFor(element).addProperty(name, {
             attribute: false,
             reflect: false,
-            changeDetector: options?.changeDetector ?? undefined
+            changeDetector: options?.changeDetector ?? undefined,
+            type: options?.type ?? undefined
         });
     };
 }

@@ -49,7 +49,7 @@ export interface IPropertyToAttrConverter<Type = unknown, TypeHint = unknown>
 
 export interface IAttrToPropertyConverter<Type = unknown, TypeHint = unknown>
 {
-    (value: string | null, type?: TypeHint): Type
+    (value: string | null, type?: TypeHint): Type;
 }
 
 /**
@@ -87,7 +87,7 @@ export interface IChangeDetector<Type = unknown>
 /**
  * Options for a private, reactive data field inside the element
  */
-export interface IDataPropertyOptions<Type = unknown>
+export interface IDataPropertyOptions<Type = unknown, TypeHint = unknown>
 {
     /**
      * A function that indicates if a property should be considered changed when
@@ -95,6 +95,15 @@ export interface IDataPropertyOptions<Type = unknown>
      * return `true` if an update should be requested.
      */
     readonly changeDetector?: IChangeDetector<Type>;
+    
+    /**
+     * Indicates the type of the property. This is used only as a hint for the
+     * `converter` to determine how to convert the value to/from a value field when used in a "model".
+     *
+     * Currently, only "Date" has a special function as it allows the setting and reading of Date
+     * values on date fields
+     */
+    readonly type?: TypeHint;
 }
 
 /**
@@ -121,12 +130,12 @@ export interface IPropertyOptions<Type = unknown, TypeHint = unknown> extends ID
     
     /**
      * Indicates how to convert the attribute to/from a property. If this value
-     * is a function, it is used to convert the attribute value a the property
+     * is a function, it is used to convert the attribute value to the property
      * value. If it's an object, it can have keys for `fromAttribute` and
      * `toAttribute`. If no `toAttribute` function is provided and
      * `reflect` is set to `true`, the property value is set directly to the
      * attribute. A default `converter` is used if none is provided; it supports
-     * `Boolean`, `String`, `Number`, `Object`, and `Array`. Note,
+     * `Boolean`, `String`, `Number`, `Date`, `Object`, and `Array`. Note,
      * when a property changes and the converter is used to update the attribute,
      * the property is never updated again as a result of the attribute changing,
      * and vice versa.
